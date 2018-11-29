@@ -2,7 +2,6 @@ package br.com.vinicius.rpg;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,13 +19,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Bd banco = new Bd(getBaseContext());
         SQLiteDatabase db = banco.getWritableDatabase();
-        boolean retorno = Loads.classes.dados();
-        if(retorno){
-            Loads.comandos comandos = new Loads.comandos();
-            boolean teste = comandos.InserirClasses(db);
-            visualizar(teste,"Teste");
-            banco.close();
-        }
+        Loads.comandos comandos = new Loads.comandos();
+        System.out.println(comandos.buscaDados(db));
         //System.exit(-1);
         NovoJogo = (Button) findViewById(R.id.NovoJogo);
         Continuar = (Button) findViewById(R.id.Continuar);

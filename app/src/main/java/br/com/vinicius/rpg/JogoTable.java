@@ -1,21 +1,12 @@
 package br.com.vinicius.rpg;
 
 public class JogoTable {
-    private int id;
     private String classe;
     private String atk;
     private String def;
     private String agi;
     private String atkM;
     private String defM;
-
-    public void setId(int id){
-        this.id = id;
-    }
-
-    public int getId(){
-        return this.id;
-    }
 
     public void setClasse(String classe){
         this.classe = classe;
@@ -28,7 +19,6 @@ public class JogoTable {
     public void setAtk(String atk){
         this.atk = atk;
     }
-
 
     public String getAtk(){
         return this.atk;
