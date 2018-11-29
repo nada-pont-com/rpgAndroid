@@ -1,6 +1,7 @@
 package br.com.vinicius.rpg;
 
 import android.app.AlertDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import java.util.List;
+
 public class Jogo extends AppCompatActivity {
 
+    private String load_id;
     private Button avancar;
     private Button avancar2;
     private Button voltar;
@@ -19,6 +23,8 @@ public class Jogo extends AppCompatActivity {
     private RadioButton classAven;
     private EditText nomePerso;
     private String classe;
+    private Bd banco = new  Bd(getBaseContext());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +60,9 @@ public class Jogo extends AppCompatActivity {
                 if(nome.equals("")){
                     nomePerso.setError("Preencha o campo");
                 }else {
-
+                    SQLiteDatabase db = banco.getWritableDatabase();
+                    Loads.comandos comandos = new Loads.comandos();
+                    List<JogoTable> listaDeClasses = comandos.buscaClasses(db);
                 }
             }
         });
@@ -86,6 +94,5 @@ public class Jogo extends AppCompatActivity {
             layout.setVisibility(View.VISIBLE);
             layout2.setVisibility(View.INVISIBLE);
         }
-
     }
 }

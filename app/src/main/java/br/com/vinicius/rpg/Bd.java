@@ -8,7 +8,7 @@ import br.com.vinicius.rpg.Loads.load;
 public class Bd extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
-    private static final String SQL_CREATE_LOADS = load.SQL_CREATE_LOADS;
+    private static final String SQL_CREATE_LOADS = "CREATE TABLE IF NOT EXISTS "+load.TABLE_NAME+ load.SQL_CREATE_LOADS;
     private static final String SQL_DELETE_POSTS =
             "DROP TABLE IF EXISTS "+load.TABLE_NAME;
     private static final int DATABASE_VERSION = 1;
@@ -20,6 +20,8 @@ public class Bd extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_LOADS);
+        db.execSQL(Loads.classes.SQL_CREATE_CLASSES);
+        db.execSQL(Loads.dados.SQL_CREATE_DADOS);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_POSTS);

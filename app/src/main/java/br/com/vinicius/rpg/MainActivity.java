@@ -1,6 +1,9 @@
 package br.com.vinicius.rpg;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,8 +19,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bd banco = new Bd(getBaseContext());
-        banco.close();
-
+        SQLiteDatabase db = banco.getWritableDatabase();
+        boolean retorno = Loads.classes.dados();
+        if(retorno){
+            Loads.comandos comandos = new Loads.comandos();
+            boolean teste = comandos.InserirClasses(db);
+            visualizar(teste,"Teste");
+            banco.close();
+        }
+        //System.exit(-1);
         NovoJogo = (Button) findViewById(R.id.NovoJogo);
         Continuar = (Button) findViewById(R.id.Continuar);
 
@@ -35,5 +45,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void visualizar(Object item,String titulo){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(titulo);
+        alert.setMessage(item.toString());
+        alert.create();
+        alert.show();
     }
 }

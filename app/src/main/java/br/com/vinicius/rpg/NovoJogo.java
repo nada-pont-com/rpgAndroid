@@ -69,7 +69,8 @@ public class NovoJogo extends AppCompatActivity {
                             null,
                             null);
                     if(validador(cursor)){
-                        String valor = Loads.comandos.Inserir(Nome.getText().toString(),"00:00:01",getBaseContext());
+                        Loads.comandos comandos = new Loads.comandos();
+                        String valor = comandos.Inserir(Nome.getText().toString(),"00:00:01",getBaseContext());
                         if(valor.equals("Tudo certo")){
                             Intent it =  new Intent(NovoJogo.this,Jogo.class);
                             startActivity(it);
@@ -174,9 +175,9 @@ public class NovoJogo extends AppCompatActivity {
             alert.setNegativeButton("Voltar ao Inicio", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    banco.close();
                     Intent it =  new Intent(NovoJogo.this,MainActivity.class);
                     startActivity(it);
-                    banco.close();
                 }
             });
             alert.create();
