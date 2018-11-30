@@ -70,18 +70,19 @@ public final class Loads {
 
     public static class comandos{
 
-        public String Inserir(String nome, String tempo, Context context){
+        public boolean Inserir(int id,String nome, String tempo, Context context){
             Bd banco = new Bd(context);
             SQLiteDatabase db = banco.getWritableDatabase();
             ContentValues values = new ContentValues();
+            values.put("id", id);
             values.put("nome", nome);
             values.put("tempo", tempo);
             long newRowId = db.insert(load.TABLE_NAME, null, values);
             banco.close();
             if(newRowId==-1){
-                return "Tudo Errado";
+                return false;
             }else {
-                return "Tudo certo";
+                return true;
             }
         }
 
@@ -94,9 +95,9 @@ public final class Loads {
             values.put("load_id",load_id);
             long newRowId = db.insert(dados.TABLE_NAME, null, values);
             if(newRowId==-1){
-                return false;
+                return false; //Erro
             }else {
-                return true;
+                return true; // Tudo certo
             }
 
         }

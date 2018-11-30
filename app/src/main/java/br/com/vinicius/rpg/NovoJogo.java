@@ -1,5 +1,6 @@
 package br.com.vinicius.rpg;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,7 +36,8 @@ public class NovoJogo extends AppCompatActivity {
     private RadioButton classAven;
     private EditText nomePerso;
     private EditText Nome;
-    private String classe;
+    private String classe = "";
+    private int loadId;
     private Bd banco;
 
 
@@ -92,6 +94,7 @@ public class NovoJogo extends AppCompatActivity {
         });
 
         Excluir.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 String texto = textView.getText().toString();
@@ -134,19 +137,37 @@ public class NovoJogo extends AppCompatActivity {
                 }else {
                     SQLiteDatabase db = banco.getWritableDatabase();
                     Loads.comandos comandos = new Loads.comandos();
-                    String valor = comandos.Inserir(Nome.getText().toString(),"00:00:01",getBaseContext());
-                    List<LoadTable> listaDeLoads = comandos.buscaLoad(db);
-                    List<JogoTable> listaDeClasses = comandos.buscaClasses(db);
-                    int load_id = -1;
-                    for (int i = 0;i<listaDeLoads.size();i++){
-                        if((Nome.getText().toString()).equals(listaDeLoads.get(i).getNome())){
-                            load_id = listaDeLoads.get(i).getId();
-                            break;
+                    boolean valor = comandos.Inserir(loadId,Nome.getText().toString(),"00:00:01",getBaseContext());
+                    if(valor){
+                        if((loadId!=0) || (!classe.equals(""))){
+                            boolean retorno = comandos.InserirDados(nome,classe,loadId,db);
+                            if(retorno){
+                                DadosTable  dados = new DadosTable();
+                                dados.setClassesClasse(classe);
+                                dados.setLoadId(loadId);
+                                dados.setLevel(1);
+                                dados.setNome(nome);
+
+                                Sessao.setDados(dados);
+
+                                LoadTable load = new LoadTable();
+                                load.setNome(Nome.getText().toString());
+                                load.setId(loadId);
+                                load.setTempo("00:00:01");
+
+                                Sessao.setLoad(load);
+
+                                Intent it =  new Intent(NovoJogo.this,Jogo.class);
+                                startActivity(it);
+                            }else{
+                                visualizar("Erro ao cadastrar novo salve","Erro");
+                            }
+                        }else{
+                            visualizar("Erro ao cadastrar novo salve","Erro");
+                            Intent it =  new Intent(NovoJogo.this,MainActivity.class);
+                            startActivity(it);
                         }
-                    }
-                    if((load_id!=-1)){
-                        comandos.InserirDados(nome,classe,load_id,db);
-                    }else{
+                    }else {
                         visualizar("Erro ao cadastrar novo salve","Erro");
                         Intent it =  new Intent(NovoJogo.this,MainActivity.class);
                         startActivity(it);
@@ -202,7 +223,7 @@ public class NovoJogo extends AppCompatActivity {
                 null,
                 null);
         LoadTable load;
-        List<LoadTable> loads = new ArrayList<LoadTable>();
+        List<LoadTable> loads = new ArrayList<>();
         while (cursor.moveToNext()){
             load = new LoadTable();
             load.setId(cursor.getInt(0));
@@ -210,7 +231,7 @@ public class NovoJogo extends AppCompatActivity {
             load.setTempo(cursor.getString(2));
             loads.add(load);
         }
-        ArrayAdapter<LoadTable> adapter = new ArrayAdapter<LoadTable>(this,
+        ArrayAdapter<LoadTable> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, loads);
         lista.setAdapter(adapter);
     }
@@ -261,6 +282,7 @@ public class NovoJogo extends AppCompatActivity {
         }else if(nomeRepetido){
             visualizar("Nome de salve Repetido","Alerta");
         }else{
+            loadId = cont+1;
             return true;
         }
         return false;

@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         Continuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent it  = new Intent(MainActivity.this,Continuar.class);
+                startActivity(it);
             }
         });
 
