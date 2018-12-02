@@ -30,8 +30,7 @@ public class LoadTable {
 
     @Override
     public String toString() {
-        return "Id: " + id+ ", Nome: " +
-                nome + ", Tempo: " + tempo;
+        return "Id: "+id+",Nome: " +nome + ",Tempo: " + tempo;
     }
 
 }

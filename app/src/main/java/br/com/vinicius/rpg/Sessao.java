@@ -2,7 +2,7 @@ package br.com.vinicius.rpg;
 
 public class Sessao {
     private static LoadTable load;
-    private static DadosTable dados;
+    private static DadosTable dadosPerso;
 
     public static LoadTable getLoad() {
         return load;
@@ -12,11 +12,11 @@ public class Sessao {
         Sessao.load = load;
     }
 
-    public static DadosTable getDados() {
-        return dados;
+    public static DadosTable getDadosPerso() {
+        return dadosPerso;
     }
 
-    public static void setDados(DadosTable dados) {
-        Sessao.dados = dados;
+    public static void setDadosPerso(DadosTable dadosPerso) {
+        Sessao.dadosPerso = dadosPerso;
     }
 }

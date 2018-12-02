@@ -20,14 +20,7 @@ public class Bd extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_LOADS);
-        db.execSQL(Loads.classes.SQL_CREATE_CLASSES);
-        db.execSQL(Loads.dados.SQL_CREATE_DADOS);
-        boolean retorno = Loads.classes.dados();
-        if(retorno){
-            Loads.comandos comandos = new Loads.comandos();
-            boolean teste = comandos.InserirClasses(db);
-            System.out.println(teste);
-        }
+        db.execSQL(Loads.perso.SQL_CREATE_CLASSES);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_POSTS);

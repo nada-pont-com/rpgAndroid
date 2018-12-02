@@ -9,27 +9,36 @@ import android.provider.BaseColumns;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Loads {
+final class Loads {
     private Loads(){}
 
-    public static class load implements BaseColumns{
-        public static final String TABLE_NAME = "load";
-        public static final String SQL_CREATE_LOADS = " (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+    static class load implements BaseColumns{
+        static final String TABLE_NAME = "load";
+        static final String SQL_CREATE_LOADS = " (id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "nome VARCHAR(45) NOT NULL UNIQUE," +
                 "tempo TIME NOT NULL" +
                 ")";
     }
-    public static class classes implements BaseColumns{
-        public static final String TABLE_NAME = "classes";
-        public static final String SQL_CREATE_CLASSES = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (" +
-                "classe VARCHAR(20) NOT NULL PRIMARY KEY," +
+    static class perso implements BaseColumns{
+        static final String TABLE_NAME = "perso";
+        static final String SQL_CREATE_CLASSES = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INTEGER PRIMARY KEY," +
+                "nome VARCHAR(40) NOT NULL," +
+                "level INT UNSIGNED NOT NULL," +
+                "experiencia INT UNSIGNED NOT NULL," +
+                "load_id INTEGER NOT NULL," +
+                "classe VARCHAR(20) NOT NULL," +
+                "vida INT UNSIGNED NOT NULL," +
+                "vidaMax INT UNSIGNED NOT NULL," +
                 "atk INT UNSIGNED NOT NULL," +
                 "def INT UNSIGNED NOT NULL," +
                 "agi INT UNSIGNED NOT NULL," +
                 "atkM INT UNSIGNED NOT NULL," +
-                "defM INT UNSIGNED NOT NULL)";
-        public static final List<JogoTable> SQL_LIST_DADOS = new ArrayList<JogoTable>();
-        public static boolean dados(){
+                "defM INT UNSIGNED NOT NULL," +
+                "FOREIGN KEY (load_id) " +
+                "REFERENCES load (id)" +
+                ")";
+        static final List<DadosTable> SQL_LIST_DADOS = new ArrayList<DadosTable>();
+        static void dados(){
             String classe[] = {"Guerreiro","Aventureiro"};
             String atk[] =  {"10"       ,"7"};
             String def[] =  {"10"       ,"6"};
@@ -37,155 +46,55 @@ public final class Loads {
             String atkM[] = {"2"        ,"5"};
             String defM[] = {"2"        ,"4"};
 
-            JogoTable dado = null;
+            DadosTable dado;
             for (int i=0;i<classe.length;i++){
-                dado = new JogoTable();
+                dado = new DadosTable();
                 dado.setClasse(classe[i]);
-                dado.setAgi(agi[i]);
-                dado.setAtk(atk[i]);
-                dado.setAtkM(atkM[i]);
-                dado.setDef(def[i]);
-                dado.setDefM(defM[i]);
+                dado.setAgi(Integer.parseInt(agi[i]));
+                dado.setAtk(Integer.parseInt(atk[i]));
+                dado.setAtkM(Integer.parseInt(atkM[i]));
+                dado.setDef(Integer.parseInt(def[i]));
+                dado.setDefM(Integer.parseInt(defM[i]));
 
                 SQL_LIST_DADOS.add(dado);
             }
-            return true;
         }
     }
-    public static class dados implements BaseColumns{
 
-        public static final String TABLE_NAME = "dados";
-        public static final String SQL_CREATE_DADOS = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "nome VARCHAR(45) NOT NULL," +
-                "level INT NOT NULL," +
-                "classes_classe INTEGER NOT NULL," +
-                "load_id INTEGER NOT NULL," +
-                "FOREIGN KEY (load_id) " +
-                "REFERENCES load (id)," +
-                "FOREIGN KEY (classes_classe) " +
-                "REFERENCES classes (classe)" +
-                ")";
+    static class comandos{
 
-    }
-
-    public static class comandos{
-
-        public boolean Inserir(int id,String nome, String tempo, Context context){
+        boolean Inserir(LoadTable load, Context context){
             Bd banco = new Bd(context);
             SQLiteDatabase db = banco.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put("id", id);
-            values.put("nome", nome);
-            values.put("tempo", tempo);
-            long newRowId = db.insert(load.TABLE_NAME, null, values);
+            values.put("id", load.getId());
+            values.put("nome", load.getNome());
+            values.put("tempo", load.getTempo());
+            long newRowId = db.insert(Loads.load.TABLE_NAME, null, values);
             banco.close();
-            if(newRowId==-1){
-                return false;
-            }else {
-                return true;
-            }
+            return newRowId != -1;
         }
 
-
-        public boolean InserirDados(String nome,String classes_classe,int load_id,SQLiteDatabase db) {
+        boolean InserirDados(DadosTable dados,SQLiteDatabase db) {
             ContentValues values = new ContentValues();
-            values.put("nome",nome);
-            values.put("level",1);
-            values.put("classes_classe",classes_classe);
-            values.put("load_id",load_id);
-            long newRowId = db.insert(dados.TABLE_NAME, null, values);
-            if(newRowId==-1){
-                return false; //Erro
-            }else {
-                return true; // Tudo certo
-            }
-
+            values.put("id", dados.getId());
+            values.put("nome",dados.getNome());
+            values.put("level",dados.getLevel());
+            values.put("experiencia",dados.getExperiencia());
+            values.put("classe",dados.getClasse());
+            values.put("load_id",dados.getLoadId());
+            values.put("vida",dados.getVida());
+            values.put("vidaMax",dados.getVidaMax());
+            values.put("atk",dados.getAtk());
+            values.put("atkM",dados.getAtkM());
+            values.put("def",dados.getDef());
+            values.put("defM",dados.getDefM());
+            values.put("agi",dados.getAgi());
+            long newRowId = db.insert(perso.TABLE_NAME, null, values);
+            return newRowId != -1;
         }
 
-        public boolean InserirClasses(SQLiteDatabase db) {
-            String colunas[] = {
-                    "classe"
-            };
-            Cursor cursor = db.query(
-                    Loads.classes.TABLE_NAME,
-                    colunas,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null);
-            List<JogoTable> listaDeClasses = Loads.classes.SQL_LIST_DADOS;
-            String texto[] =  new String[listaDeClasses.size()];
-            int cont = 0;
-            while (cursor.moveToNext()){
-                texto[cont] = cursor.getString(0);
-                cont++;
-            }
-            ContentValues values = new ContentValues();
-            boolean teste = false;
-            boolean validador = false;
-            for (int i=0;i<listaDeClasses.size();i++){
-                for (int i2=0;i2<texto.length;i2++) {
-                    if(texto[i2]!=null){
-                        if (texto[i2].equals(listaDeClasses.get(i).getClasse())) {
-                            validador = true;
-                        }
-                    }
-                }
-                if (validador){
-                    validador = false;
-                }else{
-                    values.put("atk",listaDeClasses.get(i).getAtk());
-                    values.put("atkM",listaDeClasses.get(i).getAtkM());
-                    values.put("def",listaDeClasses.get(i).getDef());
-                    values.put("defM",listaDeClasses.get(i).getDefM());
-                    values.put("agi",listaDeClasses.get(i).getAgi());
-                    values.put("classe",listaDeClasses.get(i).getClasse());
-                    long newRowId = db.insert(classes.TABLE_NAME,null,values);
-                    if(newRowId==-1){
-                        teste = true;
-                    }
-                }
-            }
-            return teste;
-
-
-        }
-
-        public List<JogoTable> buscaClasses(SQLiteDatabase db){
-            List<JogoTable> listaDeClasses = new ArrayList<JogoTable>();
-            String colunas[] = {
-                    "classe",
-                    "atk",
-                    "def",
-                    "agi",
-                    "atkM",
-                    "defM"
-            };
-            Cursor cursor = db.query(
-                    Loads.classes.TABLE_NAME,
-                    colunas,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null);
-            JogoTable classe = null;
-            while (cursor.moveToNext()){
-                classe = new JogoTable();
-                classe.setClasse(cursor.getString(0));
-                classe.setAtk(cursor.getString(1));
-                classe.setDef(cursor.getString(2));
-                classe.setAgi(cursor.getString(3));
-                classe.setAtkM(cursor.getString(4));
-                classe.setDefM(cursor.getString(5));
-
-                listaDeClasses.add(classe);
-            }
-            return listaDeClasses;
-        }
-
-        public List<LoadTable> buscaLoad(SQLiteDatabase db){
+        List<LoadTable> buscaLoad(SQLiteDatabase db){
             String colunas[] = {"id",
                     "nome",
                     "tempo"};
@@ -197,8 +106,8 @@ public final class Loads {
                     null,
                     null,
                     null);
-            List<LoadTable> listaDeLoads = new ArrayList<LoadTable>();
-            LoadTable load = null;
+            List<LoadTable> listaDeLoads = new ArrayList<>();
+            LoadTable load;
             while (cursor.moveToNext()){
                 load = new LoadTable();
                 load.setId(cursor.getInt(0));
@@ -209,16 +118,25 @@ public final class Loads {
             return listaDeLoads;
         }
 
-        public List<DadosTable> buscaDados(SQLiteDatabase db){
-            List<DadosTable> listaDeDados = new ArrayList<DadosTable>();
-            DadosTable dados = null;
-            String[] colunas = {"id",
+        List<DadosTable> buscaDados(SQLiteDatabase db){
+            List<DadosTable> listaDeDados = new ArrayList<>();
+            DadosTable dados;
+            String[] colunas = {
+                    "id",
                     "nome",
                     "level",
-                    "classes_classe",
-                    "load_id"};
+                    "experiencia",
+                    "load_id",
+                    "classe",
+                    "vida",
+                    "vidaMax",
+                    "atk",
+                    "def",
+                    "agi",
+                    "atkM",
+                    "defM"};
             Cursor cursor = db.query(
-                    Loads.dados.TABLE_NAME,
+                    Loads.perso.TABLE_NAME,
                     colunas,
                     null,
                     null,
@@ -230,12 +148,67 @@ public final class Loads {
                 dados.setId(cursor.getInt(0));
                 dados.setNome(cursor.getString(1));
                 dados.setLevel(cursor.getInt(2));
-                dados.setClassesClasse(cursor.getString(3));
+                dados.setExperiencia(cursor.getInt(3));
                 dados.setLoadId(cursor.getInt(4));
+                dados.setClasse(cursor.getString(5));
+                dados.setVida(cursor.getInt(6));
+                dados.setVidaMax(cursor.getInt(7));
+                dados.setAgi(cursor.getInt(8));
+                dados.setAtk(cursor.getInt(9));
+                dados.setAtkM(cursor.getInt(10));
+                dados.setDef(cursor.getInt(11));
+                dados.setDefM(cursor.getInt(12));
 
                 listaDeDados.add(dados);
             }
             return listaDeDados;
+        }
+
+        DadosTable buscaDadosPorLoadId(SQLiteDatabase db, int loadId){
+            DadosTable dados = new DadosTable();
+            String[] colunas = {"id",
+                    "nome",
+                    "level",
+                    "experiencia",
+                    "load_id",
+                    "classe",
+                    "vida",
+                    "vidaMax",
+                    "atk",
+                    "def",
+                    "agi",
+                    "atkM",
+                    "defM"
+            };
+            String selection = "load_id=?";
+            String load_id = loadId+"";
+            String[] arg = {load_id};
+            Cursor cursor = db.query(
+                    Loads.perso.TABLE_NAME,
+                    colunas,
+                    selection,
+                    arg,
+                    null,
+                    null,
+                    "id DESC");
+            if(cursor.moveToNext()){
+                dados.setId(cursor.getInt(0));
+                dados.setNome(cursor.getString(1));
+                dados.setLevel(cursor.getInt(2));
+                dados.setExperiencia(cursor.getInt(3));
+                dados.setLoadId(cursor.getInt(4));
+                dados.setClasse(cursor.getString(5));
+                dados.setVida(cursor.getInt(6));
+                dados.setVidaMax(cursor.getInt(7));
+                dados.setAgi(cursor.getInt(8));
+                dados.setAtk(cursor.getInt(9));
+                dados.setAtkM(cursor.getInt(10));
+                dados.setDef(cursor.getInt(11));
+                dados.setDefM(cursor.getInt(12));
+            }else {
+                return null;
+            }
+            return dados;
         }
     }
 

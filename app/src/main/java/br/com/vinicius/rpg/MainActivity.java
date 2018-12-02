@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = banco.getWritableDatabase();
         Loads.comandos comandos = new Loads.comandos();
         System.out.println(comandos.buscaDados(db));
+        Loads.perso.dados();
         //System.exit(-1);
         NovoJogo = (Button) findViewById(R.id.NovoJogo);
         Continuar = (Button) findViewById(R.id.Continuar);

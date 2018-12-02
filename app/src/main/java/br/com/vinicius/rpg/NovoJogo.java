@@ -36,7 +36,7 @@ public class NovoJogo extends AppCompatActivity {
     private RadioButton classAven;
     private EditText nomePerso;
     private EditText Nome;
-    private String classe = "";
+    private Estatus classe;
     private int loadId;
     private Bd banco;
 
@@ -116,10 +116,9 @@ public class NovoJogo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(classAven.isChecked()){
-                    classe = "Guerreiro";
+                    classe = Estatus.aventureiro;
                 }else if(classGue.isChecked()){
-                    classe = "Aventureiro";
-
+                    classe = Estatus.guerreiro;
                 }else{
                     visualizar("Selecione um!","Alerta!");
                     return;
@@ -137,23 +136,26 @@ public class NovoJogo extends AppCompatActivity {
                 }else {
                     SQLiteDatabase db = banco.getWritableDatabase();
                     Loads.comandos comandos = new Loads.comandos();
-                    boolean valor = comandos.Inserir(loadId,Nome.getText().toString(),"00:00:01",getBaseContext());
+                    LoadTable load = new LoadTable();
+                    load.setNome(Nome.getText().toString());
+                    load.setId(loadId);
+                    load.setTempo("00:00:01");
+                    boolean valor = comandos.Inserir(load,getBaseContext());
                     if(valor){
-                        if((loadId!=0) || (!classe.equals(""))){
-                            boolean retorno = comandos.InserirDados(nome,classe,loadId,db);
+                        if((loadId!=0) || (classe!=null)){
+                            DadosTable dados = classe.getStatus();
+                            dados.setId(0);
+                            dados.setLoadId(loadId);
+                            dados.setLevel(1);
+                            dados.setNome(nome);
+                            dados.setExperiencia(0);
+                            dados.setVida(100);
+                            dados.setVidaMax(100);
+                            boolean retorno = comandos.InserirDados(dados,db);
                             if(retorno){
-                                DadosTable  dados = new DadosTable();
-                                dados.setClassesClasse(classe);
-                                dados.setLoadId(loadId);
-                                dados.setLevel(1);
-                                dados.setNome(nome);
+                                Sessao.setDadosPerso(dados);
 
-                                Sessao.setDados(dados);
 
-                                LoadTable load = new LoadTable();
-                                load.setNome(Nome.getText().toString());
-                                load.setId(loadId);
-                                load.setTempo("00:00:01");
 
                                 Sessao.setLoad(load);
 
@@ -240,7 +242,7 @@ public class NovoJogo extends AppCompatActivity {
         int cont = 0;
         boolean nomeRepetido = false;
         LoadTable load;
-        List<LoadTable> loads = new ArrayList<LoadTable>();
+        List<LoadTable> loads = new ArrayList<>();
         while (cursor.moveToNext()){
             load = new LoadTable();
             load.setId(cursor.getInt(0));
@@ -254,7 +256,7 @@ public class NovoJogo extends AppCompatActivity {
         }
 
         if(cont>=3){
-            ArrayAdapter<LoadTable> adapter = new ArrayAdapter<LoadTable>(this,
+            ArrayAdapter<LoadTable> adapter = new ArrayAdapter<>(this,
                     android.R.layout.simple_list_item_1, loads);
             lista.setAdapter(adapter);
             lista.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
