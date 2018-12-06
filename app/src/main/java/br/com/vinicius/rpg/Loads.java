@@ -21,12 +21,14 @@ final class Loads {
     }
     static class perso implements BaseColumns{
         static final String TABLE_NAME = "perso";
-        static final String SQL_CREATE_CLASSES = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INTEGER PRIMARY KEY," +
+        static final String SQL_CREATE_PERSO = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INTEGER NOT NULL," +
                 "nome VARCHAR(40) NOT NULL," +
                 "level INT UNSIGNED NOT NULL," +
                 "experiencia INT UNSIGNED NOT NULL," +
                 "load_id INTEGER NOT NULL," +
                 "classe VARCHAR(20) NOT NULL," +
+                "rank CHAR(1) NOT NULL," +
+                "rankExp INT UNSIGNED  NOT NULL," +
                 "vida INT UNSIGNED NOT NULL," +
                 "vidaMax INT UNSIGNED NOT NULL," +
                 "atk INT UNSIGNED NOT NULL," +
@@ -35,7 +37,8 @@ final class Loads {
                 "atkM INT UNSIGNED NOT NULL," +
                 "defM INT UNSIGNED NOT NULL," +
                 "FOREIGN KEY (load_id) " +
-                "REFERENCES load (id)" +
+                "REFERENCES load (id)," +
+                "PRIMARY KEY (load_id,id)" +
                 ")";
         static final List<DadosTable> SQL_LIST_DADOS = new ArrayList<DadosTable>();
         static void dados(){
@@ -82,6 +85,8 @@ final class Loads {
             values.put("level",dados.getLevel());
             values.put("experiencia",dados.getExperiencia());
             values.put("classe",dados.getClasse());
+            values.put("rank",dados.getRank());
+            values.put("rankExp",dados.getRankExp());
             values.put("load_id",dados.getLoadId());
             values.put("vida",dados.getVida());
             values.put("vidaMax",dados.getVidaMax());
@@ -164,8 +169,9 @@ final class Loads {
             return listaDeDados;
         }
 
-        DadosTable buscaDadosPorLoadId(SQLiteDatabase db, int loadId){
-            DadosTable dados = new DadosTable();
+        List<DadosTable> buscaDadosPorLoadId(SQLiteDatabase db, int loadId,int id){
+            DadosTable dados;
+            List<DadosTable> listaDeDados = new ArrayList<>();
             String[] colunas = {"id",
                     "nome",
                     "level",
@@ -183,6 +189,10 @@ final class Loads {
             String selection = "load_id=?";
             String load_id = loadId+"";
             String[] arg = {load_id};
+            if(id!=-1){
+                selection+="AND id=?";
+                arg = new String[]{load_id, id+""};
+            }
             Cursor cursor = db.query(
                     Loads.perso.TABLE_NAME,
                     colunas,
@@ -191,7 +201,8 @@ final class Loads {
                     null,
                     null,
                     "id DESC");
-            if(cursor.moveToNext()){
+            while (cursor.moveToNext()){
+                dados = new DadosTable();
                 dados.setId(cursor.getInt(0));
                 dados.setNome(cursor.getString(1));
                 dados.setLevel(cursor.getInt(2));
@@ -205,10 +216,10 @@ final class Loads {
                 dados.setAtkM(cursor.getInt(10));
                 dados.setDef(cursor.getInt(11));
                 dados.setDefM(cursor.getInt(12));
-            }else {
-                return null;
+
+                listaDeDados.add(dados);
             }
-            return dados;
+            return listaDeDados;
         }
     }
 

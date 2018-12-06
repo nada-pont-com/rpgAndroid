@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Jogo">
+    tools:context=".Jogo"
+    tools:layout_editor_absoluteY="81dp">
 
     <LinearLayout
         android:id="@+id/Home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="invisible">
 
         <Button
             android:id="@+id/Voltar"
@@ -18,6 +20,14 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="@string/voltar" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="2dp"
+            app:srcCompat="@android:color/background_dark" />
 
         <ListView
             android:id="@+id/perso"
@@ -46,7 +56,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 app:srcCompat="@drawable/home"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/Battle"
@@ -71,12 +81,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:layout_editor_absoluteY="452dp">
 
             <Button
                 android:id="@+id/Voltar2"
@@ -86,23 +97,77 @@
                 android:text="@string/voltar" />
         </LinearLayout>
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dp"
+            app:srcCompat="@android:color/background_dark"
+            tools:layout_editor_absoluteY="452dp" />
 
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ir na guilda" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/LayoutDungeon"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Dungeon" />
-        </LinearLayout>
+                android:orientation="vertical"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/Guild"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ir na guilda" />
+
+                <Button
+                    android:id="@+id/Dungeon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dungeon" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LayoutDungeons"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/Floresta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Floresta norte" />
+
+                    <TextView
+                        android:id="@+id/Andares"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Andares: 1- 25"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

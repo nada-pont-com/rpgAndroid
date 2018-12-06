@@ -8,6 +8,8 @@ public class DadosTable {
     private int experiencia;
     private int LoadId;
     private String classe;
+    private String rank;
+    private int rankExp;
     private int vida;
     private int vidaMax;
     private int atk;
@@ -15,6 +17,7 @@ public class DadosTable {
     private int agi;
     private int atkM;
     private int defM;
+
 
 
     public void setId(int id) {
@@ -63,6 +66,22 @@ public class DadosTable {
 
     public String getClasse() {
         return classe;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRankExp(int rankExp) {
+        this.rankExp = rankExp;
+    }
+
+    public int getRankExp() {
+        return rankExp;
     }
 
     public void setVida(int vida) {

@@ -151,12 +151,11 @@ public class NovoJogo extends AppCompatActivity {
                             dados.setExperiencia(0);
                             dados.setVida(100);
                             dados.setVidaMax(100);
+                            dados.setRank("G");
+                            dados.setRankExp(0);
                             boolean retorno = comandos.InserirDados(dados,db);
                             if(retorno){
                                 Sessao.setDadosPerso(dados);
-
-
-
                                 Sessao.setLoad(load);
 
                                 Intent it =  new Intent(NovoJogo.this,Jogo.class);
