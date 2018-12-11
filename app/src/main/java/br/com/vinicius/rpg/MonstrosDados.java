@@ -44,6 +44,15 @@ class MonstroUni implements Serializable {
     private int level;
     private String nome;
 
+
+    public MonstroUni(String rank,int vida,int status,int level,String nome){
+        this.rank = rank;
+        this.vida = vida;
+        this.status = status;
+        this.level = level;
+        this.nome = nome;
+    }
+
     void setRank(String rank) {
         this.rank = rank;
     }
@@ -82,10 +91,5 @@ class MonstroUni implements Serializable {
 
     public String getNome() {
         return nome;
-    }
-
-    @Override
-    public String toString() {
-        return "ola mundo";
     }
 }

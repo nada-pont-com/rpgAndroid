@@ -43,11 +43,13 @@ public class AdapterPersoPersonalizado extends BaseAdapter {
         TextView Level = view.findViewById(R.id.Level);
         TextView Classe = view.findViewById(R.id.Classe);
         TextView Vida = view.findViewById(R.id.Vida);
-        TextView Agi = view.findViewById(R.id.agi);
+
         TextView Atk = view.findViewById(R.id.atk);
         TextView Def = view.findViewById(R.id.def);
         TextView AtkM = view.findViewById(R.id.atkM);
         TextView DefM = view.findViewById(R.id.defM);
+        TextView Agi = view.findViewById(R.id.agi);
+        TextView Mp = view.findViewById(R.id.mp);
         ProgressBar ExpBar = view.findViewById(R.id.progressExp);
         ProgressBar VidaBar = view.findViewById(R.id.progressVida);
 
@@ -62,11 +64,12 @@ public class AdapterPersoPersonalizado extends BaseAdapter {
         Level.setText("Level: "+dado.getLevel());
         Classe.setText("Classe: "+dado.getClasse());
         Vida.setText(dado.getVida()+"/"+dado.getVidaMax());
-        Agi.setText("Agi: "+dado.getAgi());
         Atk.setText("Atk: "+dado.getAtk());
         Def.setText("Def: "+dado.getDef());
         AtkM.setText("AtkM: "+dado.getAtkM());
         DefM.setText("DefM: "+dado.getDefM());
+        Agi.setText("Agi: "+dado.getAgi());
+        Mp.setText("Mp: "+dado.getMp()+"/"+dado.getMpMax());
         ExpBar.setProgress(dado.getExperiencia());
         ExpBar.setMax(dado.getVidaMax());
         VidaBar.setProgress(dado.getVida());

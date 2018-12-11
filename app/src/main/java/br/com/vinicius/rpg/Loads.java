@@ -31,6 +31,8 @@ final class Loads {
                 "rankExp INT UNSIGNED  NOT NULL," +
                 "vida INT UNSIGNED NOT NULL," +
                 "vidaMax INT UNSIGNED NOT NULL," +
+                "mp INT UNSIGNED NOT NULL," +
+                "mpMax INT UNSIGNED NOT NULL," +
                 "atk INT UNSIGNED NOT NULL," +
                 "def INT UNSIGNED NOT NULL," +
                 "agi INT UNSIGNED NOT NULL," +
@@ -90,6 +92,8 @@ final class Loads {
             values.put("load_id",dados.getLoadId());
             values.put("vida",dados.getVida());
             values.put("vidaMax",dados.getVidaMax());
+            values.put("mp",dados.getMp());
+            values.put("mpMax",dados.getMpMax());
             values.put("atk",dados.getAtk());
             values.put("atkM",dados.getAtkM());
             values.put("def",dados.getDef());
@@ -135,6 +139,8 @@ final class Loads {
                     "classe",
                     "vida",
                     "vidaMax",
+                    "mp",
+                    "mpMax",
                     "atk",
                     "def",
                     "agi",
@@ -158,11 +164,13 @@ final class Loads {
                 dados.setClasse(cursor.getString(5));
                 dados.setVida(cursor.getInt(6));
                 dados.setVidaMax(cursor.getInt(7));
-                dados.setAgi(cursor.getInt(8));
-                dados.setAtk(cursor.getInt(9));
-                dados.setAtkM(cursor.getInt(10));
-                dados.setDef(cursor.getInt(11));
-                dados.setDefM(cursor.getInt(12));
+                dados.setMp(cursor.getInt(8));
+                dados.setMpMax(cursor.getInt(9));
+                dados.setAgi(cursor.getInt(10));
+                dados.setAtk(cursor.getInt(11));
+                dados.setAtkM(cursor.getInt(12));
+                dados.setDef(cursor.getInt(13));
+                dados.setDefM(cursor.getInt(14));
 
                 listaDeDados.add(dados);
             }
@@ -180,6 +188,8 @@ final class Loads {
                     "classe",
                     "vida",
                     "vidaMax",
+                    "mp",
+                    "mpMax",
                     "atk",
                     "def",
                     "agi",
@@ -211,11 +221,13 @@ final class Loads {
                 dados.setClasse(cursor.getString(5));
                 dados.setVida(cursor.getInt(6));
                 dados.setVidaMax(cursor.getInt(7));
-                dados.setAgi(cursor.getInt(8));
-                dados.setAtk(cursor.getInt(9));
-                dados.setAtkM(cursor.getInt(10));
-                dados.setDef(cursor.getInt(11));
-                dados.setDefM(cursor.getInt(12));
+                dados.setMp(cursor.getInt(8));
+                dados.setMpMax(cursor.getInt(9));
+                dados.setAgi(cursor.getInt(10));
+                dados.setAtk(cursor.getInt(11));
+                dados.setAtkM(cursor.getInt(12));
+                dados.setDef(cursor.getInt(13));
+                dados.setDefM(cursor.getInt(14));
 
                 listaDeDados.add(dados);
             }

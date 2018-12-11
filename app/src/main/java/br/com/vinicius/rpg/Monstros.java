@@ -63,12 +63,12 @@ public enum Monstros implements MonstrosInterface{
             double mod2 = G.getMod();
             status = (int) (status*mod2);
             status = (int) (status*mod);
-            MonstroUni monstro = new MonstroUni();
-            monstro.setNome(G.getNome());
-            monstro.setRank(rank);
-            monstro.setStatus(status);
-            monstro.setVida(vida);
-            monstro.setLevel(level);
+            MonstroUni monstro = new MonstroUni(rank,vida,status,level,G.getNome());
+            //monstro.setNome(G.getNome());
+            //monstro.setRank(rank);
+            //monstro.setStatus(status);
+            //monstro.setVida(vida);
+            //monstro.setLevel(level);
             return monstro;
         }
         RankG[] g = RankG.values();

@@ -168,15 +168,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/agi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Agi: 10"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp" />
-
             </LinearLayout>
 
             <ImageView
@@ -212,11 +203,21 @@
                         android:text="Def: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/agi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Agi: 10"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -232,7 +233,16 @@
                         android:id="@+id/defM"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="def: 10"
+                        android:text="DefM: 10"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/mp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mp: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
                 </LinearLayout>

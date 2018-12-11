@@ -8,102 +8,9 @@
     tools:layout_editor_absoluteY="81dp">
 
     <LinearLayout
-        android:id="@+id/Home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="invisible">
-
-        <Button
-            android:id="@+id/Voltar"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="@string/voltar" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="2dp"
-            app:srcCompat="@android:color/background_dark" />
-
-        <ListView
-            android:id="@+id/perso"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
+        android:layout_height="0dp"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="23dp"
-            android:gravity="bottom"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
-
-            <ImageView
-                android:id="@+id/Inicio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/home"
-                tools:ignore="ContentDescription" />
-
-            <ImageView
-                android:id="@+id/Battle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/peros"
-                tools:ignore="ContentDescription" />
-
-            <ImageView
-                android:id="@+id/Config"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/menu"
-                tools:ignore="ContentDescription" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/batalha"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:layout_editor_absoluteY="452dp">
-
-            <Button
-                android:id="@+id/Voltar2"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="@string/voltar" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dp"
-            app:srcCompat="@android:color/background_dark"
-            tools:layout_editor_absoluteY="452dp" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -111,62 +18,171 @@
             android:layout_weight="1">
 
             <LinearLayout
-                android:id="@+id/LayoutDungeon"
-                android:layout_width="0dp"
+                android:id="@+id/Home"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:visibility="visible">
 
                 <Button
-                    android:id="@+id/Guild"
+                    android:id="@+id/Voltar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ir na guilda" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/voltar" />
 
-                <Button
-                    android:id="@+id/Dungeon"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dungeon" />
+                    android:layout_weight="1"
+                    android:paddingBottom="2dp"
+                    app:srcCompat="@android:color/background_dark" />
+
+                <ListView
+                    android:id="@+id/perso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/LayoutDungeons"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/batalha"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:visibility="invisible"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteY="452dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:layout_editor_absoluteY="452dp">
 
                     <Button
-                        android:id="@+id/Floresta"
+                        android:id="@+id/Voltar2"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="Floresta norte" />
-
-                    <TextView
-                        android:id="@+id/Andares"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Andares: 1- 25"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp" />
+                        android:text="@string/voltar" />
                 </LinearLayout>
 
-            </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="2dp"
+                    app:srcCompat="@android:color/background_dark"
+                    tools:layout_editor_absoluteY="452dp" />
 
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/LayoutDungeon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <Button
+                            android:id="@+id/Guild"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ir na guilda" />
+
+                        <Button
+                            android:id="@+id/Dungeon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Dungeon" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/LayoutDungeons"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/Floresta"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Floresta norte" />
+
+                            <TextView
+                                android:id="@+id/Andares"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Andares: 1- 25"
+                                android:textColor="@android:color/black"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </LinearLayout>
         </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginBottom="2dp"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
+
+                <ImageView
+                    android:id="@+id/Inicio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="@drawable/home"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/Battle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/peros"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/Config"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/menu"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -123,6 +123,7 @@ public class Dungeon extends AppCompatActivity {
     private void monstro(){
         switch (gerador.nextInt(10)){
             case 0:
+            case 9:
                 final Monstros monstros = Monstros.G;
                 final MonstroUni monstro =  monstros.monstro();
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -135,7 +136,7 @@ public class Dungeon extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         bundle.putString("nomeDungeon", NomeDungeon);
                         bundle.putString("rank", rank);
-                        bundle.putSerializable("teste", (Serializable) monstro);
+                        bundle.putSerializable("monstro", monstro);
                         it.putExtras(bundle);
                         startActivity(it);
                     }

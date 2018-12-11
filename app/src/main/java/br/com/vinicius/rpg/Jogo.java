@@ -85,7 +85,9 @@ public class Jogo extends AppCompatActivity {
         Bd banco = new Bd(getBaseContext());
         SQLiteDatabase db = banco.getWritableDatabase();
         Loads.comandos comandos = new Loads.comandos();
-        List<DadosTable> dados = comandos.buscaDados(db);
+        LoadTable load = Sessao.getLoad();
+        List<DadosTable> dados = comandos.buscaDadosPorLoadId(db,load.getId(),-1);
+        Sessao.setDadosPerso(dados);
         AdapterPersoPersonalizado adapter = new AdapterPersoPersonalizado(dados,this);
         perso.setAdapter(adapter);
     }

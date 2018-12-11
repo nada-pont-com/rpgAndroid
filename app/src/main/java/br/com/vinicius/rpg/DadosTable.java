@@ -12,6 +12,8 @@ public class DadosTable {
     private int rankExp;
     private int vida;
     private int vidaMax;
+    private int mp;
+    private int mpMax;
     private int atk;
     private int def;
     private int agi;
@@ -98,6 +100,22 @@ public class DadosTable {
 
     public int getVidaMax() {
         return vidaMax;
+    }
+
+    public void setMp(int mp) {
+        this.mp = mp;
+    }
+
+    public int getMp() {
+        return mp;
+    }
+
+    public void setMpMax(int mpMax) {
+        this.mpMax = mpMax;
+    }
+
+    public int getMpMax() {
+        return mpMax;
     }
 
     public void setAtk(int atk){

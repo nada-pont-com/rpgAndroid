@@ -151,6 +151,8 @@ public class NovoJogo extends AppCompatActivity {
                             dados.setExperiencia(0);
                             dados.setVida(100);
                             dados.setVidaMax(100);
+                            dados.setMp(10);
+                            dados.setMpMax(10);
                             dados.setRank("G");
                             dados.setRankExp(0);
                             boolean retorno = comandos.InserirDados(dados,db);

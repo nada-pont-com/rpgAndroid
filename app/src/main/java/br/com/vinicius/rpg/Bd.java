@@ -13,7 +13,7 @@ public class Bd extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS "+load.TABLE_NAME;
     private static final String SQL_DELETE_PERSO =
             "DROP TABLE IF EXISTS "+perso.TABLE_NAME;
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "RPG.db";
 
     public Bd(Context context) {
