@@ -102,7 +102,9 @@ public class NovoJogo extends AppCompatActivity {
                     String[] t = texto.split(",");
                     t = t[0].split(": ");
                     String where = "id="+t[1];
+                    String where2 = "load_id="+t[1];
                     SQLiteDatabase db = banco.getReadableDatabase();
+                    db.delete(Loads.perso.TABLE_NAME,where2,null);
                     db.delete(Loads.load.TABLE_NAME,where,null);
                     textView.setText("Selecionado");
                     geraLista();
@@ -157,7 +159,9 @@ public class NovoJogo extends AppCompatActivity {
                             dados.setRankExp(0);
                             boolean retorno = comandos.InserirDados(dados,db);
                             if(retorno){
-                                Sessao.setDadosPerso(dados);
+                                List<DadosTable> dado = new ArrayList<DadosTable>();
+                                dado.add(dados);
+                                Sessao.setDadosPerso(dado);
                                 Sessao.setLoad(load);
 
                                 Intent it =  new Intent(NovoJogo.this,Jogo.class);
@@ -206,7 +210,6 @@ public class NovoJogo extends AppCompatActivity {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(titulo);
         alert.setMessage(item.toString());
-        alert.create();
         alert.show();
     }
 
@@ -279,7 +282,7 @@ public class NovoJogo extends AppCompatActivity {
                     startActivity(it);
                 }
             });
-            alert.create();
+            alert.setCancelable(false);
             alert.show();
 
         }else if(nomeRepetido){

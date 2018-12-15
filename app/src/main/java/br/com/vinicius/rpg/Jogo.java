@@ -5,15 +5,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
 public class Jogo extends AppCompatActivity {
 
+    private TextView andarFlo;
     private ImageView home;
     private ImageView battle;
     private ImageView config;
@@ -25,10 +28,16 @@ public class Jogo extends AppCompatActivity {
     private Button floresta;
 
     @Override
+    public void onBackPressed() {
+        // não chame o super desse método //Impede o botão de voltar do celular voltar para Activy anterior.
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jogo);
 
+        andarFlo = findViewById(R.id.AndaresFlores);
         perso = findViewById(R.id.perso);
         home =  findViewById(R.id.Inicio);
         config =  findViewById(R.id.Config);
@@ -77,19 +86,36 @@ public class Jogo extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("nomeDungeon", "floresta");
                 bundle.putString("rank","G");
+                bundle.putString("andares",andarFlo.getText().toString().split("Andares: ")[1]);
+
                 it.putExtras(bundle);
                 startActivity(it);
             }
         });
-
-        Bd banco = new Bd(getBaseContext());
-        SQLiteDatabase db = banco.getWritableDatabase();
-        Loads.comandos comandos = new Loads.comandos();
-        LoadTable load = Sessao.getLoad();
-        List<DadosTable> dados = comandos.buscaDadosPorLoadId(db,load.getId(),-1);
-        Sessao.setDadosPerso(dados);
+        List<DadosTable> dados;
+        if(Sessao.getDadosPerso()==null){
+            Bd banco = new Bd(getBaseContext());
+            SQLiteDatabase db = banco.getWritableDatabase();
+            Loads.comandos comandos = new Loads.comandos();
+            LoadTable load = Sessao.getLoad();
+            dados = comandos.buscaDadosPorLoadId(db,load.getId(),-1);
+            Sessao.setDadosPerso(dados);
+        }else{
+            dados = Sessao.getDadosPerso();
+        }
+        System.out.println("Dados Jogo: "+dados);
         AdapterPersoPersonalizado adapter = new AdapterPersoPersonalizado(dados,this);
         perso.setAdapter(adapter);
+        perso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent it = new Intent(Jogo.this,PersonagemMenu.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("position",position);
+                it.putExtras(bundle);
+                startActivity(it);
+            }
+        });
     }
 
     private void VisibleInvisible(int referencia){

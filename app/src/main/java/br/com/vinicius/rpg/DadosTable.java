@@ -6,6 +6,7 @@ public class DadosTable {
     private String nome;
     private int level;
     private int experiencia;
+    private int pontosExp;
     private int LoadId;
     private String classe;
     private String rank;
@@ -19,8 +20,6 @@ public class DadosTable {
     private int agi;
     private int atkM;
     private int defM;
-
-
 
     public void setId(int id) {
         this.id = id;
@@ -52,6 +51,14 @@ public class DadosTable {
 
     public int getExperiencia() {
         return experiencia;
+    }
+
+    public void setPontosExp(int pontosExp) {
+        this.pontosExp = pontosExp;
+    }
+
+    public int getPontosExp() {
+        return pontosExp;
     }
 
     public void setLoadId(int loadId) {

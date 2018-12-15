@@ -1,5 +1,6 @@
 package br.com.vinicius.rpg;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class AdapterPersoPersonalizado extends BaseAdapter {
         return dados.get(position).getId();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = activity.getLayoutInflater().inflate(R.layout.perso_layout,parent,false);
@@ -54,11 +56,8 @@ public class AdapterPersoPersonalizado extends BaseAdapter {
         ProgressBar VidaBar = view.findViewById(R.id.progressVida);
 
         int level = dado.getLevel();
-        System.out.println(Math.pow(2,(level-1)));
         double i = Math.pow(2,(level-1));
         int expMax = (int) (100*i);
-        System.out.println("VidaMax: "+dado.getVidaMax());
-        System.out.println("Vida: "+dado.getVida());
         Nome.setText(dado.getNome());
         Exp.setText(dado.getExperiencia()+"/"+expMax);
         Level.setText("Level: "+dado.getLevel());

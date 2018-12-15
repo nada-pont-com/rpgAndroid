@@ -1,10 +1,12 @@
 package br.com.vinicius.rpg;
 
 public interface MonstrosInterface {
-    public MonstroUni monstro();
+    public MonstroUni monstro(int andar,int andarMax);
 }
 
 interface MostrosInterface2{
-    public double getMod();
-    public String getNome();
+    double getMod();
+    String getNome();
+    int getExp();
+
 }

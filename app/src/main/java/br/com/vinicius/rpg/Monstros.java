@@ -5,49 +5,49 @@ import java.util.Random;
 public enum Monstros implements MonstrosInterface{
     S{
         @Override
-        public MonstroUni monstro() {
+        public MonstroUni monstro(int andar,int andarMax) {
             return null;
         }
     },
     A{
         @Override
-        public MonstroUni monstro() {
+        public MonstroUni monstro(int andar,int andarMax) {
             return null;
         }
     },
     B{
         @Override
-        public MonstroUni monstro() {
+        public MonstroUni monstro(int andar,int andarMax) {
             return null;
         }
     },
     C{
         @Override
-        public MonstroUni monstro() {
+        public MonstroUni monstro(int andar,int andarMax) {
             return null;
         }
     },
     D{
         @Override
-        public MonstroUni monstro() {
+        public MonstroUni monstro(int andar,int andarMax) {
             return null;
         }
     },
     E{
         @Override
-        public MonstroUni monstro() {
+        public MonstroUni monstro(int andar,int andarMax) {
             return null;
         }
     },
     F{
         @Override
-        public MonstroUni monstro() {
+        public MonstroUni monstro(int andar,int andarMax) {
             return null;
         }
     },
     G{
         private Random random = new Random();
-        public MonstroUni monstro(){
+        public MonstroUni monstro(int andar,int andarMax){
             MonstrosDados monstroDados = new MonstrosDados();
             String rank = monstroDados.getRank()[7];
             int vida = Integer.parseInt(monstroDados.getVida()[7]);
@@ -55,21 +55,30 @@ public enum Monstros implements MonstrosInterface{
             String[] levelMinMax = variLevel.split("-");
             int levelMax = Integer.parseInt(levelMinMax[0]);
             int levelMin = Integer.parseInt(levelMinMax[1]);
-            int level = random.nextInt(levelMax-levelMin+1)+levelMin;
+            double valor = levelMax-levelMin;
+            valor = valor/andarMax;
+            valor = valor*andar;
+            System.out.println(valor);
+            int valorInt = (int) valor;
+            System.out.println(valorInt);
+            int level;
+            if(valorInt==0){
+                level=levelMin;
+            }else{
+                level = random.nextInt(valorInt);
+                level+=levelMin;
+            }
+            vida = vida + vida * (level-1) / 10;
             int status = monstroDados.getStatus()[7];
-            int teste = random.nextInt(2);
+            int mp = monstroDados.getMp()[7];
+            int teste = random.nextInt(g.length);
             double mod = monstroDados.mod();
             RankG G = g[teste];
             double mod2 = G.getMod();
             status = (int) (status*mod2);
             status = (int) (status*mod);
-            MonstroUni monstro = new MonstroUni(rank,vida,status,level,G.getNome());
-            //monstro.setNome(G.getNome());
-            //monstro.setRank(rank);
-            //monstro.setStatus(status);
-            //monstro.setVida(vida);
-            //monstro.setLevel(level);
-            return monstro;
+            int ex = G.getExp()*level;
+            return new MonstroUni(rank,vida,status,level,G.getNome(),mp,ex);
         }
         RankG[] g = RankG.values();
     }
@@ -84,7 +93,11 @@ enum RankG implements MostrosInterface2{
         public String getNome(){
             return nome;
         }
+        public int getExp() {
+            return exp;
+        }
         private double modMoster = 1.2;
+        private int exp = 5;
         private String nome = "Slime";
     },
     ESQUELETO{
@@ -96,8 +109,11 @@ enum RankG implements MostrosInterface2{
         public String getNome(){
             return nome;
         }
-        private double modMoster = 1.7;
+        public int getExp() {
+            return exp;
+        }
+        private double modMoster = 1.5;
+        private int exp = 10;
         private String nome = "Esqueleto";
     }
-
 }

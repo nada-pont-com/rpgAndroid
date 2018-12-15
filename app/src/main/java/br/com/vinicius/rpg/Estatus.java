@@ -15,8 +15,7 @@ public enum Estatus implements status {
                     break;
                 }
             }
-            System.out.println("size: "+classes.size());
-            System.out.println("i: "+i);
+            System.out.println(classes.get(i));
             return classes.get(i);
         }
     },
@@ -33,8 +32,6 @@ public enum Estatus implements status {
                     break;
                 }
             }
-            System.out.println("size: "+classes.size());
-            System.out.println("i: "+i);
             return classes.get(i);
         }
     }

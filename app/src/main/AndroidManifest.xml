@@ -20,7 +20,8 @@
         <activity android:name=".Jogo" />
         <activity android:name=".Continuar" />
         <activity android:name=".Dungeon" />
-        <activity android:name=".Battle"></activity>
+        <activity android:name=".Battle" />
+        <activity android:name=".PersonagemMenu"></activity>
     </application>
 
 </manifest>

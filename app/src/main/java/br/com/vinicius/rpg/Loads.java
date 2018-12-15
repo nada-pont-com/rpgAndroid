@@ -25,6 +25,7 @@ final class Loads {
                 "nome VARCHAR(40) NOT NULL," +
                 "level INT UNSIGNED NOT NULL," +
                 "experiencia INT UNSIGNED NOT NULL," +
+                "pontosExp INT UNSIGNED NOT NULL," +
                 "load_id INTEGER NOT NULL," +
                 "classe VARCHAR(20) NOT NULL," +
                 "rank CHAR(1) NOT NULL," +
@@ -47,9 +48,9 @@ final class Loads {
             String classe[] = {"Guerreiro","Aventureiro"};
             String atk[] =  {"10"       ,"7"};
             String def[] =  {"10"       ,"6"};
-            String agi[] =  {"5"        ,"7"};
+            String agi[] =  {"5"        ,"9"};
             String atkM[] = {"2"        ,"5"};
-            String defM[] = {"2"        ,"4"};
+            String defM[] = {"2"        ,"6"};
 
             DadosTable dado;
             for (int i=0;i<classe.length;i++){
@@ -86,6 +87,7 @@ final class Loads {
             values.put("nome",dados.getNome());
             values.put("level",dados.getLevel());
             values.put("experiencia",dados.getExperiencia());
+            values.put("pontosExp",0);
             values.put("classe",dados.getClasse());
             values.put("rank",dados.getRank());
             values.put("rankExp",dados.getRankExp());
@@ -99,6 +101,7 @@ final class Loads {
             values.put("def",dados.getDef());
             values.put("defM",dados.getDefM());
             values.put("agi",dados.getAgi());
+
             long newRowId = db.insert(perso.TABLE_NAME, null, values);
             return newRowId != -1;
         }
@@ -137,6 +140,8 @@ final class Loads {
                     "experiencia",
                     "load_id",
                     "classe",
+                    "rank",
+                    "rankExp",
                     "vida",
                     "vidaMax",
                     "mp",
@@ -145,7 +150,9 @@ final class Loads {
                     "def",
                     "agi",
                     "atkM",
-                    "defM"};
+                    "defM",
+                    "pontosExp"
+            };
             Cursor cursor = db.query(
                     Loads.perso.TABLE_NAME,
                     colunas,
@@ -162,15 +169,18 @@ final class Loads {
                 dados.setExperiencia(cursor.getInt(3));
                 dados.setLoadId(cursor.getInt(4));
                 dados.setClasse(cursor.getString(5));
-                dados.setVida(cursor.getInt(6));
-                dados.setVidaMax(cursor.getInt(7));
-                dados.setMp(cursor.getInt(8));
-                dados.setMpMax(cursor.getInt(9));
-                dados.setAgi(cursor.getInt(10));
-                dados.setAtk(cursor.getInt(11));
-                dados.setAtkM(cursor.getInt(12));
+                dados.setRank(cursor.getString(6));
+                dados.setRankExp(cursor.getInt(7));
+                dados.setVida(cursor.getInt(8));
+                dados.setVidaMax(cursor.getInt(9));
+                dados.setMp(cursor.getInt(10));
+                dados.setMpMax(cursor.getInt(11));
+                dados.setAtk(cursor.getInt(12));
                 dados.setDef(cursor.getInt(13));
-                dados.setDefM(cursor.getInt(14));
+                dados.setAgi(cursor.getInt(14));
+                dados.setAtkM(cursor.getInt(15));
+                dados.setDefM(cursor.getInt(16));
+                dados.setPontosExp(cursor.getInt(17));
 
                 listaDeDados.add(dados);
             }
@@ -186,6 +196,8 @@ final class Loads {
                     "experiencia",
                     "load_id",
                     "classe",
+                    "rank",
+                    "rankExp",
                     "vida",
                     "vidaMax",
                     "mp",
@@ -194,7 +206,8 @@ final class Loads {
                     "def",
                     "agi",
                     "atkM",
-                    "defM"
+                    "defM",
+                    "pontosExp"
             };
             String selection = "load_id=?";
             String load_id = loadId+"";
@@ -219,19 +232,46 @@ final class Loads {
                 dados.setExperiencia(cursor.getInt(3));
                 dados.setLoadId(cursor.getInt(4));
                 dados.setClasse(cursor.getString(5));
-                dados.setVida(cursor.getInt(6));
-                dados.setVidaMax(cursor.getInt(7));
-                dados.setMp(cursor.getInt(8));
-                dados.setMpMax(cursor.getInt(9));
-                dados.setAgi(cursor.getInt(10));
-                dados.setAtk(cursor.getInt(11));
-                dados.setAtkM(cursor.getInt(12));
+                dados.setRank(cursor.getString(6));
+                dados.setRankExp(cursor.getInt(7));
+                dados.setVida(cursor.getInt(8));
+                dados.setVidaMax(cursor.getInt(9));
+                dados.setMp(cursor.getInt(10));
+                dados.setMpMax(cursor.getInt(11));
+                dados.setAtk(cursor.getInt(12));
                 dados.setDef(cursor.getInt(13));
-                dados.setDefM(cursor.getInt(14));
+                dados.setAgi(cursor.getInt(14));
+                dados.setAtkM(cursor.getInt(15));
+                dados.setDefM(cursor.getInt(16));
+                dados.setPontosExp(cursor.getInt(17));
 
                 listaDeDados.add(dados);
             }
             return listaDeDados;
+        }
+
+        public void atulizarDados(SQLiteDatabase db,DadosTable dados,int loadId,int id){
+            System.out.println(dados);
+            System.out.println(dados.getRank());
+            String where = "load_id="+loadId+" AND id="+id;
+            ContentValues values = new ContentValues();
+            values.put("nome",dados.getNome());
+            values.put("level",dados.getLevel());
+            values.put("experiencia",dados.getExperiencia());
+            values.put("pontosExp",dados.getPontosExp());
+            values.put("rank",dados.getRank());
+            values.put("rankExp",dados.getRankExp());
+            values.put("vida",dados.getVida());
+            values.put("vidaMax",dados.getVidaMax());
+            values.put("mp",dados.getMp());
+            values.put("mpMax",dados.getMpMax());
+            values.put("atk",dados.getAtk());
+            values.put("atkM",dados.getAtkM());
+            values.put("def",dados.getDef());
+            values.put("defM",dados.getDefM());
+            values.put("agi",dados.getAgi());
+
+            db.update(Loads.perso.TABLE_NAME,values,where,null);
         }
     }
 

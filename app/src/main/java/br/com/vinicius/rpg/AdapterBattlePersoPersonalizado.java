@@ -2,9 +2,11 @@ package br.com.vinicius.rpg;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -13,10 +15,18 @@ import java.util.List;
 public class AdapterBattlePersoPersonalizado extends BaseAdapter {
     private final List<DadosTable> dados;
     private final Activity activity;
+    private int selected = -1;
+    private int estado = -1;
 
-    public AdapterBattlePersoPersonalizado(List<DadosTable> dados, Activity activity) {
+    AdapterBattlePersoPersonalizado(List<DadosTable> dados, Activity activity) {
         this.dados = dados;
         this.activity = activity;
+    }
+
+    void select(int position,int estado) {
+        this.selected = position;
+        this.estado = estado;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -52,6 +62,14 @@ public class AdapterBattlePersoPersonalizado extends BaseAdapter {
         mp.setText(dados.get(position).getMp()+"/"+dados.get(position).getMpMax());
         mpBar.setMax(dados.get(position).getMpMax());
         mpBar.setProgress(dados.get(position).getMp());
+        if(selected!=-1 && selected==position){
+            LinearLayout fundo = view.findViewById(R.id.Fundo);
+            if (estado==1){
+                fundo.setBackgroundColor(Color.YELLOW);
+            }else if (estado==0){
+                fundo.setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
         return view;
     }
 }

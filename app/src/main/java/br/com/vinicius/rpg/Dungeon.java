@@ -1,18 +1,17 @@
 package br.com.vinicius.rpg;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Parcelable;
-import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import java.io.Serializable;
+import java.util.List;
 import java.util.Random;
 
 public class Dungeon extends AppCompatActivity {
@@ -24,10 +23,20 @@ public class Dungeon extends AppCompatActivity {
     private Button desce;
     private ListView listaDeAcoes;
     private Random gerador = new Random();
+    private TextView Andar;
+    private TextView MonstroRank;
     private int andar;
+    private int andarMax;
     private String NomeDungeon;
     private String rank;
+    private List<DadosTable> dados;
 
+    @Override
+    public void onBackPressed() {
+        // não chame o super desse método //Impede o botão de voltar do celular voltar para Activy anterior.
+    }
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,21 +47,39 @@ public class Dungeon extends AppCompatActivity {
         assert bundle != null;
         NomeDungeon = bundle.getString("nomeDungeon");
         rank = bundle.getString("rank");
-        andar = 1;
+        dados = Sessao.getDadosPerso();
+        String[] andares = bundle.getString("andares").split("-");
+        andarMax = Integer.parseInt(andares[1]);
+        andar = Integer.parseInt(andares[0]);
+        Andar = findViewById(R.id.Andar);
+        MonstroRank = findViewById(R.id.MontrosRank);
         listaDeAcoes = findViewById(R.id.ListaAcoes);
         frente = findViewById(R.id.Frente);
         direita = findViewById(R.id.Direita);
         esquerda = findViewById(R.id.Esquerda);
         sobe = findViewById(R.id.Subir);
         desce = findViewById(R.id.Descer);
+
+        frente.setClickable(true);
+        direita.setClickable(false);
+        direita.setAlpha(0.2f);
+        esquerda.setClickable(false);
+        esquerda.setAlpha(0.2f);
+        desce.setClickable(false);
+        desce.setAlpha(0.2f);
         frente.setOnClickListener(caminho());
         esquerda.setOnClickListener(caminho());
         direita.setOnClickListener(caminho());
-        switch (gerador.nextInt(10)){
-            case 0:
-                //subir ou descer
-                break;
-        }
+        desce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                andar++;
+                Andar.setText("Andar: "+andar);
+            }
+        });
+        Andar.setText("Andar: "+andar);
+        MonstroRank.setText("Montros Rank: "+rank);
+
     }
 
     private View.OnClickListener caminho(){
@@ -61,14 +88,22 @@ public class Dungeon extends AppCompatActivity {
             public void onClick(View v) {
                 caminhos();
                 monstro();
+                desceCaminho();
             }
         };
     }
 
+    private void desceCaminho(){
+        switch (gerador.nextInt(25)){
+            case 0:
+                sobe.setClickable(true);
+                sobe.setAlpha(1);
+                break;
+        }
+    }
+
     private void caminhos(){
-        int teste = gerador.nextInt(6);
-        System.out.println(teste);
-        switch (teste){
+        switch (gerador.nextInt(6)){
             case 0://Frente
                 frente.setClickable(true);
                 frente.setAlpha(1);
@@ -118,6 +153,19 @@ public class Dungeon extends AppCompatActivity {
                 esquerda.setAlpha(1);
                 break;
         }
+        RegHp();
+    }
+
+    private void RegHp(){
+        for (int i =0;i<dados.size();i++){
+            DadosTable dado = dados.get(i);
+            int vida = dado.getVida();
+            if (vida<dado.getVidaMax()){
+                int reg = dado.getVidaMax()/100;
+                System.out.println("Reg: "+reg);
+                dado.setVida(vida+reg);
+            }
+        }
     }
 
     private void monstro(){
@@ -125,7 +173,7 @@ public class Dungeon extends AppCompatActivity {
             case 0:
             case 9:
                 final Monstros monstros = Monstros.G;
-                final MonstroUni monstro =  monstros.monstro();
+                final MonstroUni monstro =  monstros.monstro(andar,andarMax);
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setTitle("Aviso");
                 alert.setMessage("Você encontrou um "+monstro.getNome());
@@ -136,6 +184,7 @@ public class Dungeon extends AppCompatActivity {
                         Bundle bundle = new Bundle();
                         bundle.putString("nomeDungeon", NomeDungeon);
                         bundle.putString("rank", rank);
+                        bundle.putString("andares",andar+"-"+andarMax);
                         bundle.putSerializable("monstro", monstro);
                         it.putExtras(bundle);
                         startActivity(it);
@@ -146,7 +195,8 @@ public class Dungeon extends AppCompatActivity {
 
                     }
                 });
-                alert.create();
+                //alert.create();
+                alert.setCancelable(false);
                 alert.show();
                 break;
         }
