@@ -77,6 +77,9 @@ public enum Monstros implements MonstrosInterface{
             double mod2 = G.getMod();
             status = (int) (status*mod2);
             status = (int) (status*mod);
+            if (status==0){
+                status = 1;
+            }
             int ex = G.getExp()*level;
             return new MonstroUni(rank,vida,status,level,G.getNome(),mp,ex);
         }
@@ -97,7 +100,7 @@ enum RankG implements MostrosInterface2{
             return exp;
         }
         private double modMoster = 1.2;
-        private int exp = 5;
+        private int exp = 50;
         private String nome = "Slime";
     },
     ESQUELETO{
@@ -113,7 +116,7 @@ enum RankG implements MostrosInterface2{
             return exp;
         }
         private double modMoster = 1.5;
-        private int exp = 10;
+        private int exp = 100;
         private String nome = "Esqueleto";
     }
 }

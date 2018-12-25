@@ -24,6 +24,7 @@ import java.util.List;
 public class NovoJogo extends AppCompatActivity {
 
     private Button Criar;
+    private Button Cancelar;
     private Button Excluir;
     private Button Voltar;
     private Button avancar;
@@ -46,6 +47,7 @@ public class NovoJogo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_novo_jogo);
         banco = new  Bd(getBaseContext());
+        Cancelar = (Button) findViewById(R.id.Cancelar);
         avancar = (Button) findViewById(R.id.Avancar);
         avancar2 = (Button) findViewById(R.id.Avancar2);
         Voltar2 = (Button) findViewById(R.id.Voltar2);
@@ -90,6 +92,14 @@ public class NovoJogo extends AppCompatActivity {
                         VisibleInviseble2(1);
                     }
                 }
+            }
+        });
+
+        Cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(NovoJogo.this,MainActivity.class);
+                startActivity(it);
             }
         });
 

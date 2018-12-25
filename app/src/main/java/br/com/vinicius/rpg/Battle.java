@@ -117,6 +117,9 @@ public class Battle extends AppCompatActivity {
                         int atk = dado.getAtk();
                         System.out.println(atk);
                         double atkReal = atk - (monstro.getStatus()/5);
+                        if(atkReal<0){
+                            atkReal = 0;
+                        }
                         System.out.println(atkReal);
                         int dano = (int) atkReal;
                         System.out.println(dano);
@@ -133,12 +136,15 @@ public class Battle extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Intent it = new Intent(Battle.this, Dungeon.class);
+                                    //it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    /*
                                     Bundle bundle = new Bundle();
                                     bundle.putString("nomeDungeon", NomeDungeon);
                                     bundle.putString("rank",rank);
                                     System.out.println(andares);
                                     bundle.putString("andares",andares);
                                     it.putExtras(bundle);
+                                    */
                                     startActivity(it);
 
                                 }
@@ -182,6 +188,9 @@ public class Battle extends AppCompatActivity {
         int atk = monstro.getStatus();
         System.out.println(atk);
         double atkReal = atk - (dado.getDef()/5);
+        if(atkReal<0){
+            atkReal = 0;
+        }
         System.out.println(atkReal);
         int dano = (int) atkReal;
         int validador = dado.getVida()-dano;

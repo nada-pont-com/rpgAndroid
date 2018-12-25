@@ -14,7 +14,7 @@ public class AdapterPersoPersonalizado extends BaseAdapter {
     private final List<DadosTable> dados;
     private final Activity activity;
 
-    public AdapterPersoPersonalizado(List<DadosTable> dados, Activity activity) {
+    AdapterPersoPersonalizado(List<DadosTable> dados, Activity activity) {
         this.dados = dados;
         this.activity = activity;
     }
@@ -55,11 +55,8 @@ public class AdapterPersoPersonalizado extends BaseAdapter {
         ProgressBar ExpBar = view.findViewById(R.id.progressExp);
         ProgressBar VidaBar = view.findViewById(R.id.progressVida);
 
-        int level = dado.getLevel();
-        double i = Math.pow(2,(level-1));
-        int expMax = (int) (100*i);
         Nome.setText(dado.getNome());
-        Exp.setText(dado.getExperiencia()+"/"+expMax);
+        Exp.setText(dado.getExperiencia()+"/"+dado.getExpMax());
         Level.setText("Level: "+dado.getLevel());
         Classe.setText("Classe: "+dado.getClasse());
         Vida.setText(dado.getVida()+"/"+dado.getVidaMax());
@@ -70,9 +67,9 @@ public class AdapterPersoPersonalizado extends BaseAdapter {
         Agi.setText("Agi: "+dado.getAgi());
         Mp.setText("Mp: "+dado.getMp()+"/"+dado.getMpMax());
         ExpBar.setProgress(dado.getExperiencia());
-        ExpBar.setMax(dado.getVidaMax());
+        ExpBar.setMax(dado.getExpMax());
         VidaBar.setProgress(dado.getVida());
-        VidaBar.setMax(expMax);
+        VidaBar.setMax(dado.getVidaMax());
 
         return view;
     }

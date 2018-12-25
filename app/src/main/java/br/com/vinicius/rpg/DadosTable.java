@@ -46,11 +46,26 @@ public class DadosTable {
     }
 
     public void setExperiencia(int experiencia) {
+        int expMax = getExpMax();
+        while(experiencia>=expMax){
+            System.out.println(experiencia);
+            expMax = getExpMax();
+            experiencia = (experiencia-expMax);
+            this.level++;
+            this.pontosExp = this.pontosExp+5;
+            this.vidaMax = this.vidaMax*2;
+            this.vida = this.vidaMax;
+        }
         this.experiencia = experiencia;
     }
 
     public int getExperiencia() {
         return experiencia;
+    }
+
+    public int getExpMax(){
+        double i = Math.pow(2,(level-1));//potencia 2^level
+        return (int) (100*i);
     }
 
     public void setPontosExp(int pontosExp) {

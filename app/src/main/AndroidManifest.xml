@@ -19,9 +19,10 @@
         <activity android:name=".NovoJogo" />
         <activity android:name=".Jogo" />
         <activity android:name=".Continuar" />
-        <activity android:name=".Dungeon" />
+        <activity android:name=".Dungeon"
+                  android:launchMode="singleTask" />
         <activity android:name=".Battle" />
-        <activity android:name=".PersonagemMenu"></activity>
+        <activity android:name=".PersonagemMenu" />
     </application>
 
 </manifest>
