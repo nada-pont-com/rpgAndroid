@@ -237,6 +237,17 @@
                             android:text="Agi: 10"
                             android:textColor="@android:color/black"
                             android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/Int"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:text="Int: 0"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -283,6 +294,20 @@
                                 android:layout_marginTop="3dp" />
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <include
+                                android:id="@+id/seis"
+                                layout="@layout/button_pontos"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_marginTop="3dp" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -322,6 +347,18 @@
                             android:text="Mp: 10/10"
                             android:textColor="@android:color/black"
                             android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/Vit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="Vit:"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -354,9 +391,47 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:layout_marginTop="3dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="3dp"
+                            android:orientation="horizontal">
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <include
+                                android:id="@+id/sete"
+                                layout="@layout/button_pontos"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_marginTop="3dp" />
                         </LinearLayout>
 
                     </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                 </LinearLayout>
 

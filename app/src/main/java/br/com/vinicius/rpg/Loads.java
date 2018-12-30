@@ -2,6 +2,7 @@ package br.com.vinicius.rpg;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
@@ -16,7 +17,7 @@ final class Loads {
         static final String TABLE_NAME = "load";
         static final String SQL_CREATE_LOADS = " (id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "nome VARCHAR(45) NOT NULL UNIQUE," +
-                "tempo TIME NOT NULL" +
+                "tempo String NOT NULL" +
                 ")";
     }
     static class perso implements BaseColumns{
@@ -39,6 +40,8 @@ final class Loads {
                 "agi INT UNSIGNED NOT NULL," +
                 "atkM INT UNSIGNED NOT NULL," +
                 "defM INT UNSIGNED NOT NULL," +
+                "vit INT UNSIGNED NOT NULL," +
+                "inteli INT UNSIGNED NOT NULL," +
                 "FOREIGN KEY (load_id) " +
                 "REFERENCES load (id)," +
                 "PRIMARY KEY (load_id,id)" +
@@ -51,6 +54,8 @@ final class Loads {
             String agi[] =  {"5"        ,"9"};
             String atkM[] = {"2"        ,"5"};
             String defM[] = {"2"        ,"6"};
+            String vit[] =  {"0"        ,"0"};
+            String intl[] =  {"0"        ,"0"};
 
             DadosTable dado;
             for (int i=0;i<classe.length;i++){
@@ -61,6 +66,8 @@ final class Loads {
                 dado.setAtkM(Integer.parseInt(atkM[i]));
                 dado.setDef(Integer.parseInt(def[i]));
                 dado.setDefM(Integer.parseInt(defM[i]));
+                dado.setVit(Integer.parseInt(vit[i]));
+                dado.setIntl(Integer.parseInt(intl[i]));
 
                 SQL_LIST_DADOS.add(dado);
             }
@@ -101,6 +108,8 @@ final class Loads {
             values.put("def",dados.getDef());
             values.put("defM",dados.getDefM());
             values.put("agi",dados.getAgi());
+            values.put("vit",dados.getVit());
+            values.put("inteli",dados.getIntl());
 
             long newRowId = db.insert(perso.TABLE_NAME, null, values);
             return newRowId != -1;
@@ -151,7 +160,9 @@ final class Loads {
                     "agi",
                     "atkM",
                     "defM",
-                    "pontosExp"
+                    "pontosExp",
+                    "vit",
+                    "inteli"
             };
             Cursor cursor = db.query(
                     Loads.perso.TABLE_NAME,
@@ -181,6 +192,8 @@ final class Loads {
                 dados.setAtkM(cursor.getInt(15));
                 dados.setDefM(cursor.getInt(16));
                 dados.setPontosExp(cursor.getInt(17));
+                dados.setVit(cursor.getInt(18));
+                dados.setIntl(cursor.getInt(19));
 
                 listaDeDados.add(dados);
             }
@@ -207,7 +220,9 @@ final class Loads {
                     "agi",
                     "atkM",
                     "defM",
-                    "pontosExp"
+                    "pontosExp",
+                    "vit",
+                    "inteli"
             };
             String selection = "load_id=?";
             String load_id = loadId+"";
@@ -244,6 +259,9 @@ final class Loads {
                 dados.setAtkM(cursor.getInt(15));
                 dados.setDefM(cursor.getInt(16));
                 dados.setPontosExp(cursor.getInt(17));
+                dados.setVit(cursor.getInt(18));
+                dados.setIntl(cursor.getInt(19));
+
 
                 listaDeDados.add(dados);
             }
@@ -270,8 +288,20 @@ final class Loads {
             values.put("def",dados.getDef());
             values.put("defM",dados.getDefM());
             values.put("agi",dados.getAgi());
+            values.put("vit",dados.getVit());
+            values.put("inteli",dados.getIntl());
 
             db.update(Loads.perso.TABLE_NAME,values,where,null);
+        }
+
+        public void atulizarLoad(SQLiteDatabase db,LoadTable load){
+
+            String where = "id="+load.getId();
+            ContentValues values = new ContentValues();
+            values.put("nome", load.getNome());
+            values.put("tempo", load.getTempo());
+            db.update(Loads.load.TABLE_NAME,values,where,null);
+
         }
     }
 

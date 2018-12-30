@@ -13,8 +13,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Timer;
 
-public class Jogo extends AppCompatActivity {
+public class Jogo extends AppCompatActivity{
 
     private TextView andarFlo;
     private ImageView home;
@@ -26,6 +27,8 @@ public class Jogo extends AppCompatActivity {
     private Button dungeon;
     private Button guild;
     private Button floresta;
+
+    private LoadTable load;
 
     @Override
     public void onBackPressed() {
@@ -93,11 +96,11 @@ public class Jogo extends AppCompatActivity {
             }
         });
         List<DadosTable> dados;
+        load = Sessao.getLoad();
         if(Sessao.getDadosPerso()==null){
-            Bd banco = new Bd(getBaseContext());
+            Bd banco = new Bd(this);
             SQLiteDatabase db = banco.getWritableDatabase();
             Loads.comandos comandos = new Loads.comandos();
-            LoadTable load = Sessao.getLoad();
             dados = comandos.buscaDadosPorLoadId(db,load.getId(),-1);
             Sessao.setDadosPerso(dados);
         }else{
@@ -116,6 +119,12 @@ public class Jogo extends AppCompatActivity {
                 startActivity(it);
             }
         });
+
+        Timer timer = new Timer();
+        Tempo tempo = new Tempo(load);
+        AutoSalve autoSalve = new AutoSalve(load,Jogo.this);
+        timer.schedule(tempo,0,1000);
+        timer.schedule(autoSalve,0,10000);
     }
 
     private void VisibleInvisible(int referencia){

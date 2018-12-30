@@ -20,6 +20,8 @@ public class DadosTable {
     private int agi;
     private int atkM;
     private int defM;
+    private int vit;
+    private int intl;
 
     public void setId(int id) {
         this.id = id;
@@ -178,6 +180,22 @@ public class DadosTable {
 
     public int getDefM(){
         return this.defM;
+    }
+
+    int getVit() {
+        return vit;
+    }
+
+    void setVit(int vit) {
+        this.vit = vit;
+    }
+
+    public int getIntl() {
+        return vit;
+    }
+
+    void setIntl(int intl) {
+        this.intl = intl;
     }
 
     @Override

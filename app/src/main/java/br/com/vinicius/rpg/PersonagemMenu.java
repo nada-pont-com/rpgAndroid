@@ -28,6 +28,8 @@ public class PersonagemMenu extends AppCompatActivity {
     private TextView DefM;
     private TextView Agi;
     private TextView Mp;
+    private TextView Vit;
+    private TextView Int;
     private ProgressBar VidaBar;
     private ProgressBar ExpBar;
 
@@ -36,18 +38,24 @@ public class PersonagemMenu extends AppCompatActivity {
     private TextView valor3;
     private TextView valor4;
     private TextView valor5;
+    private TextView valor6;
+    private TextView valor7;
 
     private ImageButton mais;
     private ImageButton mais2;
     private ImageButton mais3;
     private ImageButton mais4;
     private ImageButton mais5;
+    private ImageButton mais6;
+    private ImageButton mais7;
 
     private ImageButton menos;
     private ImageButton menos2;
     private ImageButton menos3;
     private ImageButton menos4;
     private ImageButton menos5;
+    private ImageButton menos6;
+    private ImageButton menos7;
 
     private DadosTable dado;
     private int pontos;
@@ -80,6 +88,8 @@ public class PersonagemMenu extends AppCompatActivity {
         DefM = findViewById(R.id.defM);
         Agi = findViewById(R.id.agi);
         Mp = findViewById(R.id.mp);
+        Vit = findViewById(R.id.Vit);
+        Int = findViewById(R.id.Int);
 
         ExpBar = findViewById(R.id.progressExp);
         VidaBar = findViewById(R.id.progressVida);
@@ -94,8 +104,11 @@ public class PersonagemMenu extends AppCompatActivity {
         AtkM.setText("AtkM: "+dado.getAtkM());
         DefM.setText("DefM: "+dado.getDefM());
         Agi.setText("Agi: "+dado.getAgi());
+        Vit.setText("Vit: "+dado.getVit());
+        Int.setText("Int: "+dado.getIntl());
         Mp.setText("Mp: "+dado.getMp()+"/"+dado.getMpMax());
         Pontos.setText("Pontos: "+pontos);
+
 
         ExpBar.setProgress(dado.getExperiencia());
         ExpBar.setMax(dado.getExpMax());
@@ -107,12 +120,12 @@ public class PersonagemMenu extends AppCompatActivity {
         Button Salvar = findViewById(R.id.Salvar);
 
         View layout;
-        final TextView[] valores = {valor,valor2,valor3,valor4,valor5};
-        ImageButton[] maises = {mais,mais2,mais3,mais4,mais5};
-        ImageButton[] menoes = {menos,menos2,menos3,menos4,menos5};
-        int[] teste =  {R.id.um,R.id.dois,R.id.tres,R.id.quatro,R.id.cinco};
-        for(int i = 0;i<5;i++){
-            layout = findViewById(teste[i]);
+        final TextView[] valores = {valor,valor2,valor3,valor4,valor5,valor6,valor7};
+        ImageButton[] maises = {mais,mais2,mais3,mais4,mais5,mais6,mais7};
+        ImageButton[] menoes = {menos,menos2,menos3,menos4,menos5,mais6,mais7};
+        int[] layouts =  {R.id.um,R.id.dois,R.id.tres,R.id.quatro,R.id.cinco,R.id.seis,R.id.sete};
+        for(int i = 0;i<layouts.length;i++){
+            layout = findViewById(layouts[i]);
             valores[i] = layout.findViewById(R.id.valor);
             maises[i] = layout.findViewById(R.id.mais);
             menoes[i] = layout.findViewById(R.id.menos);
@@ -163,6 +176,8 @@ public class PersonagemMenu extends AppCompatActivity {
                 int agi = Integer.parseInt(valores[2].getText().toString());
                 int atkM = Integer.parseInt(valores[3].getText().toString());
                 int defM = Integer.parseInt(valores[4].getText().toString());
+                int intl = Integer.parseInt(valores[5].getText().toString());
+                int vit = Integer.parseInt(valores[6].getText().toString());
 
                 //salvar pontos, zerar ou voltar para a home
                 dado.setAtk(dado.getAtk()+atk);
@@ -170,6 +185,8 @@ public class PersonagemMenu extends AppCompatActivity {
                 dado.setAtkM(dado.getAtkM()+atkM);
                 dado.setDefM(dado.getDefM()+defM);
                 dado.setAgi(dado.getAgi()+agi);
+                dado.setVit(dado.getVit()+vit);
+                dado.setIntl(dado.getIntl()+intl);
                 dado.setPontosExp(pontos);
                 Loads.comandos comandos = new Loads.comandos();
                 Bd Banco = new Bd(PersonagemMenu.this);
