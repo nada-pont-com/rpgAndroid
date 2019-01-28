@@ -51,9 +51,10 @@ class MonstroUni implements Serializable {
     private String nome;
     private int mp;
     private int ex;
+    private String[] item;
 
 
-    MonstroUni(String rank,int vida,int status,int level,String nome,int mp,int ex){
+    MonstroUni(String rank, int vida, int status, int level, String nome, int mp, int ex, String[] item){
         this.rank = rank;
         this.vida = vida;
         this.status = status;
@@ -61,6 +62,7 @@ class MonstroUni implements Serializable {
         this.nome = nome;
         this.mp = mp;
         this.ex = ex;
+        this.item = item;// (randon(max-min)) + min
     }
 
    /* void setRank(String rank) {
@@ -111,12 +113,11 @@ class MonstroUni implements Serializable {
         return mp;
     }
 
-    /*public void setEx(int ex) {
-        this.ex = ex;
-    }
-    */
-
-    public int getEx() {
+    int getEx() {
         return ex;
+    }
+
+    public String[] getItem() {
+        return item;
     }
 }

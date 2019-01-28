@@ -184,11 +184,11 @@
                     android:text="Guerreiro" />
 
                 <RadioButton
-                    android:id="@+id/ClasseAven"
+                    android:id="@+id/ClasseExpl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Aventureiro" />
+                    android:text="Explorador" />
             </RadioGroup>
 
             <Button

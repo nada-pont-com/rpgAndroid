@@ -36,8 +36,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingLeft="4dp"
+                    android:paddingRight="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:paddingRight="10dp"
+                                android:paddingRight="2dp"
                                 android:text="Vida"
                                 tools:ignore="RtlSymmetry" />
 
@@ -80,7 +80,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:paddingRight="20dp"
+                                android:paddingRight="5dp"
                                 android:text="0/100"
                                 tools:ignore="RtlSymmetry" />
 
@@ -89,7 +89,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:paddingRight="10dp"
+                                android:paddingRight="5dp"
                                 android:text="100/100"
                                 tools:ignore="RtlSymmetry" />
 
@@ -212,6 +212,15 @@
                         android:text="Agi: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/Int"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Int: 10"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -243,6 +252,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Mp: 10"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/Vit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Vit: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
                 </LinearLayout>

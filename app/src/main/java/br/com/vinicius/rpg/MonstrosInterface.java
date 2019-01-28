@@ -8,5 +8,5 @@ interface MostrosInterface2{
     double getMod();
     String getNome();
     int getExp();
-
+    String[] getItem();
 }

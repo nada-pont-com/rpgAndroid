@@ -81,42 +81,48 @@ public enum Monstros implements MonstrosInterface{
                 status = 1;
             }
             int ex = G.getExp()*level;
-            return new MonstroUni(rank,vida,status,level,G.getNome(),mp,ex);
+            return new MonstroUni(rank,vida,status,level,G.getNome(),mp,ex,G.getItem());
         }
         RankG[] g = RankG.values();
     }
 }
 enum RankG implements MostrosInterface2{
     SLIME{
-        @Override
         public double getMod() {
             return modMoster;
         }
-        @Override
         public String getNome(){
             return nome;
         }
         public int getExp() {
             return exp;
+        }
+        public String[] getItem(){
+                return item;
         }
         private double modMoster = 1.2;
         private int exp = 50;
         private String nome = "Slime";
+        //             item = nome-minimo-maximo
+        private String[] item = {"Gosma-1-3","pocaoHP-0-1","pocaoMP-0-1"};
     },
     ESQUELETO{
-        @Override
         public double getMod() {
             return modMoster;
         }
-        @Override
         public String getNome(){
             return nome;
         }
         public int getExp() {
             return exp;
         }
+        public String[] getItem(){
+            return item;
+        }
         private double modMoster = 1.5;
         private int exp = 100;
         private String nome = "Esqueleto";
+        private String[] item = {"Osso-1-3","pocaoHP-0-1","pocaoMP-0-1"};
+
     }
 }

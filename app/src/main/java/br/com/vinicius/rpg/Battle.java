@@ -7,11 +7,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -35,6 +37,8 @@ public class Battle extends AppCompatActivity {
     private MonstroUni monstro;
     private AdapterBattlePersoPersonalizado adapter;
     private Random random = new Random();
+    private ListView ListaAcoes;
+    private List<String> listaAcoes = new ArrayList<>();
 
     @Override
     public void onBackPressed() {
@@ -100,6 +104,9 @@ public class Battle extends AppCompatActivity {
 
         mpBar.setMax(monstro.getMp());
         mpBar.setProgress(monstro.getMp());
+
+        ListaAcoes = findViewById(R.id.ListaAcoes);
+
     }
 
     //Referencia se refere se é um atk comum, habilidade ou magia
@@ -123,6 +130,10 @@ public class Battle extends AppCompatActivity {
                         System.out.println(atkReal);
                         int dano = (int) atkReal;
                         System.out.println(dano);
+                        String acao = dado.getNome()+": Atacou e causou "+dano+" de dano";
+                        listaAcoes.add(acao);
+                        ListaAcoes();
+                        System.out.print(listaAcoes);
                         int validador = monstro.getVida()-dano;
                         if (validador<=0){
                             dado.setExperiencia(monstro.getEx()+dado.getExperiencia());
@@ -136,15 +147,6 @@ public class Battle extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Intent it = new Intent(Battle.this, Dungeon.class);
-                                    //it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    /*
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("nomeDungeon", NomeDungeon);
-                                    bundle.putString("rank",rank);
-                                    System.out.println(andares);
-                                    bundle.putString("andares",andares);
-                                    it.putExtras(bundle);
-                                    */
                                     startActivity(it);
 
                                 }
@@ -193,6 +195,9 @@ public class Battle extends AppCompatActivity {
         }
         System.out.println(atkReal);
         int dano = (int) atkReal;
+        String acao = monstro.getNome()+": Atacou e causou "+dano+" de dano";
+        listaAcoes.add(acao);
+        ListaAcoes();
         int validador = dado.getVida()-dano;
         if(validador<=0){
             validador = 0;
@@ -208,10 +213,18 @@ public class Battle extends AppCompatActivity {
                     startActivity(it);
                 }
             });
+            alert.show();
         }
         System.out.println(dano);
         dado.setVida(validador);
     }
+
+    private void ListaAcoes(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, listaAcoes);
+        ListaAcoes.setAdapter(adapter);
+    }
+
     private void Salvar(){
         Bd banco = new Bd(getBaseContext());
         SQLiteDatabase db = banco.getWritableDatabase();
@@ -219,6 +232,5 @@ public class Battle extends AppCompatActivity {
         for (int i = 0;i<dados.size();i++){
             comandos.atulizarDados(db,dados.get(i),dados.get(i).getLoadId(),dados.get(i).getId());
         }
-
     }
 }

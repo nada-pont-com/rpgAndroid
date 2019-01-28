@@ -3,64 +3,89 @@ package br.com.vinicius.rpg;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.Timer;
 import java.util.TimerTask;
 
-public class Tempo extends TimerTask {
+public class Tempo {
 
-    private LoadTable load;
+    static final Timer timer = new Timer();
+    static class tempo extends TimerTask{
+        private boolean ONOFF = false;
 
-    public Tempo(LoadTable load){
-        this.load = load;
+        public void setONOFF(boolean ONOFF) {
+            this.ONOFF = ONOFF;
+        }
+
+        public boolean getONOFF() {
+            return ONOFF;
+        }
+
+        private LoadTable load;
+
+        public tempo(LoadTable load){
+            this.load = load;
+        }
+        @Override
+        public void run() {
+            String[] tempo = load.getTempo().split(":");
+
+            int seg,min,hora;
+            seg  = Integer.parseInt(tempo[2]);
+            min  = Integer.parseInt(tempo[1]);
+            hora = Integer.parseInt(tempo[0]);
+
+            seg++;
+
+            if(seg==60){
+                seg = 0;
+                min++;
+            }
+            if(min==60){
+                min = 0;
+                hora++;
+            }
+            String seg2 = "",min2 = "",hora2 = "";
+            if(seg<10){
+                seg2 = "0";
+            }
+            if(min<10){
+                min2 = "0";
+            }
+            if(hora<10){
+                hora2 = "0";
+            }
+            load.setTempo(hora2+hora+":"+min2+min+":"+seg2+seg);
+        }
     }
-    @Override
-    public void run() {
-        String[] tempo = load.getTempo().split(":");
 
-        int seg,min,hora;
-        seg  = Integer.parseInt(tempo[2]);
-        min  = Integer.parseInt(tempo[1]);
-        hora = Integer.parseInt(tempo[0]);
+    static class autoSalve extends TimerTask{
 
-        seg++;
+        private boolean ONOFF = false;
 
-        if(seg==60){
-            seg = 0;
-            min++;
+        public void setONOFF(boolean ONOFF) {
+            this.ONOFF = ONOFF;
         }
-        if(min==60){
-            min = 0;
-            hora++;
+
+        public boolean getONOFF() {
+            return ONOFF;
         }
-        String seg2 = "",min2 = "",hora2 = "";
-        if(seg<10){
-            seg2 = "0";
+
+        private Context context;
+        private LoadTable load;
+
+        autoSalve(LoadTable load,Context context){
+            this.context = context;
+            this.load = load;
         }
-        if(min<10){
-            min2 = "0";
+        @Override
+        public void run() {
+            Bd Banco = new Bd(context);
+            SQLiteDatabase db = Banco.getWritableDatabase();
+            Loads.comandos comandos = new Loads.comandos();
+            System.out.println(load.getTempo());
+            comandos.atulizarLoad(db,load);
+            db.close();
         }
-        if(hora<10){
-            hora2 = "0";
-        }
-        load.setTempo(hora2+hora+":"+min2+min+":"+seg2+seg);
     }
 }
 
-class AutoSalve extends TimerTask{
-
-    private LoadTable load;
-    private Context context;
-
-    AutoSalve(LoadTable load, Context context){
-        this.load = load;
-        this.context = context;
-    }
-    @Override
-    public void run() {
-        Bd Banco = new Bd(context);
-        SQLiteDatabase db = Banco.getWritableDatabase();
-        Loads.comandos comandos = new Loads.comandos();
-        System.out.println(load.getTempo());
-        comandos.atulizarLoad(db,load);
-        db.close();
-    }
-}

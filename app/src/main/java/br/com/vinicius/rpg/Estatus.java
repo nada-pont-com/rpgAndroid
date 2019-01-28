@@ -19,7 +19,7 @@ public enum Estatus implements status {
             return classes.get(i);
         }
     },
-    aventureiro{
+    explorador{
         @Override
         public DadosTable getStatus() {
             List<DadosTable> classes = Loads.perso.SQL_LIST_DADOS;
@@ -27,7 +27,7 @@ public enum Estatus implements status {
             int i;
             for (i = 0;i<classes.size();i++){
                 System.out.println("fora: "+classes.get(i).getClasse());
-                if(classes.get(i).getClasse().equals("Aventureiro")){
+                if(classes.get(i).getClasse().equals("Explorador")){
                     System.out.println("Dentro: "+classes.get(i).getClasse());
                     break;
                 }

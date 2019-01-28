@@ -10,14 +10,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.List;
 import java.util.Timer;
 
 public class Jogo extends AppCompatActivity{
 
-    private TextView andarFlo;
     private ImageView home;
     private ImageView battle;
     private ImageView config;
@@ -26,9 +24,12 @@ public class Jogo extends AppCompatActivity{
     private Button voltar2;
     private Button dungeon;
     private Button guild;
-    private Button floresta;
-
+    private Timer timer;
+    private Tempo.tempo tempo;
+    private Tempo.autoSalve autoSalve;
+    private ListView dungeons;
     private LoadTable load;
+    private Dungeons dungeonsClass = new Dungeons();
 
     @Override
     public void onBackPressed() {
@@ -40,7 +41,8 @@ public class Jogo extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jogo);
 
-        andarFlo = findViewById(R.id.AndaresFlores);
+        timer = Tempo.timer;
+
         perso = findViewById(R.id.perso);
         home =  findViewById(R.id.Inicio);
         config =  findViewById(R.id.Config);
@@ -49,7 +51,33 @@ public class Jogo extends AppCompatActivity{
         guild = findViewById(R.id.Guild);
         voltar = findViewById(R.id.Voltar);
         voltar2 = findViewById(R.id.Voltar2);
-        floresta = findViewById(R.id.Floresta);
+        dungeons = findViewById(R.id.dungeons);
+
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timer.cancel();
+                tempo.setONOFF(false);
+                autoSalve.setONOFF(false);
+                Sessao.setLoad(null);
+                Sessao.setDadosPerso(null);
+                Loads.comandos comandos = new Loads.comandos();
+                Bd banco = new Bd(Jogo.this);
+                SQLiteDatabase db = banco.getWritableDatabase();
+                comandos.atulizarLoad(db,load);
+                db.close();
+                Intent it = new Intent(Jogo.this,MainActivity.class);
+                it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(it);
+            }
+        });
+        guild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(Jogo.this,Guilda.class);
+                startActivity(it);
+            }
+        });
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,26 +99,27 @@ public class Jogo extends AppCompatActivity{
             }
         });
 
-        voltar.setOnClickListener(new View.OnClickListener() {
+        voltar2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(dungeonT[0] == 0){
                     VisibleInvisible(1);
                 }else{
+                    dungeonT[0] = 0;
                     VisibleInvisibleDungeon(1);
                 }
             }
         });
 
-        floresta.setOnClickListener(new View.OnClickListener() {
+        dungeons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent it = new Intent(Jogo.this,Dungeon.class);
+                DungeonTable dungeonTable = dungeonsClass.listaDeDungeons.get(position);
                 Bundle bundle = new Bundle();
-                bundle.putString("nomeDungeon", "floresta");
-                bundle.putString("rank","G");
-                bundle.putString("andares",andarFlo.getText().toString().split("Andares: ")[1]);
-
+                bundle.putString("nomeDungeon", dungeonTable.getNome());
+                bundle.putString("rank",dungeonTable.getRank());
+                bundle.putString("andares",dungeonTable.getAndares());
                 it.putExtras(bundle);
                 startActivity(it);
             }
@@ -103,9 +132,14 @@ public class Jogo extends AppCompatActivity{
             Loads.comandos comandos = new Loads.comandos();
             dados = comandos.buscaDadosPorLoadId(db,load.getId(),-1);
             Sessao.setDadosPerso(dados);
+            db.close();
         }else{
             dados = Sessao.getDadosPerso();
         }
+        dungeonsClass.list();
+        AdapterDungeonsPersonalizado adpter = new AdapterDungeonsPersonalizado(dungeonsClass.listaDeDungeons,this);
+        dungeons.setAdapter(adpter);
+
         System.out.println("Dados Jogo: "+dados);
         AdapterPersoPersonalizado adapter = new AdapterPersoPersonalizado(dados,this);
         perso.setAdapter(adapter);
@@ -119,12 +153,24 @@ public class Jogo extends AppCompatActivity{
                 startActivity(it);
             }
         });
-
-        Timer timer = new Timer();
-        Tempo tempo = new Tempo(load);
-        AutoSalve autoSalve = new AutoSalve(load,Jogo.this);
-        timer.schedule(tempo,0,1000);
-        timer.schedule(autoSalve,0,10000);
+        if(Sessao.getAutoSalve()==null){
+            autoSalve = new Tempo.autoSalve(load,Jogo.this);
+        }else{
+            autoSalve = Sessao.getAutoSalve();
+        }
+        if(Sessao.getTempo()==null){
+            tempo = new Tempo.tempo(load);
+        }else{
+            tempo = Sessao.getTempo();
+        }
+        if(!tempo.getONOFF()){
+            timer.schedule(tempo,0,1000);
+            tempo.setONOFF(true);
+        }
+        if(!autoSalve.getONOFF()){
+            timer.schedule(autoSalve,0,10000);
+            autoSalve.setONOFF(true);
+        }
     }
 
     private void VisibleInvisible(int referencia){

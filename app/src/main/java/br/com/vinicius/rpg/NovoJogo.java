@@ -34,7 +34,7 @@ public class NovoJogo extends AppCompatActivity {
     private TextView textView;
     private ListView lista;
     private RadioButton classGue;
-    private RadioButton classAven;
+    private RadioButton classExpl;
     private EditText nomePerso;
     private EditText Nome;
     private Estatus classe;
@@ -46,6 +46,10 @@ public class NovoJogo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_novo_jogo);
+
+        if(Loads.perso.SQL_LIST_DADOS==null) {
+            Loads.perso.dados();
+        }
         banco = new  Bd(getBaseContext());
         Cancelar = (Button) findViewById(R.id.Cancelar);
         avancar = (Button) findViewById(R.id.Avancar);
@@ -54,7 +58,7 @@ public class NovoJogo extends AppCompatActivity {
         Voltar3 = (Button) findViewById(R.id.Voltar3);
         nomePerso = (EditText) findViewById(R.id.NomePerso);
         classGue = (RadioButton) findViewById(R.id.ClasseGue);
-        classAven = (RadioButton) findViewById(R.id.ClasseAven);
+        classExpl = (RadioButton) findViewById(R.id.ClasseExpl);
         Nome = (EditText) findViewById(R.id.Nome);
         textView = (TextView) findViewById(R.id.Selecionado);
         lista = (ListView) findViewById(R.id.lista);
@@ -127,8 +131,8 @@ public class NovoJogo extends AppCompatActivity {
         avancar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(classAven.isChecked()){
-                    classe = Estatus.aventureiro;
+                if(classExpl.isChecked()){
+                    classe = Estatus.explorador;
                 }else if(classGue.isChecked()){
                     classe = Estatus.guerreiro;
                 }else{
@@ -167,6 +171,8 @@ public class NovoJogo extends AppCompatActivity {
                             dados.setMpMax(10);
                             dados.setRank("G");
                             dados.setRankExp(0);
+                            dados.setPontosHab(0);
+                            dados.setPontosExp(0);
                             boolean retorno = comandos.InserirDados(dados,db);
                             if(retorno){
                                 List<DadosTable> dado = new ArrayList<DadosTable>();
@@ -177,6 +183,7 @@ public class NovoJogo extends AppCompatActivity {
                                 Intent it =  new Intent(NovoJogo.this,Jogo.class);
                                 startActivity(it);
                             }else{
+                                comandos.deletaLoad(db,load);
                                 visualizar("Erro ao cadastrar novo salve","Erro");
                             }
                         }else{

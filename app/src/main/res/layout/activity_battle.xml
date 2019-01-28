@@ -28,8 +28,7 @@
             <TextView
                 android:id="@+id/Descrisao"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_height="50dp"
                 android:text="Descrisao"
                 android:textColor="@android:color/black" />
 
@@ -48,7 +47,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -162,6 +161,11 @@
 
             </LinearLayout>
 
+            <ListView
+                android:id="@+id/ListaAcoes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -228,7 +232,8 @@
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="5" />
+                        android:layout_weight="5"
+                        tools:ignore="NestedWeights" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -238,7 +243,7 @@
 
                         <ListView
                             android:id="@+id/listaDePerso"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
 

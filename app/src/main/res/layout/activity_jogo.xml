@@ -108,35 +108,24 @@
 
                     <LinearLayout
                         android:id="@+id/LayoutDungeons"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="vertical"
                         android:visibility="invisible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <LinearLayout
+                        <ListView
+                            android:id="@+id/dungeons"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
+                            android:layout_height="wrap_content">
 
-                            <Button
-                                android:id="@+id/Floresta"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Floresta norte" />
-
-                            <TextView
-                                android:id="@+id/AndaresFlores"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Andares: 1-25"
-                                android:textColor="@android:color/black"
-                                android:textSize="18sp" />
-                        </LinearLayout>
+                        </ListView>
 
                     </LinearLayout>
 

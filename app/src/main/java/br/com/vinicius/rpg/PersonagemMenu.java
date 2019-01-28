@@ -1,20 +1,27 @@
 package br.com.vinicius.rpg;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class PersonagemMenu extends AppCompatActivity {
+
+public class
+PersonagemMenu extends AppCompatActivity {
 
     private TextView Nome;
     private TextView Level;
@@ -57,8 +64,21 @@ public class PersonagemMenu extends AppCompatActivity {
     private ImageButton menos6;
     private ImageButton menos7;
 
+    private Button hab;
+    private Button status;
+    private Button mag;
+
+    private ListView Habilidades;
+    private TextView NomeHab;
+    private TextView DescricaoHab;
+    private Button AprenderHab;
+
     private DadosTable dado;
+    private List<HabilidadesTable> habilidadeList;
     private int pontos;
+    private int pontosHab;
+    private int positionHab;
+
 
     public PersonagemMenu() {
     }
@@ -75,6 +95,7 @@ public class PersonagemMenu extends AppCompatActivity {
         int position = bundle.getInt("position");
         dado = Sessao.getDadosPerso().get(position);
         pontos = dado.getPontosExp();
+        pontosHab = dado.getPontosHab();
 
         Nome = findViewById(R.id.Nome);
         Level = findViewById(R.id.Level);
@@ -115,6 +136,23 @@ public class PersonagemMenu extends AppCompatActivity {
         VidaBar.setProgress(dado.getVida());
         VidaBar.setMax(dado.getVidaMax());
 
+        status = findViewById(R.id.Status);
+        hab = findViewById(R.id.Habilidades);
+        mag = findViewById(R.id.Magias);
+
+        Loads.comandos comandos = new Loads.comandos();
+        Bd banco = new Bd(this);
+        SQLiteDatabase db = banco.getWritableDatabase();
+        habilidadeList = comandos.buscaHabilidades(db);
+        db.close();
+        NomeHab = findViewById(R.id.NomeHab);
+        DescricaoHab = findViewById(R.id.DescricaoHab);
+        AprenderHab = findViewById(R.id.AprenderHab);
+        Habilidades = findViewById(R.id.HabilidadeLista);
+
+        ArrayAdapter<HabilidadesTable> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, habilidadeList);
+        Habilidades.setAdapter(adapter);
 
         Button Voltar = findViewById(R.id.Voltar);
         Button Salvar = findViewById(R.id.Salvar);
@@ -198,5 +236,99 @@ public class PersonagemMenu extends AppCompatActivity {
                 startActivity(it);
             }
         });
+
+        status.setOnClickListener(Button(3));
+        mag.setOnClickListener(Button(2));
+        hab.setOnClickListener(Button(1));
+
+
+        Habilidades.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HabilidadesTable habilidade = habilidadeList.get(position);
+                NomeHab.setText(habilidade.getNome());
+                DescricaoHab.setText(habilidade.getDescricao());
+                positionHab = position;
+            }
+        });
+
+        AprenderHab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final HabilidadesTable habilidade =habilidadeList.get(positionHab);
+                AlertDialog.Builder alert = new AlertDialog.Builder(PersonagemMenu.this);
+                alert.setMessage("Deseja aprender "+habilidade.getNome()+ " por "+habilidade.getPontos()+" pontos.");
+                alert.setTitle("Aprender Habilidade");
+                alert.setPositiveButton("Aprender", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int valida = pontosHab-habilidade.getPontos();
+                        AlertDialog.Builder alert = new AlertDialog.Builder(PersonagemMenu.this);
+                        if(valida>=0){
+                            Bd banco = new Bd(PersonagemMenu.this);
+                            SQLiteDatabase db = banco.getWritableDatabase();
+                            Loads.comandos comandos = new Loads.comandos();
+                            List<HabilidadesPersoTable> habilidadesPerso = comandos.buscaHabilidadesDoPerso(db,habilidade.getId(),dado.getId());
+                            if(habilidadesPerso.size()==0){
+                                comandos.InserirHabilidadePerso(habilidade.getId(),dado.getId(),db);
+                                alert.setMessage("Habilidade Aprendida: "+ habilidade.getNome());
+                                pontosHab = valida;
+                                dado.setPontosHab(pontosHab);
+                                comandos.atulizarDados(db,dado,dado.getLoadId(),dado.getId());
+                                Pontos.setText("Pontos: "+pontosHab);
+                            }else{
+                                alert.setTitle("Aviso");
+                                alert.setMessage("Voce já tem esse Habilidade");
+                            }
+                        }else {
+                            alert.setMessage("Pontos insuficientes");
+                        }
+                        alert.setNeutralButton("Ok", null);
+                        alert.show();
+                    }
+                });
+                alert.setNegativeButton("Canselar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alert.show();
+            }
+        });
+    }
+
+    private View.OnClickListener Button(final int referencia){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VisibleInvisible(referencia);
+            }
+        };
+    }
+
+    private void VisibleInvisible(int Referencia){
+        LinearLayout magias = findViewById(R.id.MagiaLayout);
+        LinearLayout habilidade = findViewById(R.id.HabilidadeLayout);
+        LinearLayout status = findViewById(R.id.StatusLayout);
+        switch (Referencia){
+            case 1:
+                magias.setVisibility(View.INVISIBLE);
+                habilidade.setVisibility(View.VISIBLE);
+                status.setVisibility(View.INVISIBLE);
+                Pontos.setText("Pontos: "+pontosHab);
+                break;
+            case 2:
+                magias.setVisibility(View.VISIBLE);
+                habilidade.setVisibility(View.INVISIBLE);
+                status.setVisibility(View.INVISIBLE);
+                break;
+            case 3:
+                magias.setVisibility(View.INVISIBLE);
+                habilidade.setVisibility(View.INVISIBLE);
+                status.setVisibility(View.VISIBLE);
+                Pontos.setText("Pontos: "+pontos);
+                break;
+        }
     }
 }
