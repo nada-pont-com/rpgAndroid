@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+//Adapter da lista de salves
 public class AdapterSalvesPersonalizado extends BaseAdapter {
 
     private final List<LoadTable> listaDeLoad;

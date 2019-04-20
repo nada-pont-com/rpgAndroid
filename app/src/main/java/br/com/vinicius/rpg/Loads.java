@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//Todos os comando do banco de dados e tabelas
+
 final class Loads {
     private Loads(){}//TODO criar um tabela para os itens equipados no personagem!
 

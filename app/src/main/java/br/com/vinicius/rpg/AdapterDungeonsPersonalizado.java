@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+//Adapter da lista de dungeons
 public class AdapterDungeonsPersonalizado extends BaseAdapter {
     private List<DungeonTable> listaDeDungeons;
     private Activity activity;

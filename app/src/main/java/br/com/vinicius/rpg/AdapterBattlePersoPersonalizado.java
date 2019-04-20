@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+
+// Adapter da lista de status da batalha
 public class AdapterBattlePersoPersonalizado extends BaseAdapter {
     private final List<DadosTable> dados;
     private final Activity activity;

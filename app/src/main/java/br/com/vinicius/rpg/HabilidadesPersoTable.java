@@ -29,4 +29,8 @@ public class HabilidadesPersoTable {
         return persoId;
     }
 
+    @Override
+    public String toString() {
+        return null;
+    }
 }

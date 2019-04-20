@@ -8,7 +8,12 @@ import java.util.TimerTask;
 
 public class Tempo {
 
-    static final Timer timer = new Timer();
+    static Timer timer;
+
+    public static void setTimer(Timer timer) {
+        Tempo.timer = timer;
+    }
+
     static class tempo extends TimerTask{
         private boolean ONOFF = false;
 

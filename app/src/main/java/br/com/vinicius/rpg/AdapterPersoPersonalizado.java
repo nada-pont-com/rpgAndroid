@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+//Adapter da lista de status do personagem
 public class AdapterPersoPersonalizado extends BaseAdapter {
     private final List<DadosTable> dados;
     private final Activity activity;

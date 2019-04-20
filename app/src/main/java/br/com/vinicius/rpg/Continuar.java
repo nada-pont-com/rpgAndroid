@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+//Menu de salves
 public class Continuar extends AppCompatActivity {
 
     private Button voltar;
@@ -44,6 +45,7 @@ public class Continuar extends AppCompatActivity {
                 }else{
                     Loads.comandos comandos = new Loads.comandos();
                     List<LoadTable> listaDeLoad = comandos.buscaLoad(db);
+                    Sessao.setHabilidades(comandos.buscaHabilidades(db));
                     db.close();
                     System.out.println(position);
                     Sessao.setLoad(listaDeLoad.get(position));

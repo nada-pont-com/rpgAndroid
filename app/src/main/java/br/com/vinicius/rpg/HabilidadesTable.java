@@ -3,9 +3,9 @@ package br.com.vinicius.rpg;
 public class HabilidadesTable {
     private int id;
     private String nome;
-    private String tipo;//Ataque, fortalecimento
+    private String tipo;//1-Ataque, 2-fortalecimento
     private int nuberAtk;//numero de ataques que habilidade fara;
-    private int valor;
+    private int valor;// dano, aumento // porcentagem;
     private int aumento;
     private int nocalte;
     private String extra;//tipo de fortalecimento;

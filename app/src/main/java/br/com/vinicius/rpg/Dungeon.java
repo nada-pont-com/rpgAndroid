@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Random;
 
+//Dungeon
 public class Dungeon extends AppCompatActivity {
 
     private Button frente;
@@ -163,42 +164,63 @@ public class Dungeon extends AppCompatActivity {
             if (vida<dado.getVidaMax()){
                 int reg = dado.getVidaMax()/100;
                 System.out.println("Reg: "+reg);
-                dado.setVida(vida+reg);
+                if((vida+reg)>dado.getVidaMax()){
+                    dado.setVida(dado.getVidaMax());
+                }else{
+                    dado.setVida(vida+reg);
+                }
             }
         }
     }
 
     private void monstro(){
-        switch (gerador.nextInt(10)){
-            case 0:
-            case 9:
-                final Monstros monstros = Monstros.G;
-                final MonstroUni monstro =  monstros.monstro(andar,andarMax);
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.setTitle("Aviso");
-                alert.setMessage("Você encontrou um "+monstro.getNome());
-                alert.setNeutralButton("Lutar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent it = new Intent(Dungeon.this, Battle.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("nomeDungeon", NomeDungeon);
-                        bundle.putString("rank", rank);
-                        bundle.putString("andares",andar+"-"+andarMax);
-                        bundle.putSerializable("monstro", monstro);
-                        it.putExtras(bundle);
-                        startActivity(it);
+        int rand = gerador.nextInt(100);
+        if (rand<10){
+            final Monstros monstros = Monstros.G;
+            final MonstroUni monstro =  monstros.monstro(andar,andarMax);
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Aviso");
+            alert.setMessage("Você encontrou um "+monstro.getNome());
+            alert.setNeutralButton("Lutar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent it = new Intent(Dungeon.this, Battle.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("nomeDungeon", NomeDungeon);
+                    bundle.putString("rank", rank);
+                    bundle.putString("andares",andar+"-"+andarMax);
+                    bundle.putSerializable("monstro", monstro);
+                    it.putExtras(bundle);
+                    startActivity(it);
+                }
+            }).setNegativeButton("Fugir", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    int agiT = 0;
+                    for (int i = 0;i<dados.size();i++ ){
+                        agiT+=  dados.get(i).getAgi();
                     }
-                }).setNegativeButton("Fugir", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
+                    int agiM = agiT/dados.size();
+                    int fuga = (agiM/monstro.getStatus())*100;
+                    int valor = gerador.nextInt(100);
+                    System.out.println("valor: "+valor);
+                    System.out.println("Fuga: "+fuga);
+                    if(valor<=fuga){
+                        visualizar("Conseguiu fugir","Alerta");
+                    }else{
+                        visualizar("Falha ao tentar fugir fugir","Alerta");
                     }
-                });
-                //alert.create();
-                alert.setCancelable(false);
-                alert.show();
-                break;
+                }
+            });
+            alert.setCancelable(false);
+            alert.show();
         }
+    }
+
+    private void visualizar(Object item,String titulo){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(titulo);
+        alert.setMessage(item.toString());
+        alert.show();
     }
 }

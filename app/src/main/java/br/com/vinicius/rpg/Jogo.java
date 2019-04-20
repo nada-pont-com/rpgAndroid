@@ -41,7 +41,12 @@ public class Jogo extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jogo);
 
+        if(Tempo.timer==null){
+            Tempo.setTimer(new Timer());
+        }
         timer = Tempo.timer;
+        System.out.println("TIMER ---------------------------------------------");
+        System.out.println(timer);
 
         perso = findViewById(R.id.perso);
         home =  findViewById(R.id.Inicio);
@@ -57,10 +62,10 @@ public class Jogo extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 timer.cancel();
+                Tempo.setTimer(null);
                 tempo.setONOFF(false);
                 autoSalve.setONOFF(false);
-                Sessao.setLoad(null);
-                Sessao.setDadosPerso(null);
+                Sessao.setNull();
                 Loads.comandos comandos = new Loads.comandos();
                 Bd banco = new Bd(Jogo.this);
                 SQLiteDatabase db = banco.getWritableDatabase();
@@ -132,6 +137,7 @@ public class Jogo extends AppCompatActivity{
             Loads.comandos comandos = new Loads.comandos();
             dados = comandos.buscaDadosPorLoadId(db,load.getId(),-1);
             Sessao.setDadosPerso(dados);
+            Sessao.HabilidadesPersoDados(db);
             db.close();
         }else{
             dados = Sessao.getDadosPerso();
@@ -163,13 +169,18 @@ public class Jogo extends AppCompatActivity{
         }else{
             tempo = Sessao.getTempo();
         }
+        System.out.println("+++++++++++++++++++++");
+        System.out.println(tempo.getONOFF());
+        System.out.println(autoSalve.getONOFF());
         if(!tempo.getONOFF()){
             timer.schedule(tempo,0,1000);
             tempo.setONOFF(true);
+            Sessao.setTempo(tempo);
         }
         if(!autoSalve.getONOFF()){
             timer.schedule(autoSalve,0,10000);
             autoSalve.setONOFF(true);
+            Sessao.setAutoSalve(autoSalve);
         }
     }
 

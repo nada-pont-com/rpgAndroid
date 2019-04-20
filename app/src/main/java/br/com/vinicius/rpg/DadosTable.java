@@ -1,6 +1,6 @@
 package br.com.vinicius.rpg;
 
-public class DadosTable {
+public class DadosTable { //Dados do jogador
 
     private int id;
     private String nome;
