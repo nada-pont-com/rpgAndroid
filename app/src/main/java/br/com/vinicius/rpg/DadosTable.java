@@ -57,7 +57,7 @@ public class DadosTable { //Dados do jogador
             this.level++;
             this.pontosExp = this.pontosExp+5;
             this.pontosHab = this.pontosHab+2;
-            this.vidaMax = this.vidaMax*2;
+            this.vidaMax = (int) (this.vidaMax*1.25);
             this.vida = this.vidaMax;
             this.atk++;
             this.def++;
@@ -75,8 +75,9 @@ public class DadosTable { //Dados do jogador
     }
 
     int getExpMax(){
-        double i = Math.pow(2,(level-1));//potencia 2^level
-        return (int) (100*i);
+        double i = Math.pow(2,(level-1));//potencia 2^(level-1)
+        double d = Math.pow(1.5,(level));//potencia 1.5^level
+        return (int) ((100*i)/d);
     }
 
     void setPontosExp(int pontosExp) {
@@ -141,6 +142,10 @@ public class DadosTable { //Dados do jogador
 
     int getVidaMax() {
         return (vidaMax+(vit*10));
+    }
+
+    int getVidaM(){
+        return this.vidaMax;
     }
 
     public void setMp(int mp) {

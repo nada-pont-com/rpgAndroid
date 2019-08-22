@@ -30,6 +30,32 @@ public class Jogo extends AppCompatActivity{
     private ListView dungeons;
     private LoadTable load;
     private Dungeons dungeonsClass = new Dungeons();
+    private boolean pause = false;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.out.println("test-jogo");
+        if(!pause){
+            timer.cancel();
+            Tempo.setTimer(null);
+            tempo.setONOFF(false);
+            autoSalve.setONOFF(false);
+            Sessao.setNull();
+            Loads.comandos comandos = new Loads.comandos();
+            Bd banco = new Bd(Jogo.this);
+            SQLiteDatabase db = banco.getWritableDatabase();
+            comandos.atulizarLoad(db,load);
+            db.close();
+            this.finishAffinity();
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        pause = false;
+    }
 
     @Override
     public void onBackPressed() {
@@ -79,6 +105,7 @@ public class Jogo extends AppCompatActivity{
         guild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pause = true;
                 Intent it = new Intent(Jogo.this,Guilda.class);
                 startActivity(it);
             }
@@ -119,6 +146,7 @@ public class Jogo extends AppCompatActivity{
         dungeons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                pause = true;
                 Intent it = new Intent(Jogo.this,Dungeon.class);
                 DungeonTable dungeonTable = dungeonsClass.listaDeDungeons.get(position);
                 Bundle bundle = new Bundle();
@@ -152,6 +180,7 @@ public class Jogo extends AppCompatActivity{
         perso.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                pause = true;
                 Intent it = new Intent(Jogo.this,PersonagemMenu.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("position",position);
@@ -184,6 +213,7 @@ public class Jogo extends AppCompatActivity{
         }
     }
 
+
     private void VisibleInvisible(int referencia){
         LinearLayout home = findViewById(R.id.Home);
         LinearLayout battle = findViewById(R.id.batalha);
@@ -206,6 +236,7 @@ public class Jogo extends AppCompatActivity{
                 break;
         }
     }
+
     private void VisibleInvisibleDungeon(int referencia){
         LinearLayout dungeon = findViewById(R.id.LayoutDungeon);
         LinearLayout dungeons = findViewById(R.id.LayoutDungeons);

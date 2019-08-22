@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class Guilda extends AppCompatActivity {
+public class Guilda extends AppCompatActivity { //TODO Fazer um explorador automático no jogo. Anda, encontra, luta e avança.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

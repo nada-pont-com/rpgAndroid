@@ -28,23 +28,29 @@
                 <Button
                     android:id="@+id/Voltar"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:text="@string/voltar" />
 
                 <ImageView
                     android:id="@+id/imageView4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:paddingBottom="2dp"
                     app:srcCompat="@android:color/background_dark" />
 
-                <ListView
-                    android:id="@+id/perso"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:id="@+id/perso"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout

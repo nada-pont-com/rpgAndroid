@@ -41,7 +41,7 @@ public class Continuar extends AppCompatActivity {
                     db.delete(Loads.load.TABLE_NAME,where,null);
                     Loads.comandos comandos = new Loads.comandos();
                     listaDeLoad = comandos.buscaLoad(db);
-                    //lista();
+                    lista();
                 }else{
                     Loads.comandos comandos = new Loads.comandos();
                     List<LoadTable> listaDeLoad = comandos.buscaLoad(db);

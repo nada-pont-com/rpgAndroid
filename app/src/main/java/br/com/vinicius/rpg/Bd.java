@@ -14,7 +14,7 @@ public class Bd extends SQLiteOpenHelper {
     private static final String SQL_DELETE_PERSO =
             "DROP TABLE IF EXISTS "+perso.TABLE_NAME;
     private static final String SQL_DELETE_ITENS =
-            "DROP TABLE IF EXISTS "+itens.TABLE_NAME;
+            "DROP TABLE IF EXISTS "+itensPerso.TABLE_NAME;
     private static final String SQL_DELETE_HABILIDADES =
             "DROP TABLE IF EXISTS "+habilidades.TABLE_NAME;
     private static final String SQL_DELETE_PERSO_TEM_HABILIDADES =
@@ -30,7 +30,7 @@ public class Bd extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_LOADS);
         db.execSQL(perso.SQL_CREATE_PERSO);
-        db.execSQL(itens.SQL_CREATE_ITENS);
+        db.execSQL(itensPerso.SQL_CREATE_ITENS_PERSO);
         db.execSQL(habilidades.SQL_CREATE_HABILIDADES);
         habilidades.Habilidades(db);
         db.execSQL(perso_tem_habilidades.SQL_CREATE_PERSO_TEM_HABILIDADES);

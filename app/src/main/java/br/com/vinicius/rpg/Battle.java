@@ -50,10 +50,35 @@ public class Battle extends AppCompatActivity {
     private List<String> listaAcoes = new ArrayList<>();
     private List<HabilidadesPersoTable> listaHabilidadesPerso;
     private int nocalte = 0;
+    private boolean pause = false;
 
     @Override
     public void onBackPressed() {
         // não chame o super desse método //Impede o botão de voltar do celular voltar para Activy anterior.
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        if(!pause){
+            Tempo.timer.cancel();
+            Tempo.setTimer(null);
+            Sessao.getTempo().setONOFF(false);
+            Sessao.getAutoSalve().setONOFF(false);
+            Loads.comandos comandos = new Loads.comandos();
+            Bd banco = new Bd(Battle.this);
+            SQLiteDatabase db = banco.getWritableDatabase();
+            comandos.atulizarLoad(db,Sessao.getLoad());
+            db.close();
+            Sessao.setNull();
+            this.finishAffinity();
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        pause = false;
     }
 
     @Override
@@ -163,16 +188,20 @@ public class Battle extends AppCompatActivity {
                         String acao = dado.getNome()+": Atacou e causou "+dano+" de dano";
                         listaAcoes.add(acao);
                         ListaAcoes();
-                        System.out.print(listaAcoes);
+                        System.out.println(listaAcoes);
                         int validador = monstro.getVida()-dano;
                         if (validador<=0){
                             PersoNunber = 0;
                             validador = 0;
                             monsterMorto(dado);
                         }else {
+                            System.out.println("-------------------Info------------------------");
+                            System.out.println(dados.size()+"<"+(PersoNunber+1));
+                            System.out.println(dados.size()<(PersoNunber+1));
                             if (dados.size()<(PersoNunber+1)){
                                 PersoNunber++;
                             }else{
+                                System.out.println("-----------Entrou----------------");
                                 PersoNunber = 0;
                                 monstroAtk();
                             }
@@ -236,7 +265,7 @@ public class Battle extends AppCompatActivity {
         };
     }
     private void monstroAtk(){
-        if(nocalte!=0){
+        if(nocalte==0){
             int personagens = dados.size()-1;
             if (personagens!=0){
                 personagens = random.nextInt(personagens);
@@ -262,6 +291,7 @@ public class Battle extends AppCompatActivity {
                 alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        pause = true;
                         Intent it = new Intent(Battle.this,Jogo.class);
                         startActivity(it);
                     }
@@ -331,6 +361,7 @@ public class Battle extends AppCompatActivity {
         alert.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                pause = true;
                 Intent it = new Intent(Battle.this, Dungeon.class);
                 startActivity(it);
             }
@@ -339,6 +370,7 @@ public class Battle extends AppCompatActivity {
         alert.setNeutralButton("Voltar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                pause = true;
                 Intent it = new Intent(Battle.this, Jogo.class);
                 it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(it);

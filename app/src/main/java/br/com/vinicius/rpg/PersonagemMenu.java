@@ -78,9 +78,31 @@ PersonagemMenu extends AppCompatActivity {
     private int pontos;
     private int pontosHab;
     private int positionHab;
+    private boolean pause = false;
 
 
-    public PersonagemMenu() {
+    @Override
+    protected void onPause(){
+        super.onPause();
+        if(!pause){
+            Tempo.timer.cancel();
+            Tempo.setTimer(null);
+            Sessao.getTempo().setONOFF(false);
+            Sessao.getAutoSalve().setONOFF(false);
+            Loads.comandos comandos = new Loads.comandos();
+            Bd banco = new Bd(PersonagemMenu.this);
+            SQLiteDatabase db = banco.getWritableDatabase();
+            comandos.atulizarLoad(db,Sessao.getLoad());
+            db.close();
+            Sessao.setNull();
+            this.finishAffinity();
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        pause = false;
     }
 
     @SuppressLint("SetTextI18n")
@@ -200,6 +222,7 @@ PersonagemMenu extends AppCompatActivity {
         Voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pause = true;
                 Intent it = new Intent(PersonagemMenu.this,Jogo.class);
                 it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(it);
@@ -231,6 +254,7 @@ PersonagemMenu extends AppCompatActivity {
                 SQLiteDatabase db = Banco.getWritableDatabase();
                 comandos.atulizarDados(db,dado,dado.getLoadId(),dado.getId());
 
+                pause = true;
                 Intent it = new Intent(PersonagemMenu.this,Jogo.class);
                 it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(it);

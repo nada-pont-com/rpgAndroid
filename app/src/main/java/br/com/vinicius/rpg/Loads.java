@@ -12,7 +12,7 @@ import java.util.List;
 //Todos os comando do banco de dados e tabelas
 
 final class Loads {
-    private Loads(){}//TODO criar um tabela para os itens equipados no personagem!
+    private Loads(){}//TODO criar um tabela para os itens equipados no personagem! Tabela multiplas para os itens.
 
     static class load implements BaseColumns{
         static final String TABLE_NAME = "load";
@@ -76,11 +76,12 @@ final class Loads {
             }
         }
     }
-    static class itens implements BaseColumns{
-        static final String TABLE_NAME = "itens";
-        static final String SQL_CREATE_ITENS = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INT UNSIGNED NOT NULL ," +
+    static class itensPerso implements BaseColumns{
+        static final String TABLE_NAME = "itens_perso";
+        static final String SQL_CREATE_ITENS_PERSO = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INT UNSIGNED NOT NULL ," +
                 "perso_id INT UNSIGNED NOT NULL," +
                 "quantidade INT UNSIGNED NOT NULL," +
+                "DescIten_id INT UNSIGNED NOT NULL," +
                 "FOREIGN KEY (perso_id) " +
                 "REFERENCES perso (id)," +
                 "PRIMARY KEY (id,perso_id)" +
@@ -439,7 +440,7 @@ final class Loads {
             values.put("rank",dados.getRank());
             values.put("rankExp",dados.getRankExp());
             values.put("vida",dados.getVida());
-            values.put("vidaMax",dados.getVidaMax());
+            values.put("vidaMax",dados.getVidaM());
             values.put("mp",dados.getMp());
             values.put("mpMax",dados.getMpMax());
             values.put("atk",dados.getAtk());

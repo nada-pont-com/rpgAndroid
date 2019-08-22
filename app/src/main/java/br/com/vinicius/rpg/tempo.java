@@ -10,7 +10,7 @@ public class Tempo {
 
     static Timer timer;
 
-    public static void setTimer(Timer timer) {
+    static void setTimer(Timer timer) {
         Tempo.timer = timer;
     }
 

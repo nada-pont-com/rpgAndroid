@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,10 +32,37 @@ public class Dungeon extends AppCompatActivity {
     private String NomeDungeon;
     private String rank;
     private List<DadosTable> dados;
+    private int passos = 0;
+    private boolean pause = false;
 
     @Override
     public void onBackPressed() {
         // não chame o super desse método //Impede o botão de voltar do celular voltar para Activy anterior.
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        if(!pause) {
+            System.out.println("----------------------------dungeon-------------------");
+            System.out.println(pause);
+            Tempo.timer.cancel();
+            Tempo.setTimer(null);
+            Sessao.getTempo().setONOFF(false);
+            Sessao.getAutoSalve().setONOFF(false);
+            Loads.comandos comandos = new Loads.comandos();
+            Bd banco = new Bd(Dungeon.this);
+            SQLiteDatabase db = banco.getWritableDatabase();
+            comandos.atulizarLoad(db, Sessao.getLoad());
+            db.close();
+            Sessao.setNull();
+            this.finishAffinity();
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        pause = false;
     }
 
     @SuppressLint("SetTextI18n")
@@ -76,6 +104,8 @@ public class Dungeon extends AppCompatActivity {
             public void onClick(View v) {
                 andar++;
                 Andar.setText("Andar: "+andar);
+                desce.setClickable(false);
+                desce.setAlpha(0.2f);
             }
         });
         Andar.setText("Andar: "+andar);
@@ -95,15 +125,17 @@ public class Dungeon extends AppCompatActivity {
     }
 
     private void desceCaminho(){
-        switch (gerador.nextInt(25)){
-            case 0:
-                sobe.setClickable(true);
-                sobe.setAlpha(1);
-                break;
+        passos++;
+        if ((gerador.nextInt(25) == 0) || (passos==100)){
+            visualizar("Você avista uma descida a frente!","Aviso!");
+            desce.setClickable(true);
+            desce.setAlpha(1);
+            boss();
         }
     }
 
     private void caminhos(){
+        passos++;
         switch (gerador.nextInt(6)){
             case 0://Frente
                 frente.setClickable(true);
@@ -184,6 +216,12 @@ public class Dungeon extends AppCompatActivity {
             alert.setNeutralButton("Lutar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    pause = true;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     Intent it = new Intent(Dungeon.this, Battle.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("nomeDungeon", NomeDungeon);
@@ -217,6 +255,11 @@ public class Dungeon extends AppCompatActivity {
         }
     }
 
+    private void boss(){
+        if ((gerador.nextInt(99)>49)  || (passos==100)) {
+            visualizar("Você concontrou um boss","Atenção");
+        }
+    }
     private void visualizar(Object item,String titulo){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(titulo);
