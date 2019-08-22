@@ -87,7 +87,10 @@ final class Loads {
                 "PRIMARY KEY (id,perso_id)" +
                 ")";
         static final List<ItensTable> SQL_LIST_ITENS = new ArrayList<ItensTable>();
+
+        //TODO criar uma classe separada, e comparar os valores quando o jogador ganhar os itens presentes nos monstros e nas quests(fazer uma lista lá nas quests)
         static void Itens(){
+
             String[] nome = {"Gosma","Osso","pocaoHP","pocaoMP","Couro","","","","","","",""};
             String[] estatistica = {"","","HP:100","MP:10","","","","","","","",""};
             ItensTable itensTable;
@@ -102,7 +105,6 @@ final class Loads {
                 }
             }
         }
-
     }
     static class habilidades implements BaseColumns{
         static final String TABLE_NAME = "habilidades";
@@ -157,7 +159,7 @@ final class Loads {
                 "FOREIGN KEY (habilidades_id) " +
                 "REFERENCES habilidades (id)," +
                 "PRIMARY KEY (habilidades_id,perso_id))";
-        static final List<HabilidadesTable> SQL_LIST_HABILIDADES = new ArrayList<HabilidadesTable>();
+        //static final List<HabilidadesTable> SQL_LIST_HABILIDADES = new ArrayList<HabilidadesTable>();
     }
     static class comandos{
 
@@ -201,18 +203,17 @@ final class Loads {
             return newRowId != -1;
         }
 
-        boolean InserirHabilidadePerso(int habilidadeId,int perso_id,SQLiteDatabase db){
+        void InserirHabilidadePerso(int habilidadeId, int perso_id, SQLiteDatabase db){
 
             ContentValues values = new ContentValues();
             values.put("habilidades_id",habilidadeId);
             values.put("perso_id",perso_id);
             values.put("level",0);
-            long newRowId = db.insert(perso_tem_habilidades.TABLE_NAME, null, values);
-            return newRowId != -1;
+            db.insert(perso_tem_habilidades.TABLE_NAME, null, values);
         }
 
         List<LoadTable> buscaLoad(SQLiteDatabase db){
-            String colunas[] = {"id",
+            String[] colunas = {"id",
                     "nome",
                     "tempo"};
             Cursor cursor = db.query(
@@ -466,6 +467,22 @@ final class Loads {
         void deletaLoad(SQLiteDatabase db,LoadTable load){
             String where = "id="+load.getId();
             db.delete(Loads.load.TABLE_NAME,where,null);
+        }
+
+        boolean deletaSave(SQLiteDatabase db,long id){
+
+            String where2 = "load_id="+id;
+            String where = "id="+id;
+            List<DadosTable> listaDeDados= buscaDadosPorLoadId(db,(int)id,-1);
+            for (int i = 0;i<listaDeDados.size();i++){
+                int idPerso = listaDeDados.get(i).getId();
+                String comando = "perso_id="+idPerso;
+                db.delete(Loads.itensPerso.TABLE_NAME,comando,null);
+                db.delete(Loads.perso_tem_habilidades.TABLE_NAME,comando,null);
+            }
+            db.delete(Loads.perso.TABLE_NAME,where2,null);
+            db.delete(Loads.load.TABLE_NAME,where,null);
+            return false;
         }
     }
 

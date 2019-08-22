@@ -305,20 +305,30 @@ public class NovoJogo extends AppCompatActivity {
         }else if(nomeRepetido){
             visualizar("Nome de salve Repetido","Alerta");
         }else{
-            loadId = cont+1;
+            int cont2 = 1;
+            if(loads.size()==2){
+                cont2 = 6;
+                for (int i=0;i<loads.size();i++){
+                    cont2 = cont2-loads.get(i).getId();
+                }
+            }else if(loads.get(0).getId()==1){
+                cont2++;
+            }
+            loadId = cont2;
             return true;
         }
         return false;
     }
 
-    //1 para tornar layoutJogo2 invisivel, layout invisivel e layoutJogo visivel// 2 para tornar layoutJogo invisivel e layoutJogo2 visivel
-    //3 para tornar layoutJogo2 invisivel, layout visivel e layoutJogo invisivel
+    //1 para tornar layoutJogo2 invisivel, layout invisivel e layoutJogo visivel
+    //2 para tornar layoutJogo  invisivel e layoutJogo2 visivel
+    //3 para tornar layoutJogo ninvisivel e layout visivel
     private void VisibleInviseble2(int UmOuDois){
         LinearLayout layout = (LinearLayout) findViewById(R.id.layoutJogo);
         LinearLayout layout2 = (LinearLayout) findViewById(R.id.layoutJogo2);
         LinearLayout layout3 = (LinearLayout) findViewById(R.id.layout);
         switch (UmOuDois){
-            case 1:
+            case 1://TODO adicionar lista com os status base dos personagens easy
                 layout.setVisibility(View.VISIBLE);
                 layout2.setVisibility(View.INVISIBLE);
                 layout3.setVisibility(View.INVISIBLE);
@@ -330,7 +340,6 @@ public class NovoJogo extends AppCompatActivity {
 
             case 3:
                 layout.setVisibility(View.INVISIBLE);
-                layout2.setVisibility(View.INVISIBLE);
                 layout3.setVisibility(View.VISIBLE);
         }
     }

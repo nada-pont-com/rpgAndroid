@@ -34,12 +34,10 @@ public class Continuar extends AppCompatActivity {
                 Bd banco = new Bd(Continuar.this);
                 SQLiteDatabase db = banco.getReadableDatabase();
                 if(Deletar){
-                    String where2 = "load_id="+id;
-                    String where = "id="+id;
-                    System.out.println(id);
-                    db.delete(Loads.perso.TABLE_NAME,where2,null);
-                    db.delete(Loads.load.TABLE_NAME,where,null);
                     Loads.comandos comandos = new Loads.comandos();
+                    comandos.deletaSave(db,id);
+                    System.out.println(id);
+
                     listaDeLoad = comandos.buscaLoad(db);
                     lista();
                 }else{

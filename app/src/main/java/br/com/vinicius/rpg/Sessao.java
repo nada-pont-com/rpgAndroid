@@ -65,7 +65,7 @@ public class Sessao {
         ListaDeHabilidadesDosPersonagens = listaDeHabilidadesDosPersonagens;
     }
 
-    public static List<List<HabilidadesTable>> getListaDeHabilidadesDosPersonagens() {
+    static List<List<HabilidadesTable>> getListaDeHabilidadesDosPersonagens() {
         return ListaDeHabilidadesDosPersonagens;
     }
 

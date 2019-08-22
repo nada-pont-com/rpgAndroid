@@ -229,7 +229,7 @@ public class DadosTable { //Dados do jogador
             case "B":
                 return (this.rank.equals("S")) || (this.rank.equals("A")) || (this.rank.equals("B"));
             case "C":
-                return (!this.rank.equals("G")) && (!this.rank.equals("F")) && (!this.rank.equals("E")) && (!this.rank.equals("E"));
+                return (!this.rank.equals("G")) && (!this.rank.equals("F")) && (!this.rank.equals("E")) && (!this.rank.equals("D"));
             case "D":
                 return (!this.rank.equals("G")) && (!this.rank.equals("F")) && (!this.rank.equals("E"));
             case "E":
