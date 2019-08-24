@@ -9,22 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".inicio.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NovoJogo" />
-        <activity android:name=".Jogo" />
-        <activity android:name=".Continuar" />
+        <activity android:name=".jogo.inicio.NovoJogo" />
+        <activity android:name=".jogo.inicio.Jogo" />
+        <activity android:name=".jogo.inicio.Continuar" />
         <activity
-            android:name=".Dungeon"
+            android:name=".jogo.dungeon.Dungeon"
             android:launchMode="singleTask" />
-        <activity android:name=".Battle" />
-        <activity android:name=".PersonagemMenu" />
-        <activity android:name=".Guilda"></activity>
+        <activity android:name=".jogo.batalha.Battle" />
+        <activity android:name=".jogo.inicio.PersonagemMenu" />
+        <activity android:name=".jogo.guilda.Guilda"></activity>
     </application>
 
 </manifest>
