@@ -26,7 +26,7 @@ import br.com.vinicius.rpg.jogo.informacoes.Tempo;
 import br.com.vinicius.rpg.adapters.AdapterBattlePersoPersonalizado;
 import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
-import br.com.vinicius.rpg.dados.MonstroUni;
+import br.com.vinicius.rpg.objetosTabelas.MonstroUni;
 import br.com.vinicius.rpg.objetosTabelas.DadosTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesTable;

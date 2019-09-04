@@ -20,7 +20,7 @@ import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.jogo.informacoes.Tempo;
 import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
-import br.com.vinicius.rpg.dados.MonstroUni;
+import br.com.vinicius.rpg.objetosTabelas.MonstroUni;
 import br.com.vinicius.rpg.jogo.batalha.Battle;
 import br.com.vinicius.rpg.jogo.monstros.Monstros;
 import br.com.vinicius.rpg.objetosTabelas.DadosTable;
@@ -37,6 +37,7 @@ public class Dungeon extends AppCompatActivity {
     private Random gerador = new Random();
     private TextView Andar;
     private TextView MonstroRank;
+    private MonstroUni monstro;
     private int andar;
     private int andarMax;
     private String NomeDungeon;
@@ -218,28 +219,14 @@ public class Dungeon extends AppCompatActivity {
     private void monstro(){
         int rand = gerador.nextInt(100);
         if (rand<10){
-            final Monstros monstros = Monstros.G;
-            final MonstroUni monstro =  monstros.monstro(andar,andarMax);
+            invocaMonstro(1);
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Aviso");
             alert.setMessage("Você encontrou um "+monstro.getNome());
             alert.setNeutralButton("Lutar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    pause = true;
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Intent it = new Intent(Dungeon.this, Battle.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("nomeDungeon", NomeDungeon);
-                    bundle.putString("rank", rank);
-                    bundle.putString("andares",andar+"-"+andarMax);
-                    bundle.putSerializable("monstro", monstro);
-                    it.putExtras(bundle);
-                    startActivity(it);
+                    batalha();
                 }
             }).setNegativeButton("Fugir", new DialogInterface.OnClickListener() {
                 @Override
@@ -257,6 +244,7 @@ public class Dungeon extends AppCompatActivity {
                         visualizar("Conseguiu fugir","Alerta");
                     }else{
                         visualizar("Falha ao tentar fugir fugir","Alerta");
+                        batalha();
                     }
                 }
             });
@@ -265,9 +253,42 @@ public class Dungeon extends AppCompatActivity {
         }
     }
 
+    private void invocaMonstro(int tipo) {
+        Monstros monstros = Monstros.G;//TODO tornar a chamada para todos os ranks não somente "G"
+        monstro =  monstros.monstro(andar,andarMax,tipo);
+    }
+
+    private void batalha(){
+        pause = true;
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Intent it = new Intent(Dungeon.this, Battle.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("nomeDungeon", NomeDungeon);
+        bundle.putString("rank", rank);
+        bundle.putString("andares",andar+"-"+andarMax);
+        bundle.putSerializable("monstro", monstro);
+        it.putExtras(bundle);
+        startActivity(it);
+    }
+
     private void boss(){
-        if ((gerador.nextInt(99)>49)  || (passos==100)) {
-            visualizar("Você concontrou um boss","Atenção");
+        if ((gerador.nextInt(99)>49)  || (passos==100)) {//TODO colocar o boss no final do nome do monstro e alterar vida. adicionar jogo casual ou hard(3 vidas)
+            invocaMonstro(3);
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Aviso");
+            alert.setMessage("Você encontrou um Boss: "+monstro.getNome());
+            alert.setNeutralButton("Lutar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    batalha();
+                }
+            });
+            alert.setCancelable(false);
+            alert.show();
         }
     }
     private void visualizar(Object item,String titulo){

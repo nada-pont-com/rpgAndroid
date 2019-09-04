@@ -11,6 +11,8 @@ import br.com.vinicius.rpg.jogo.inicio.Jogo;
 
 public class Guilda extends AppCompatActivity { //TODO Fazer um explorador automático no jogo. Anda, encontra, luta e avança.
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

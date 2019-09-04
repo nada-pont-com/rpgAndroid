@@ -8,8 +8,8 @@ import br.com.vinicius.rpg.objetosTabelas.DungeonTable;
 
 public class Dungeons {
     private String[] nome = {"Floresta Norte"};
-    private String[] andares = {"1-25"};
-    private String[] rank = {"G"};
+    private String[] andares = {"1-25",""};
+    private String[] rank = {"G","F","E","D","C","B","A","S"};
     public List<DungeonTable> listaDeDungeons;
 
     public void list(){

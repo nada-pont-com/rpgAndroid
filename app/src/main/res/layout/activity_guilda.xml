@@ -29,18 +29,38 @@
                 android:visibility="invisible">
 
                 <ListView
-                    android:id="@+id/missoes"
+                    android:id="@+id/MissoesList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:layout_editor_absoluteY="452dp" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/LayoutInicial"
+                android:id="@+id/grupo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:visibility="invisible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/Bauconista"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Bauconista" />
+
+                    <Button
+                        android:id="@+id/Missoes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Missoes" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -85,25 +105,10 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <ListView
+                    android:id="@+id/Persos"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/Bauconista"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Bauconista" />
-
-                    <Button
-                        android:id="@+id/button3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Missoes" />
-                </LinearLayout>
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
@@ -111,7 +116,8 @@
                 android:id="@+id/LayoutBaucao"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"

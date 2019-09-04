@@ -82,15 +82,20 @@ public final class Loads {
             }
         }
     }
+    public static class misseosLoad implements BaseColumns{
+        public static final String TABLE_NAME = "missoes_load";
+        public static final String SQL_CREATE_MISSOES_LOAD = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INT UNSIGNED NOT NULL," +
+                "load_id INT UNSIGNED NOT NULL," +
+                "tipo TINYINT UNSIGNED NOT NULL," +
+                "quant INT UNSIGNED NOT NULL)";
+    }
     public static class itensPerso implements BaseColumns{
         public static final String TABLE_NAME = "itens_perso";
-        public static final String SQL_CREATE_ITENS_PERSO = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INT UNSIGNED NOT NULL ," +
-                "perso_id INT UNSIGNED NOT NULL," +
+        public static final String SQL_CREATE_ITENS_PERSO = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (nome VARCHAR(40) NOT NULL ," +
+                "load_id INT UNSIGNED NOT NULL," +
                 "quantidade INT UNSIGNED NOT NULL," +
-                "DescIten_id INT UNSIGNED NOT NULL," +
-                "FOREIGN KEY (perso_id) " +
-                "REFERENCES perso (id)," +
-                "PRIMARY KEY (id,perso_id)" +
+                "FOREIGN KEY (load_id) " +
+                "PRIMARY KEY (id,load_id)" +
                 ")";
         public static final List<ItensTable> SQL_LIST_ITENS = new ArrayList<ItensTable>();
 

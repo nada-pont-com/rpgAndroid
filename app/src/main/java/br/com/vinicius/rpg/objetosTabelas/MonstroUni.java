@@ -1,4 +1,4 @@
-package br.com.vinicius.rpg.dados;
+package br.com.vinicius.rpg.objetosTabelas;
 
 import java.io.Serializable;
 
