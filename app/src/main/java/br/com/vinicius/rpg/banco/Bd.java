@@ -34,6 +34,8 @@ public class Bd extends SQLiteOpenHelper {
         db.execSQL(habilidades.SQL_CREATE_HABILIDADES);
         habilidades.Habilidades(db);
         db.execSQL(perso_tem_habilidades.SQL_CREATE_PERSO_TEM_HABILIDADES);
+        db.execSQL(misseosLoad.SQL_CREATE_MISSOES_LOAD);
+        db.execSQL(dungions_tem_loads.SQL_CREATE_DUNGEONS_TEM_LOADS);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ITENS);

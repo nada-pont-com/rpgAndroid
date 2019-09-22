@@ -92,9 +92,11 @@ public final class Loads {
     public static class itensPerso implements BaseColumns{
         public static final String TABLE_NAME = "itens_perso";
         public static final String SQL_CREATE_ITENS_PERSO = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (nome VARCHAR(40) NOT NULL ," +
+                "id INT UNSIGNED NOT NULL," +
                 "load_id INT UNSIGNED NOT NULL," +
                 "quantidade INT UNSIGNED NOT NULL," +
-                "FOREIGN KEY (load_id) " +
+                "FOREIGN KEY (load_id)" +
+                "REFERENCES load (id), " +
                 "PRIMARY KEY (id,load_id)" +
                 ")";
         public static final List<ItensTable> SQL_LIST_ITENS = new ArrayList<ItensTable>();
@@ -158,6 +160,7 @@ public final class Loads {
             //db.close();
         }
     }
+
     public static class perso_tem_habilidades implements BaseColumns{
 
         public static final String TABLE_NAME = "perso_tem_habilidades";//não é necessario salvar as habilidades.
@@ -172,6 +175,20 @@ public final class Loads {
                 "PRIMARY KEY (habilidades_id,perso_id))";
         //static final List<HabilidadesTable> SQL_LIST_HABILIDADES = new ArrayList<HabilidadesTable>();
     }
+
+    public static class dungions_tem_loads implements BaseColumns{
+        public static final String TABLE_NAME = "dungeons_tem_loads";
+        public static final String SQL_CREATE_DUNGEONS_TEM_LOADS = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INT UNSIGNED NOT NULL," +
+                "nome VARCHAR(20) NOT NULL," +
+                "andares VARCHAR(7) NOT NULL," +
+                "load_id INT UNSIGNED NOT NULL," +
+                "rank CHAR(1) NOT NULL," +
+                "FOREIGN KEY (load_id)" +
+                "REFERENCES load (id)," +
+                "PRIMARY KEY (id)" +
+                ")";
+    }
+
     public static class comandos{
 
         public boolean Inserir(LoadTable load, Context context){
