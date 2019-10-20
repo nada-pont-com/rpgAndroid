@@ -1,12 +1,13 @@
 package br.com.vinicius.rpg.inicio;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import br.com.vinicius.rpg.R;
+import br.com.vinicius.rpg.banco.Loads;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Loads.itensPerso.Itens();
+        Loads.itensPerso.Itens();
         //System.exit(-1);
         Button NovoJogo = findViewById(R.id.NovoJogo);
         Button Continuar = findViewById(R.id.Continuar);

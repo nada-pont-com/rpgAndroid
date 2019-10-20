@@ -39,6 +39,8 @@ public class Jogo extends AppCompatActivity{
     private Button voltar2;
     private Button dungeon;
     private Button guild;
+    private Button procurar;
+    private Button excluir;
     private Timer timer;
     private Tempo.tempo tempo;
     private Tempo.autoSalve autoSalve;
@@ -98,6 +100,9 @@ public class Jogo extends AppCompatActivity{
         voltar = findViewById(R.id.Voltar);
         voltar2 = findViewById(R.id.Voltar2);
         dungeons = findViewById(R.id.dungeons);
+        procurar = findViewById(R.id.procurarD);
+        excluir = findViewById(R.id.excluirD);
+
 
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,7 +168,7 @@ public class Jogo extends AppCompatActivity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 pause = true;
                 Intent it = new Intent(Jogo.this, Dungeon.class);
-                DungeonTable dungeonTable = dungeonsClass.listaDeDungeons.get(position);
+                DungeonTable dungeonTable = dungeonsClass.getListaDeDungeons().get(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("nomeDungeon", dungeonTable.getNome());
                 bundle.putString("rank",dungeonTable.getRank());
@@ -185,10 +190,14 @@ public class Jogo extends AppCompatActivity{
         }else{
             dados = Sessao.getDadosPerso();
         }
-        dungeonsClass.list();
-        AdapterDungeonsPersonalizado adpter = new AdapterDungeonsPersonalizado(dungeonsClass.listaDeDungeons,this);
-        dungeons.setAdapter(adpter);
-
+        procurar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dungeonsClass.list();
+                atualizaDungeons();
+            }
+        });
+        atualizaDungeons();
         System.out.println("Dados Jogo: "+dados);
         AdapterPersoPersonalizado adapter = new AdapterPersoPersonalizado(dados,this);
         perso.setAdapter(adapter);
@@ -228,6 +237,10 @@ public class Jogo extends AppCompatActivity{
         }
     }
 
+    private void atualizaDungeons(){
+        AdapterDungeonsPersonalizado adpter = new AdapterDungeonsPersonalizado(dungeonsClass.getListaDeDungeons(),this);
+        dungeons.setAdapter(adpter);
+    }
 
     private void VisibleInvisible(int referencia){
         LinearLayout home = findViewById(R.id.Home);
