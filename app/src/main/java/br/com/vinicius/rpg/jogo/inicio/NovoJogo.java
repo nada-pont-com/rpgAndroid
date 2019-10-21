@@ -320,8 +320,10 @@ public class NovoJogo extends AppCompatActivity {
                 for (int i=0;i<loads.size();i++){
                     cont2 = cont2-loads.get(i).getId();
                 }
-            }else if(loads.get(0).getId()==1){
-                cont2++;
+            }else if(loads.size()!=0){
+                if(loads.get(0).getId()==1){
+                    cont2++;
+                }
             }
             loadId = cont2;
             return true;

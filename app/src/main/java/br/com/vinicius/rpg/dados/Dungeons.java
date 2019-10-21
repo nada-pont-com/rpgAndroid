@@ -41,4 +41,3 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
         }while (vali==1);
     }
 }
-
