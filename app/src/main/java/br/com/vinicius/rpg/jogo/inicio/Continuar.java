@@ -51,7 +51,7 @@ public class Continuar extends AppCompatActivity {
                 }else{
                     Loads.comandos comandos = new Loads.comandos();
                     List<LoadTable> listaDeLoad = comandos.buscaLoad(db);
-                    Sessao.setHabilidades(comandos.buscaHabilidades(db));
+                    Sessao.setHabilidades();
                     db.close();
                     System.out.println(position);
                     Sessao.setLoad(listaDeLoad.get(position));

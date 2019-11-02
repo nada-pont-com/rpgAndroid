@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.com.vinicius.rpg.objetosTabelas.DadosTable;
+import br.com.vinicius.rpg.objetosTabelas.DungeonTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesTable;
 import br.com.vinicius.rpg.objetosTabelas.ItensTable;
@@ -119,60 +120,17 @@ public final class Loads {
             }
         }
     }
-    public static class habilidades implements BaseColumns{
-        public static final String TABLE_NAME = "habilidades";
-        public static final String SQL_CREATE_HABILIDADES= "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (" +
-                "id INT UNSIGNED NOT NULL," +
-                "nome VARCHAR(100) NOT NULL," +
-                "tipo CHAR(1) NOT NULL," +
-                "valor INT UNSIGNED NOT NULL," +
-                "nunberAtk INT UNSIGNED NOT NULL," +
-                "aumento INT UNSIGNED NOT NULL," +
-                "nocalte INT UNSIGNED NOT NULL," +
-                "extra VARCHAR(20)," +
-                "pontos INT UNSIGNED NOT NULL," +
-                "descricao VARCHAR(255) NOT NULL," +
-                "PRIMARY KEY (id))";
-        public static void Habilidades(SQLiteDatabase db){
-            String[] nome = {"Ataque Forte","Nocaltear","Consentrasão","Ataque UP"};
-            String[] tipo = {"1",           "1",        "2",           "2"};
-            String[] valor = {"50",          "25",       "10",          "10"};
-            String[] nunberAtk = {"1",      "1",        "0",           "0"};
-            String[] aumento = {"3",        "1",        "2",           "2"};
-            String[] nocalte = {"5",        "55",       "0",           "0"};
-            String[] extra = {"",           "",         "def,agi,defM","atk"};
-            String[] pontos = {"1",         "5",        "12",          "8"};
-            String[] descricao = {"Um ataque forte","Um ataque que tem chance de nocaltear","Aumanta a concentração do personagem","Aumanta o ataque do personagem no proximo ataque"};
-            ContentValues values = new ContentValues();
-            for(int i = 0;i<nome.length;i++){
-                values.put("id",i+1);
-                values.put("nome",nome[i]);
-                values.put("tipo",tipo[i]);
-                values.put("valor",Integer.parseInt(valor[i]));
-                values.put("nunberAtk",Integer.parseInt(nunberAtk[i]));
-                values.put("aumento",Integer.parseInt(aumento[i]));
-                values.put("nocalte",Integer.parseInt(nocalte[i]));
-                values.put("extra",extra[i]);
-                values.put("pontos",Integer.parseInt(pontos[i]));
-                values.put("descricao",descricao[i]);
-                db.insert(Loads.habilidades.TABLE_NAME, null, values);
-            }
-            //db.close();
-        }
-    }
 
     public static class perso_tem_habilidades implements BaseColumns{
 
         public static final String TABLE_NAME = "perso_tem_habilidades";//não é necessario salvar as habilidades.
         public static final String SQL_CREATE_PERSO_TEM_HABILIDADES= "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (" +
-                "habilidades_id INT UNSIGNED NOT NULL," +
+                "id INT UNSIGNED NOT NULL," +
                 "perso_id INT UNSIGNED NOT NULL," +
                 "level INT UNSIGNED  NOT NULL," +
                 "FOREIGN KEY (perso_id) " +
                 "REFERENCES perso (id)," +
-                "FOREIGN KEY (habilidades_id) " +
-                "REFERENCES habilidades (id)," +
-                "PRIMARY KEY (habilidades_id,perso_id))";
+                "PRIMARY KEY (id,perso_id))";
         //static final List<HabilidadesTable> SQL_LIST_HABILIDADES = new ArrayList<HabilidadesTable>();
     }
 
@@ -231,13 +189,27 @@ public final class Loads {
             return newRowId != -1;
         }
 
-        public void InserirHabilidadePerso(int habilidadeId, int perso_id, SQLiteDatabase db){
+        public void InserirHabilidadePerso(int id, int perso_id, SQLiteDatabase db){
 
             ContentValues values = new ContentValues();
-            values.put("habilidades_id",habilidadeId);
+            values.put("id",id);
             values.put("perso_id",perso_id);
             values.put("level",0);
             db.insert(perso_tem_habilidades.TABLE_NAME, null, values);
+        }
+
+        public boolean InserirDungeon(int loadId,int id,DungeonTable dungeon, Context context){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("load_id", loadId);
+            values.put("id", id);
+            values.put("nome", dungeon.getNome());
+            values.put("andares", dungeon.getAndares());
+            values.put("rank", dungeon.getRank());
+            long newRowId = db.insert(Loads.dungions_tem_loads.TABLE_NAME, null, values);
+            banco.close();
+            return newRowId != -1;
         }
 
         public List<LoadTable> buscaLoad(SQLiteDatabase db){
@@ -397,13 +369,13 @@ public final class Loads {
             return listaDeDados;
         }
 
-        public List<HabilidadesPersoTable> buscaHabilidadesDoPerso(SQLiteDatabase db, int idHab, int perso_id){
-            String[] colunas = {"habilidades_id","perso_id","level"};
+        public List<HabilidadesPersoTable> buscaHabilidadesDoPerso(SQLiteDatabase db, int id, int perso_id){
+            String[] colunas = {"id","perso_id","level"};
             String selection = "perso_id=?";
             String[] arg;
-            if(idHab>0){
-                selection ="habilidades_id=? AND "+selection;
-                arg = new String[]{idHab + "", perso_id + ""};
+            if(id>0){
+                selection ="id=? AND "+selection;
+                arg = new String[]{id + "", perso_id + ""};
             }else{
                 arg = new String[]{perso_id + ""};
             }
@@ -415,7 +387,7 @@ public final class Loads {
                     arg,
                     null,
                     null,
-                    "habilidades_id DESC");
+                    "id DESC");
             List<HabilidadesPersoTable> listHabilidades = new ArrayList<>();
             HabilidadesPersoTable habilidades;
             while (cursor.moveToNext()){
@@ -428,6 +400,33 @@ public final class Loads {
             }
             return listHabilidades;
         }
+
+        public List<DungeonTable> buscaDungeons(SQLiteDatabase db,int load_id){
+            String[] colunas = {"andares",
+                    "nome",
+                    "rank"};
+            String selection = "load_id="+load_id;
+            Cursor cursor = db.query(
+                    Loads.load.TABLE_NAME,
+                    colunas,
+                    selection,
+                    null,
+                    null,
+                    null,
+                    null);
+            List<DungeonTable> listaDeDungeons = new ArrayList<>();
+            DungeonTable dungeons;
+            while (cursor.moveToNext()){
+                dungeons = new DungeonTable();
+                dungeons.setAndares(cursor.getString(0));
+                dungeons.setNome(cursor.getString(1));
+                dungeons.setRank(cursor.getString(2));
+                listaDeDungeons.add(dungeons);
+            }
+            return listaDeDungeons;
+        }
+
+        /*
         public List<HabilidadesTable> buscaHabilidades(SQLiteDatabase db){
             //String[] colunas = {"id","nome","tipo","valor","nuberAtk","aumento","nocalte","extra","pontos","descricao"};
             String[] colunas = {"*"};
@@ -457,7 +456,7 @@ public final class Loads {
             }
             return listHabilidades;
         }
-
+        */
         public void atulizarDados(SQLiteDatabase db,DadosTable dados,int loadId,int id){
             String where = "load_id="+loadId+" AND id="+id;
             ContentValues values = new ContentValues();

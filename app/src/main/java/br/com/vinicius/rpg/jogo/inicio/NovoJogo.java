@@ -188,7 +188,7 @@ public class NovoJogo extends AppCompatActivity {
                                 dado.add(dados);
                                 Sessao.setDadosPerso(dado);
                                 Sessao.setLoad(load);
-                                Sessao.setHabilidades(comandos.buscaHabilidades(db));
+                                Sessao.setHabilidades();
                                 Intent it =  new Intent(NovoJogo.this, Jogo.class);
                                 startActivity(it);
                             }else{

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.vinicius.rpg.banco.Loads;
+import br.com.vinicius.rpg.dados.Habilidades;
 import br.com.vinicius.rpg.objetosTabelas.DadosTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesTable;
@@ -55,8 +56,9 @@ public class Sessao {
         return habilidades;
     }
 
-    public static void setHabilidades(List<HabilidadesTable> habilidades) {
-        Sessao.habilidades = habilidades;
+    public static void setHabilidades() {
+        Habilidades habilidades = new Habilidades();
+        Sessao.habilidades = habilidades.getHabilidades();
     }
 
     public static void setNull(){
@@ -78,26 +80,18 @@ public class Sessao {
     public static void HabilidadesPersoDados(SQLiteDatabase db){
         Loads.comandos comandos = new Loads.comandos();
         List<List<HabilidadesTable>> ListaDeHabilidadesDosPersonagens = new ArrayList<>();
-        if(dadosPerso!=null && habilidades!=null){
+        if(dadosPerso!=null){
             for (int i3 = 0;i3<dadosPerso.size();i3++){
                 List<HabilidadesPersoTable> HabilidadesPerso = comandos.buscaHabilidadesDoPerso(db,0,dadosPerso.get(i3).getId());
                 List<HabilidadesTable> habiPerso = new ArrayList<>();
                 for (int i = 0;i<HabilidadesPerso.size();i++){
-                    for (int i2 = 0;i2<habilidades.size();i2++){
-                        if(habilidades.get(i2).getId()==HabilidadesPerso.get(i).getHabilidadesId()){
-                            habiPerso.add(habilidades.get(i2));
-                            break;
-                        }
-                    }
+                    habiPerso.add(habilidades.get(habiPerso.get(i).getId()));
                 }
                 System.out.println(dadosPerso.get(i3).getId());
                 ListaDeHabilidadesDosPersonagens.add(habiPerso);
             }
-        }else if(dadosPerso==null){
-            setDadosPerso(comandos.buscaDados(db));
-            HabilidadesPersoDados(db);
         }else{
-            setHabilidades(comandos.buscaHabilidades(db));
+            setDadosPerso(comandos.buscaDados(db));
             HabilidadesPersoDados(db);
         }
         setListaDeHabilidadesDosPersonagens(ListaDeHabilidadesDosPersonagens);

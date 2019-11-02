@@ -15,8 +15,6 @@ public class Bd extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS "+perso.TABLE_NAME;
     private static final String SQL_DELETE_ITENS =
             "DROP TABLE IF EXISTS "+itensPerso.TABLE_NAME;
-    private static final String SQL_DELETE_HABILIDADES =
-            "DROP TABLE IF EXISTS "+habilidades.TABLE_NAME;
     private static final String SQL_DELETE_PERSO_TEM_HABILIDADES =
             "DROP TABLE IF EXISTS "+perso_tem_habilidades.TABLE_NAME;
 
@@ -31,8 +29,6 @@ public class Bd extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_LOADS);
         db.execSQL(perso.SQL_CREATE_PERSO);
         db.execSQL(itensPerso.SQL_CREATE_ITENS_PERSO);
-        db.execSQL(habilidades.SQL_CREATE_HABILIDADES);
-        habilidades.Habilidades(db);
         db.execSQL(perso_tem_habilidades.SQL_CREATE_PERSO_TEM_HABILIDADES);
         db.execSQL(misseosLoad.SQL_CREATE_MISSOES_LOAD);
         db.execSQL(dungions_tem_loads.SQL_CREATE_DUNGEONS_TEM_LOADS);
@@ -40,7 +36,6 @@ public class Bd extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ITENS);
         db.execSQL(SQL_DELETE_PERSO_TEM_HABILIDADES);
-        db.execSQL(SQL_DELETE_HABILIDADES);
         db.execSQL(SQL_DELETE_PERSO);
         db.execSQL(SQL_DELETE_LOADS);
         onCreate(db);

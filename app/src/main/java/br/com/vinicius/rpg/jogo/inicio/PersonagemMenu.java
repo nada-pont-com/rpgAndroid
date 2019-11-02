@@ -20,6 +20,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.vinicius.rpg.R;
+import br.com.vinicius.rpg.dados.Habilidades;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.jogo.informacoes.Tempo;
 import br.com.vinicius.rpg.banco.Bd;
@@ -171,11 +172,9 @@ PersonagemMenu extends AppCompatActivity {
         hab = findViewById(R.id.Habilidades);
         mag = findViewById(R.id.Magias);
 
-        Loads.comandos comandos = new Loads.comandos();
-        Bd banco = new Bd(this);
-        SQLiteDatabase db = banco.getWritableDatabase();
-        habilidadeList = comandos.buscaHabilidades(db);
-        db.close();
+        Habilidades habilidades = new Habilidades();
+        habilidadeList = habilidades.getHabilidades();
+
         NomeHab = findViewById(R.id.NomeHab);
         DescricaoHab = findViewById(R.id.DescricaoHab);
         AprenderHab = findViewById(R.id.AprenderHab);

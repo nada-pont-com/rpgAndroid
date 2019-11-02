@@ -186,6 +186,7 @@ public class Jogo extends AppCompatActivity{
             dados = comandos.buscaDadosPorLoadId(db,load.getId(),-1);
             Sessao.setDadosPerso(dados);
             Sessao.HabilidadesPersoDados(db);
+            dungeonsClass.atuDungeons(db,comandos);
             db.close();
         }else{
             dados = Sessao.getDadosPerso();
