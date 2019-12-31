@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import br.com.vinicius.rpg.R;
 import br.com.vinicius.rpg.banco.Loads;
+import br.com.vinicius.rpg.dados.Itens;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,7 +16,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Loads.itensPerso.Itens();
+        Itens itens = new Itens();
+        itens.geraList();
         //System.exit(-1);
         Button NovoJogo = findViewById(R.id.NovoJogo);
         Button Continuar = findViewById(R.id.Continuar);

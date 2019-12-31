@@ -1,5 +1,6 @@
 package br.com.vinicius.rpg.jogo.inicio;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -83,7 +84,6 @@ public class Jogo extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jogo);
-
         if(Tempo.timer==null){
             Tempo.setTimer(new Timer());
         }
@@ -194,7 +194,7 @@ public class Jogo extends AppCompatActivity{
         procurar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dungeonsClass.list();
+                dungeonsClass.list(Jogo.this);
                 atualizaDungeons();
             }
         });

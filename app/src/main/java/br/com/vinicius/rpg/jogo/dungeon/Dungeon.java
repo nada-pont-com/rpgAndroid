@@ -20,6 +20,7 @@ import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.jogo.informacoes.Tempo;
 import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
+import br.com.vinicius.rpg.jogo.inicio.Jogo;
 import br.com.vinicius.rpg.objetosTabelas.MonstroUni;
 import br.com.vinicius.rpg.jogo.batalha.Battle;
 import br.com.vinicius.rpg.jogo.monstros.Monstros;
@@ -110,6 +111,13 @@ public class Dungeon extends AppCompatActivity {
         frente.setOnClickListener(caminho());
         esquerda.setOnClickListener(caminho());
         direita.setOnClickListener(caminho());
+        sobe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(Dungeon.this, Jogo.class);
+                startActivity(it);
+            }
+        });
         desce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

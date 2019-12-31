@@ -15,6 +15,7 @@ import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesTable;
 import br.com.vinicius.rpg.objetosTabelas.ItensTable;
 import br.com.vinicius.rpg.objetosTabelas.LoadTable;
+import br.com.vinicius.rpg.objetosTabelas.MissoesTable;
 
 //Todos os comando do banco de dados e tabelas
 
@@ -87,38 +88,23 @@ public final class Loads {
         public static final String TABLE_NAME = "missoes_load";
         public static final String SQL_CREATE_MISSOES_LOAD = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INT UNSIGNED NOT NULL," +
                 "load_id INT UNSIGNED NOT NULL," +
+                "itens_id INT UNSIGNED," +
+                "monstro_id INT UNSIGNED," +
+                "monstro_rank CHAR," +
+                "dungeon_nome CHAR," +
                 "tipo TINYINT UNSIGNED NOT NULL," +
-                "quant INT UNSIGNED NOT NULL)";
+                "quant INT UNSIGNED)";
     }
     public static class itensPerso implements BaseColumns{
         public static final String TABLE_NAME = "itens_perso";
         public static final String SQL_CREATE_ITENS_PERSO = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (nome VARCHAR(40) NOT NULL ," +
-                "id INT UNSIGNED NOT NULL," +
+                "id INT NOT NULL PRIMARY KEY," + // Id referente a posição do item na lista;
                 "load_id INT UNSIGNED NOT NULL," +
                 "quantidade INT UNSIGNED NOT NULL," +
                 "FOREIGN KEY (load_id)" +
                 "REFERENCES load (id), " +
-                "PRIMARY KEY (id,load_id)" +
+                "PRIMARY KEY (load_id)" +
                 ")";
-        public static final List<ItensTable> SQL_LIST_ITENS = new ArrayList<ItensTable>();
-
-        //TODO criar uma classe separada, e comparar os valores quando o jogador ganhar os itens presentes nos monstros e nas quests(fazer uma lista lá nas quests)
-        public static void Itens(){
-
-            String[] nome = {"Gosma","Osso","pocaoHP","pocaoMP","Couro","","","","","","",""};
-            String[] estatistica = {"","","HP:100","MP:10","","","","","","","",""};
-            ItensTable itensTable;
-            for (int i = 0;i<nome.length;i++){
-                if(!nome[i].equals("")){
-                    itensTable = new ItensTable();
-                    itensTable.setNome(nome[i]);
-                    if(!estatistica[i].equals("")){
-                        itensTable.Estatisticas(estatistica[i]);
-                    }
-                    SQL_LIST_ITENS.add(itensTable);
-                }
-            }
-        }
     }
 
     public static class perso_tem_habilidades implements BaseColumns{
@@ -136,14 +122,13 @@ public final class Loads {
 
     public static class dungions_tem_loads implements BaseColumns{
         public static final String TABLE_NAME = "dungeons_tem_loads";
-        public static final String SQL_CREATE_DUNGEONS_TEM_LOADS = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INT UNSIGNED NOT NULL," +
+        public static final String SQL_CREATE_DUNGEONS_TEM_LOADS = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                 "nome VARCHAR(20) NOT NULL," +
                 "andares VARCHAR(7) NOT NULL," +
                 "load_id INT UNSIGNED NOT NULL," +
                 "rank CHAR(1) NOT NULL," +
                 "FOREIGN KEY (load_id)" +
-                "REFERENCES load (id)," +
-                "PRIMARY KEY (id)" +
+                "REFERENCES load (id)" +
                 ")";
     }
 
@@ -190,7 +175,6 @@ public final class Loads {
         }
 
         public void InserirHabilidadePerso(int id, int perso_id, SQLiteDatabase db){
-
             ContentValues values = new ContentValues();
             values.put("id",id);
             values.put("perso_id",perso_id);
@@ -198,18 +182,27 @@ public final class Loads {
             db.insert(perso_tem_habilidades.TABLE_NAME, null, values);
         }
 
-        public boolean InserirDungeon(int loadId,int id,DungeonTable dungeon, Context context){
+        public boolean InserirDungeon(int loadId,DungeonTable dungeon, Context context){
             Bd banco = new Bd(context);
             SQLiteDatabase db = banco.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put("load_id", loadId);
-            values.put("id", id);
             values.put("nome", dungeon.getNome());
             values.put("andares", dungeon.getAndares());
             values.put("rank", dungeon.getRank());
             long newRowId = db.insert(Loads.dungions_tem_loads.TABLE_NAME, null, values);
             banco.close();
             return newRowId != -1;
+        }
+
+        public boolean InserirItensPerso(SQLiteDatabase db, int load_id,int id,ItensTable itensTable){
+            ContentValues values = new ContentValues();
+            values.put("id",id);
+            values.put("load_id",id);
+            values.put("nome",itensTable.getNome());
+            values.put("quantidade",itensTable.getQuantidade());
+            long newRowId = db.insert(Loads.itensPerso.TABLE_NAME, null, values);
+            return newRowId != 1;
         }
 
         public List<LoadTable> buscaLoad(SQLiteDatabase db){
@@ -407,7 +400,7 @@ public final class Loads {
                     "rank"};
             String selection = "load_id="+load_id;
             Cursor cursor = db.query(
-                    Loads.load.TABLE_NAME,
+                    Loads.dungions_tem_loads.TABLE_NAME,
                     colunas,
                     selection,
                     null,
@@ -426,6 +419,28 @@ public final class Loads {
             return listaDeDungeons;
         }
 
+        public List<MissoesTable> buscaMissoes(SQLiteDatabase db,int load_id){
+            String selection = "load_id="+load_id;
+            Cursor cursor = db.query(
+                    Loads.misseosLoad.TABLE_NAME,
+                    null,
+                    selection,
+                    null,
+                    null,
+                    null,
+                    null);
+            List<MissoesTable> listaDeMissoes = new ArrayList<>();
+            MissoesTable missao;
+            while (cursor.moveToNext()){
+                missao = new MissoesTable();
+                missao.setTipo(cursor.getInt(6));
+                missao.setQuant(cursor.getInt(7));
+                missao.setDados(cursor.getInt(2),cursor.getInt(3),cursor.getString(4),cursor.getString(5));
+                listaDeMissoes.add(missao);
+            }
+
+            return listaDeMissoes;
+        }
         /*
         public List<HabilidadesTable> buscaHabilidades(SQLiteDatabase db){
             //String[] colunas = {"id","nome","tipo","valor","nuberAtk","aumento","nocalte","extra","pontos","descricao"};

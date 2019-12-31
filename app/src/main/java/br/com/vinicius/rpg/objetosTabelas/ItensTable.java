@@ -1,8 +1,9 @@
-
 package br.com.vinicius.rpg.objetosTabelas;
 
 public class ItensTable {
     private String nome;
+    private String raridade;
+    private int quantidade;
     private String[] referencia;
     private int[] valor;
 
@@ -12,6 +13,22 @@ public class ItensTable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public void setRaridade(String raridade){
+        this.raridade = raridade;
+    }
+
+    public String getRaridade() {
+        return raridade;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 
     public String[] getReferencia() {

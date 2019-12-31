@@ -15,7 +15,7 @@ import br.com.vinicius.rpg.objetosTabelas.DungeonTable;
 public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstros aos nomes; até 3 para o rank G, aumentar de acordo com o rank;
     private String[] nome = {};
     private String[] nomeRG = {"Floresta Norte","Scarlet","cubias","Dragonideos","Planice"};
-    private String[] nomeRF = {"vaca"};//R = Rank; F = F;
+    private String[] nomeRF = {"Floresta Sombria"};//R = Rank; F = F;
     private String[] andares = {"25","30","40","45","55","60","80","70","90","100"};
     private String[] rank = {"G","F","E","D","C","B","A","S"};
     private List<DungeonTable> listaDeDungeons = new ArrayList<>();
@@ -30,7 +30,7 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
         listaDeDungeons = comandos.buscaDungeons(db,Sessao.getLoad().getId());
     }
 
-    public void list(){
+    public void list(Context context){
         Random random = new Random();
         int andar = random.nextInt(andares.length);
         int vali;
@@ -40,22 +40,22 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
             if(Sessao.getDadosPerso().get(0).validadorRank(rank[randRank])) {
                 geraNome(rank[randRank]);
                 int name = random.nextInt(nome.length);
-                DungeonTable dungeon;
-                    dungeon = new DungeonTable();
-                    dungeon.setNome(nome[name]);
-                    dungeon.setAndares("1-" + andares[andar]);
-                    dungeon.setRank(rank[randRank]);
-                    listaDeDungeons.add(dungeon);
-                    salvaDungeon(dungeon);
+                DungeonTable dungeon = new DungeonTable();
+                dungeon.setNome(nome[name]);
+                dungeon.setAndares("1-" + andares[andar]);
+                dungeon.setRank(rank[randRank]);
+                listaDeDungeons.add(dungeon);
+                salvaDungeon(dungeon,context);
             }else{
                 vali = 1;
             }
         }while (vali==1);
     }
 
-    private void salvaDungeon(DungeonTable dungeon) {
+    private void salvaDungeon(DungeonTable dungeon,Context context) {
         int loadId = Sessao.getLoad().getId();
-        int id;
+        Loads.comandos comando = new Loads.comandos();
+        comando.InserirDungeon(loadId,dungeon,context);
     }
 
     public void geraNome(String rank){
