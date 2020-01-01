@@ -114,6 +114,7 @@ public class Dungeon extends AppCompatActivity {
         sobe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pause = true;
                 Intent it = new Intent(Dungeon.this, Jogo.class);
                 startActivity(it);
             }

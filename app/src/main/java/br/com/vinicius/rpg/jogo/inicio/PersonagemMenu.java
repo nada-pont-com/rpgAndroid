@@ -172,8 +172,9 @@ PersonagemMenu extends AppCompatActivity {
         hab = findViewById(R.id.Habilidades);
         mag = findViewById(R.id.Magias);
 
-        Habilidades habilidades = new Habilidades();
-        habilidadeList = habilidades.getHabilidades();
+
+        habilidadeList = Sessao.getHabilidades();
+        System.out.println(habilidadeList.get(0).getNome());
 
         NomeHab = findViewById(R.id.NomeHab);
         DescricaoHab = findViewById(R.id.DescricaoHab);

@@ -1,12 +1,13 @@
 package br.com.vinicius.rpg.dados;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesTable;
 
 public class Habilidades {
-    private List<HabilidadesTable> habilidades;
+    private List<HabilidadesTable> habilidades = new ArrayList<>();
     public void Habilidades() {
         String[] nome = {"Ataque Forte", "Nocaltear", "Consentrasão", "Ataque UP"};
         String[] tipo = {"1", "1", "2", "2"};
@@ -30,6 +31,7 @@ public class Habilidades {
             habilidade.setExtra(extra[i]);
             habilidade.setPontos(Integer.parseInt(pontos[i]));
             habilidade.descricao(descricao[i]);
+            System.out.println("habilidade "+i);
             habilidades.add(habilidade);
         }
     }

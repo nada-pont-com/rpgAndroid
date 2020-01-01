@@ -58,6 +58,7 @@ public class Sessao {
 
     public static void setHabilidades() {
         Habilidades habilidades = new Habilidades();
+        habilidades.Habilidades();
         Sessao.habilidades = habilidades.getHabilidades();
     }
 

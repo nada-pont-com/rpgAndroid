@@ -11,6 +11,7 @@ public class MissoesTable {
     private int quant;
     private int dificuldade;
     private String rank;
+    private int exp;
 
     public int getTipo() {
         return tipo;
@@ -95,6 +96,7 @@ public class MissoesTable {
                 item = itens.getListaDeItens().get(itemId);
                 break;
             case 2:
+                String nome = "";
                 switch (rank){
                     case "S":
                         break;
@@ -111,29 +113,14 @@ public class MissoesTable {
                     case "F":
                         break;
                     case "G":
-                        RankG.values()[monstroId].getNome();
+                        nome = RankG.values()[monstroId].getNome();
                         break;
                 }
+                monstro.setRank(rankMostro);
+                monstro.setNome(nome);
                 break;
             case 3:
                 break;
         }
     }
 }
-
-/*
-missoes - tipo - encontrar, matar, completar dungeon
-        -         "itens","monst", "o que o nome diz"
-        - quant- nun-NAN  , nun  , NAN
-        - exp  - a*       , b*   , c*
-        - dif  - a*       , b*	 , c*
-        - rank - a1*	  , b1*  , c1*
-
-    a = "quant*raridade"
-	b = "quant*dificuldade"
-	c = "andares*(RankMonsters*nivelsMonsters)"
-	a1= "rank do Lugar que se encontra"
-	b1= "rank do munstro/lugar"
-	c1= "rank da dungeon"
-
-*/

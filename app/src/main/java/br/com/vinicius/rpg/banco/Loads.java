@@ -98,12 +98,12 @@ public final class Loads {
     public static class itensPerso implements BaseColumns{
         public static final String TABLE_NAME = "itens_perso";
         public static final String SQL_CREATE_ITENS_PERSO = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (nome VARCHAR(40) NOT NULL ," +
-                "id INT NOT NULL PRIMARY KEY," + // Id referente a posição do item na lista;
+                "id INT NOT NULL," + // Id referente a posição do item na lista;
                 "load_id INT UNSIGNED NOT NULL," +
                 "quantidade INT UNSIGNED NOT NULL," +
                 "FOREIGN KEY (load_id)" +
                 "REFERENCES load (id), " +
-                "PRIMARY KEY (load_id)" +
+                "PRIMARY KEY (id,load_id)" +
                 ")";
     }
 

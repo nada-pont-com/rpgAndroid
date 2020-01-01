@@ -32,6 +32,10 @@ public class MonstroUni implements Serializable {
         return rank;
     }
 
+    public void setRank(String rank){
+        this.rank = rank;
+    }
+
     public void setVida(int vida) {
         this.vida = vida;
     }
