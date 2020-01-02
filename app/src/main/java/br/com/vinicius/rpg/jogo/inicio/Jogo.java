@@ -1,6 +1,5 @@
 package br.com.vinicius.rpg.jogo.inicio;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -194,7 +193,7 @@ public class Jogo extends AppCompatActivity{
         procurar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dungeonsClass.list(Jogo.this);
+                dungeonsClass.list(Jogo.this,false);
                 atualizaDungeons();
             }
         });

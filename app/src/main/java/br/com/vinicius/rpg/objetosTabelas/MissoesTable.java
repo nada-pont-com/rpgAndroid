@@ -25,12 +25,24 @@ public class MissoesTable {
         return item;
     }
 
+    public void setItem(ItensTable item) {
+        this.item = item;
+    }
+
     public MonstroUni getMonstro() {
         return monstro;
     }
 
+    public void setMonstro(MonstroUni monstro) {
+        this.monstro = monstro;
+    }
+
     public DungeonTable getDungeon() {
         return dungeon;
+    }
+
+    public void setDungeon(DungeonTable dungeon) {
+        this.dungeon = dungeon;
     }
 
     public int getQuant() {

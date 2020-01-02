@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.objetosTabelas.DungeonTable;
@@ -30,7 +28,7 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
         listaDeDungeons = comandos.buscaDungeons(db,Sessao.getLoad().getId());
     }
 
-    public void list(Context context){
+    public void list(Context context,boolean missao){
         Random random = new Random();
         int andar = random.nextInt(andares.length);
         int vali;
@@ -45,7 +43,9 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
                 dungeon.setAndares("1-" + andares[andar]);
                 dungeon.setRank(rank[randRank]);
                 listaDeDungeons.add(dungeon);
-                salvaDungeon(dungeon,context);
+                if(!missao){
+                    salvaDungeon(dungeon,context);
+                }
             }else{
                 vali = 1;
             }
@@ -59,7 +59,7 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
     }
 
     public void geraNome(String rank){
-        int soma = 1;
+        int soma;
         List<String[]> listaDeNomes = new ArrayList<>();
         listaDeNomes.add(nomeRG);
         switch (rank){
