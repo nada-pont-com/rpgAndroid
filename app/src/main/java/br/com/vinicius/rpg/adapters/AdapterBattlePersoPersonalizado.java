@@ -12,18 +12,18 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import br.com.vinicius.rpg.objetosTabelas.DadosTable;
+import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.R;
 
 
 // Adapter da lista de status da batalha
 public class AdapterBattlePersoPersonalizado extends BaseAdapter {
-    private final List<DadosTable> dados;
+    private final List<PersoTable> dados;
     private final Activity activity;
     private int selected = -1;
     private int estado = -1;
 
-    public AdapterBattlePersoPersonalizado(List<DadosTable> dados, Activity activity) {
+    public AdapterBattlePersoPersonalizado(List<PersoTable> dados, Activity activity) {
         this.dados = dados;
         this.activity = activity;
     }

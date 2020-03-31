@@ -21,13 +21,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.vinicius.rpg.dados.Estatus;
+import br.com.vinicius.rpg.dados.ClassesPerso;
 import br.com.vinicius.rpg.R;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.inicio.MainActivity;
-import br.com.vinicius.rpg.objetosTabelas.DadosTable;
+import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.LoadTable;
 
 public class NovoJogo extends AppCompatActivity {
@@ -46,7 +46,7 @@ public class NovoJogo extends AppCompatActivity {
     private RadioButton classExpl;
     private EditText nomePerso;
     private EditText Nome;
-    private Estatus classe;
+    private ClassesPerso classe;
     private int loadId;
     private Bd banco;
 
@@ -141,9 +141,9 @@ public class NovoJogo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(classExpl.isChecked()){
-                    classe = Estatus.explorador;
+                    classe = ClassesPerso.explorador;
                 }else if(classGue.isChecked()){
-                    classe = Estatus.guerreiro;
+                    classe = ClassesPerso.guerreiro;
                 }else{
                     visualizar("Selecione um!","Alerta!");
                     return;
@@ -168,7 +168,7 @@ public class NovoJogo extends AppCompatActivity {
                     boolean valor = comandos.Inserir(load,getBaseContext());
                     if(valor){
                         if((loadId!=0) || (classe!=null)){
-                            DadosTable dados = classe.getStatus();
+                            PersoTable dados = classe.getStatus();
                             dados.setId(0);
                             dados.setLoadId(loadId);
                             dados.setLevel(1);
@@ -184,7 +184,7 @@ public class NovoJogo extends AppCompatActivity {
                             dados.setPontosExp(0);
                             boolean retorno = comandos.InserirDados(dados,db);
                             if(retorno){
-                                List<DadosTable> dado = new ArrayList<DadosTable>();
+                                List<PersoTable> dado = new ArrayList<PersoTable>();
                                 dado.add(dados);
                                 Sessao.setDadosPerso(dado);
                                 Sessao.setLoad(load);

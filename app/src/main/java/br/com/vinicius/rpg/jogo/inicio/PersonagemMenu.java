@@ -20,12 +20,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.vinicius.rpg.R;
-import br.com.vinicius.rpg.dados.Habilidades;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.jogo.informacoes.Tempo;
 import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
-import br.com.vinicius.rpg.objetosTabelas.DadosTable;
+import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesTable;
 
@@ -83,7 +82,7 @@ PersonagemMenu extends AppCompatActivity {
     private TextView DescricaoHab;
     private Button AprenderHab;
 
-    private DadosTable dado;
+    private PersoTable dado;
     private List<HabilidadesTable> habilidadeList;
     private int pontos;
     private int pontosHab;

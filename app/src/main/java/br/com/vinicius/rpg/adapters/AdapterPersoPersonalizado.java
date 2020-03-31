@@ -10,15 +10,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import br.com.vinicius.rpg.objetosTabelas.DadosTable;
+import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.R;
 
 //Adapter da lista de status do personagem
 public class AdapterPersoPersonalizado extends BaseAdapter {
-    private final List<DadosTable> dados;
+    private final List<PersoTable> dados;
     private final Activity activity;
 
-    public AdapterPersoPersonalizado(List<DadosTable> dados, Activity activity) {
+    public AdapterPersoPersonalizado(List<PersoTable> dados, Activity activity) {
         this.dados = dados;
         this.activity = activity;
     }
@@ -42,7 +42,7 @@ public class AdapterPersoPersonalizado extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = activity.getLayoutInflater().inflate(R.layout.perso_layout,parent,false);
-        DadosTable dado = dados.get(position);
+        PersoTable dado = dados.get(position);
 
         TextView Nome = view.findViewById(R.id.Nome);
         TextView Exp = view.findViewById(R.id.ExperienciaNunber);

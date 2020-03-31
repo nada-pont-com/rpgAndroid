@@ -18,7 +18,10 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
     private String[] rank = {"G","F","E","D","C","B","A","S"};
     private List<DungeonTable> listaDeDungeons = new ArrayList<>();
 
-
+    public String[] getNome(String rank){
+        geraNome(rank);
+        return nome;
+    }
 
     public List<DungeonTable> getListaDeDungeons() {
         return listaDeDungeons;
@@ -58,10 +61,7 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
         comando.InserirDungeon(loadId,dungeon,context);
     }
 
-    public void geraNome(String rank){
-        int soma;
-        List<String[]> listaDeNomes = new ArrayList<>();
-        listaDeNomes.add(nomeRG);
+    private void geraNome(String rank){
         switch (rank){
             case "S":
                 break;
@@ -76,24 +76,11 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
             case "E":
                 break;
             case "F":
-                soma = nomeRG.length + nomeRF.length;
-                nome = new String[soma];
-                listaDeNomes.add(nomeRF);
+                nome = nomeRF;
                 break;
             case "G":
-                nome = new String[nomeRG.length];
+                nome = nomeRG;
                 break;
-        }
-        somaNomes(listaDeNomes);
-    }
-
-    private void somaNomes(List<String[]> listaDeNomes) {
-        int cont = 0;
-        for (int i = 0;i<listaDeNomes.size();i++){
-            for (int i2 = 0;i2<listaDeNomes.get(i).length;i2++){
-                nome[cont] = listaDeNomes.get(i)[i2];
-                cont++;
-            }
         }
     }
 }

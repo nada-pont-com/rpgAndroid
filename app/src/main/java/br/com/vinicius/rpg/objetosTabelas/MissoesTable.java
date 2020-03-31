@@ -1,16 +1,16 @@
 package br.com.vinicius.rpg.objetosTabelas;
 
 import br.com.vinicius.rpg.dados.Itens;
-import br.com.vinicius.rpg.jogo.monstros.RankG;
+import br.com.vinicius.rpg.jogo.monstros.MonstrosRG;
 
 public class MissoesTable {
-    private int tipo;
-    private ItensTable item;
-    private MonstroUni monstro;
-    private DungeonTable dungeon;
-    private int quant;
+    private int tipo; //salv
+    private ItensTable item; //id
+    private MonstroUni monstro; //id
+    private DungeonTable dungeon; //nome
+    private int quant;//salv
     private int dificuldade;
-    private String rank;
+    private String rank;//salv
     private int exp;
 
     public int getTipo() {
@@ -101,7 +101,7 @@ public class MissoesTable {
         return 0;
     }
 
-    public void setDados(int itemId,int monstroId,String rankMostro,String dungeonNome){
+    public void setDados(int itemId,int monstroId,String rank,String dungeonNome){
         switch (tipo){
             case 1:
                 Itens itens = new Itens();
@@ -125,13 +125,15 @@ public class MissoesTable {
                     case "F":
                         break;
                     case "G":
-                        nome = RankG.values()[monstroId].getNome();
+                        nome = MonstrosRG.values()[monstroId].getNome();
                         break;
                 }
-                monstro.setRank(rankMostro);
+                monstro.setRank(rank);
                 monstro.setNome(nome);
                 break;
             case 3:
+                dungeon.setNome(dungeonNome);
+                dungeon.setRank(rank);
                 break;
         }
     }

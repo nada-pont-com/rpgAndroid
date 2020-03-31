@@ -25,7 +25,7 @@ import br.com.vinicius.rpg.adapters.AdapterPersoPersonalizado;
 import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.inicio.MainActivity;
-import br.com.vinicius.rpg.objetosTabelas.DadosTable;
+import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.DungeonTable;
 import br.com.vinicius.rpg.objetosTabelas.LoadTable;
 
@@ -176,7 +176,7 @@ public class Jogo extends AppCompatActivity{
                 startActivity(it);
             }
         });
-        List<DadosTable> dados;
+        List<PersoTable> dados;
         load = Sessao.getLoad();
         if(Sessao.getDadosPerso()==null){
             Bd banco = new Bd(this);

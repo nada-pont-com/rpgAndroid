@@ -11,7 +11,7 @@ import java.util.List;
 
 import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
-import br.com.vinicius.rpg.objetosTabelas.DadosTable;
+import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.LoadTable;
 import br.com.vinicius.rpg.R;
 
@@ -47,8 +47,8 @@ public class AdapterSalvesPersonalizado extends BaseAdapter {
         LoadTable load = listaDeLoad.get(position);
         Bd banco = new Bd(activity.getBaseContext());
         SQLiteDatabase db = banco.getWritableDatabase();
-        List<DadosTable> dados = new Loads.comandos().buscaDadosPorLoadId(db,load.getId(),0);
-        DadosTable dado = dados.get(0);
+        List<PersoTable> dados = new Loads.comandos().buscaDadosPorLoadId(db,load.getId(),0);
+        PersoTable dado = dados.get(0);
         TextView nome = (TextView)
                 view.findViewById(R.id.Nome);
         TextView tempo = (TextView)

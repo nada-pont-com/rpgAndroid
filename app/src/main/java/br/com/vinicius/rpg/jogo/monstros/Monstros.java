@@ -5,7 +5,6 @@ import java.util.Random;
 import br.com.vinicius.rpg.objetosTabelas.MonstroUni;
 import br.com.vinicius.rpg.dados.MonstrosDados;
 import br.com.vinicius.rpg.jogo.interfaces.MonstrosInterface;
-import br.com.vinicius.rpg.jogo.interfaces.MostrosInterface2;
 
 public enum Monstros implements MonstrosInterface {
     S{
@@ -78,7 +77,7 @@ public enum Monstros implements MonstrosInterface {
             int mp = monstroDados.getMp()[7];
             int teste = random.nextInt(g.length);
             double mod = monstroDados.mod();
-            RankG G = g[teste];
+            MonstrosRG G = g[teste];
             double mod2 = G.getMod();
             status = (int) (status*mod);
             if (status==0){
@@ -111,6 +110,6 @@ public enum Monstros implements MonstrosInterface {
             int ex = G.getExp()*level;
             return new MonstroUni(rank,vida,status,level,G.getNome(),mp,ex,G.getItem());
         }
-        RankG[] g = RankG.values();
+        MonstrosRG[] g = MonstrosRG.values();
     }
 }

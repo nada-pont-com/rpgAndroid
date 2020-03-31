@@ -24,7 +24,7 @@ import br.com.vinicius.rpg.jogo.inicio.Jogo;
 import br.com.vinicius.rpg.objetosTabelas.MonstroUni;
 import br.com.vinicius.rpg.jogo.batalha.Battle;
 import br.com.vinicius.rpg.jogo.monstros.Monstros;
-import br.com.vinicius.rpg.objetosTabelas.DadosTable;
+import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 
 //Dungeon
 public class Dungeon extends AppCompatActivity {
@@ -43,7 +43,7 @@ public class Dungeon extends AppCompatActivity {
     private int andarMax;
     private String NomeDungeon;
     private String rank;
-    private List<DadosTable> dados;
+    private List<PersoTable> dados;
     private int passos = 0;
     private boolean pause = false;
 
@@ -211,7 +211,7 @@ public class Dungeon extends AppCompatActivity {
 
     private void RegHp(){
         for (int i =0;i<dados.size();i++){
-            DadosTable dado = dados.get(i);
+            PersoTable dado = dados.get(i);
             int vida = dado.getVida();
             if (vida<dado.getVidaMax()){
                 int reg = dado.getVidaMax()/100;

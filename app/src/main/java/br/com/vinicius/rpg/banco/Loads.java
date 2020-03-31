@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.vinicius.rpg.objetosTabelas.DadosTable;
+import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.DungeonTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
-import br.com.vinicius.rpg.objetosTabelas.HabilidadesTable;
 import br.com.vinicius.rpg.objetosTabelas.ItensTable;
 import br.com.vinicius.rpg.objetosTabelas.LoadTable;
 import br.com.vinicius.rpg.objetosTabelas.MissoesTable;
@@ -56,9 +55,9 @@ public final class Loads {
                 "REFERENCES load (id)," +
                 "PRIMARY KEY (load_id,id)" +
                 ")";
-        public static List<DadosTable> SQL_LIST_DADOS = null;
+        public static List<PersoTable> SQL_LIST_DADOS = null;
         public static void dados(){
-            SQL_LIST_DADOS = new ArrayList<DadosTable>();
+            SQL_LIST_DADOS = new ArrayList<PersoTable>();
             String classe[] = {"Guerreiro","Explorador"};
             String atk[] =  {"10"       ,"7"};
             String def[] =  {"10"       ,"6"};
@@ -68,9 +67,9 @@ public final class Loads {
             String vit[] =  {"0"        ,"0"};
             String intl[] = {"0"        ,"0"};
 
-            DadosTable dado;
+            PersoTable dado;
             for (int i=0;i<classe.length;i++){
-                dado = new DadosTable();
+                dado = new PersoTable();
                 dado.setClasse(classe[i]);
                 dado.setAgi(Integer.parseInt(agi[i]));
                 dado.setAtk(Integer.parseInt(atk[i]));
@@ -90,14 +89,14 @@ public final class Loads {
                 "load_id INT UNSIGNED NOT NULL," +
                 "itens_id INT UNSIGNED," +
                 "monstro_id INT UNSIGNED," +
-                "monstro_rank CHAR," +
+                "rank CHAR," +
                 "dungeon_nome CHAR," +
                 "tipo TINYINT UNSIGNED NOT NULL," +
                 "quant INT UNSIGNED)";
     }
     public static class itensPerso implements BaseColumns{
         public static final String TABLE_NAME = "itens_perso";
-        public static final String SQL_CREATE_ITENS_PERSO = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (nome VARCHAR(40) NOT NULL ," +
+        public static final String SQL_CREATE_ITENS_PERSO = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (" +
                 "id INT NOT NULL," + // Id referente a posição do item na lista;
                 "load_id INT UNSIGNED NOT NULL," +
                 "quantidade INT UNSIGNED NOT NULL," +
@@ -106,7 +105,6 @@ public final class Loads {
                 "PRIMARY KEY (id,load_id)" +
                 ")";
     }
-
     public static class perso_tem_habilidades implements BaseColumns{
 
         public static final String TABLE_NAME = "perso_tem_habilidades";//não é necessario salvar as habilidades.
@@ -119,7 +117,6 @@ public final class Loads {
                 "PRIMARY KEY (id,perso_id))";
         //static final List<HabilidadesTable> SQL_LIST_HABILIDADES = new ArrayList<HabilidadesTable>();
     }
-
     public static class dungions_tem_loads implements BaseColumns{
         public static final String TABLE_NAME = "dungeons_tem_loads";
         public static final String SQL_CREATE_DUNGEONS_TEM_LOADS = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
@@ -146,7 +143,7 @@ public final class Loads {
             return newRowId != -1;
         }
 
-        public boolean InserirDados(DadosTable dados,SQLiteDatabase db) {
+        public boolean InserirDados(PersoTable dados, SQLiteDatabase db) {
             ContentValues values = new ContentValues();
             values.put("id", dados.getId());
             values.put("nome",dados.getNome());
@@ -182,7 +179,7 @@ public final class Loads {
             db.insert(perso_tem_habilidades.TABLE_NAME, null, values);
         }
 
-        public boolean InserirDungeon(int loadId,DungeonTable dungeon, Context context){
+        public void InserirDungeon(int loadId,DungeonTable dungeon, Context context){
             Bd banco = new Bd(context);
             SQLiteDatabase db = banco.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -190,16 +187,14 @@ public final class Loads {
             values.put("nome", dungeon.getNome());
             values.put("andares", dungeon.getAndares());
             values.put("rank", dungeon.getRank());
-            long newRowId = db.insert(Loads.dungions_tem_loads.TABLE_NAME, null, values);
+            db.insert(Loads.dungions_tem_loads.TABLE_NAME, null, values);
             banco.close();
-            return newRowId != -1;
         }
 
         public boolean InserirItensPerso(SQLiteDatabase db, int load_id,int id,ItensTable itensTable){
             ContentValues values = new ContentValues();
             values.put("id",id);
-            values.put("load_id",id);
-            values.put("nome",itensTable.getNome());
+            values.put("load_id",load_id);
             values.put("quantidade",itensTable.getQuantidade());
             long newRowId = db.insert(Loads.itensPerso.TABLE_NAME, null, values);
             return newRowId != 1;
@@ -229,9 +224,9 @@ public final class Loads {
             return listaDeLoads;
         }
 
-        public List<DadosTable> buscaDados(SQLiteDatabase db){
-            List<DadosTable> listaDeDados = new ArrayList<>();
-            DadosTable dados;
+        public List<PersoTable> buscaDados(SQLiteDatabase db){
+            List<PersoTable> listaDeDados = new ArrayList<>();
+            PersoTable dados;
             String[] colunas = {
                     "id",
                     "nome",
@@ -264,7 +259,7 @@ public final class Loads {
                     null,
                     null);
             while (cursor.moveToNext()){
-                dados = new DadosTable();
+                dados = new PersoTable();
                 dados.setId(cursor.getInt(0));
                 dados.setNome(cursor.getString(1));
                 dados.setLevel(cursor.getInt(2));
@@ -292,9 +287,9 @@ public final class Loads {
             return listaDeDados;
         }
 
-        public List<DadosTable> buscaDadosPorLoadId(SQLiteDatabase db, int loadId, int id){
-            DadosTable dados;
-            List<DadosTable> listaDeDados = new ArrayList<>();
+        public List<PersoTable> buscaDadosPorLoadId(SQLiteDatabase db, int loadId, int id){
+            PersoTable dados;
+            List<PersoTable> listaDeDados = new ArrayList<>();
             String[] colunas = {"id",
                     "nome",
                     "level",
@@ -333,7 +328,7 @@ public final class Loads {
                     null,
                     "id DESC");
             while (cursor.moveToNext()){
-                dados = new DadosTable();
+                dados = new PersoTable();
                 dados.setId(cursor.getInt(0));
                 dados.setNome(cursor.getString(1));
                 dados.setLevel(cursor.getInt(2));
@@ -472,7 +467,7 @@ public final class Loads {
             return listHabilidades;
         }
         */
-        public void atulizarDados(SQLiteDatabase db,DadosTable dados,int loadId,int id){
+        public void atulizarDados(SQLiteDatabase db, PersoTable dados, int loadId, int id){
             String where = "load_id="+loadId+" AND id="+id;
             ContentValues values = new ContentValues();
             values.put("nome",dados.getNome());
@@ -516,7 +511,7 @@ public final class Loads {
 
             String where2 = "load_id="+id;
             String where = "id="+id;
-            List<DadosTable> listaDeDados= buscaDadosPorLoadId(db,(int)id,-1);
+            List<PersoTable> listaDeDados= buscaDadosPorLoadId(db,(int)id,-1);
             for (int i = 0;i<listaDeDados.size();i++){
                 int idPerso = listaDeDados.get(i).getId();
                 String comando = "perso_id="+idPerso;

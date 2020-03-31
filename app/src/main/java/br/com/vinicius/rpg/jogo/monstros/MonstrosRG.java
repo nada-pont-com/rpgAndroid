@@ -1,8 +1,8 @@
 package br.com.vinicius.rpg.jogo.monstros;
 
-import br.com.vinicius.rpg.jogo.interfaces.MostrosInterface2;
+import br.com.vinicius.rpg.jogo.interfaces.MostrosRankInterface;
 
-public enum RankG implements MostrosInterface2 {
+public enum MonstrosRG implements MostrosRankInterface {
     SLIME{
         public double getMod() {
             return modMoster;

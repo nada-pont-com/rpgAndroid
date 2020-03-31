@@ -27,7 +27,7 @@ import br.com.vinicius.rpg.adapters.AdapterBattlePersoPersonalizado;
 import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.objetosTabelas.MonstroUni;
-import br.com.vinicius.rpg.objetosTabelas.DadosTable;
+import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesTable;
 
@@ -58,7 +58,7 @@ public class Battle extends AppCompatActivity {
     private MonstroUni monstro;
     private AdapterBattlePersoPersonalizado adapter;
     private Random random = new Random();
-    private List<DadosTable> dados;
+    private List<PersoTable> dados;
     private List<String> listaAcoes = new ArrayList<>();
     private List<HabilidadesPersoTable> listaHabilidadesPerso;
     private int nocalte = 0;
@@ -187,7 +187,7 @@ public class Battle extends AppCompatActivity {
             public void onClick(View v) {
                 switch (referencia){
                     case 0: //Atk Comum
-                        DadosTable dado = dados.get(PersoNunber);
+                        PersoTable dado = dados.get(PersoNunber);
                         int atk = dado.getAtk();
                         System.out.println(atk);
                         double atkReal = atk - (monstro.getStatus()/5);
@@ -282,7 +282,7 @@ public class Battle extends AppCompatActivity {
             if (personagens!=0){
                 personagens = random.nextInt(personagens);
             }
-            DadosTable dado = dados.get(personagens);
+            PersoTable dado = dados.get(personagens);
             int atk = monstro.getStatus();
             double atkReal = atk - (dado.getDef()/5);
             if(atkReal<0){
@@ -318,7 +318,7 @@ public class Battle extends AppCompatActivity {
 
     //Ação das habilidades
     private void Habilidade(HabilidadesTable habilidades){
-        DadosTable dado = dados.get(PersoNunber);
+        PersoTable dado = dados.get(PersoNunber);
         int tipo = Integer.parseInt(habilidades.getTipo());
         if(tipo==1){
             int atks = habilidades.getNuberAtk();
@@ -363,7 +363,7 @@ public class Battle extends AppCompatActivity {
 
     }
 
-    private void monsterMorto(DadosTable dado){
+    private void monsterMorto(PersoTable dado){
         dado.setExperiencia(monstro.getEx()+dado.getExperiencia());
         Salvar();
         AlertDialog.Builder alert = new AlertDialog.Builder(Battle.this);
