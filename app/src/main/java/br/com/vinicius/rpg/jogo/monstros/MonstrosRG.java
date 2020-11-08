@@ -5,59 +5,50 @@ import br.com.vinicius.rpg.jogo.interfaces.MostrosRankInterface;
 public enum MonstrosRG implements MostrosRankInterface {
     SLIME{
         public double getMod() {
-            return modMoster;
+            return 1.2;
         }
         public String getNome(){
-            return nome;
+            return "Slime";
         }
         public int getExp() {
-            return exp;
+            return 50;
         }
         public String[] getItem(){
                 return item;
         }
-        private double modMoster = 1.2;
-        private int exp = 50;
-        private String nome = "Slime";
-        //             item = nome-minimo-maximo -----------------------------------------
-        private String[] item = {"Gosma-1-3","pocaoHP-0-1","pocaoMP-0-1"};
+        //             item = id_minimo-maximo -----------------------------------------
+        private String[] item = {"id:1_1-3","id:3_0-1","id:4_0-1"};
     },
     ESQUELETO{
         public double getMod() {
-            return modMoster;
+            return 1.5;
         }
         public String getNome(){
-            return nome;
+            return "Esqueleto";
         }
         public int getExp() {
-            return exp;
+            return 100;
         }
         public String[] getItem(){
             return item;
         }
-        private double modMoster = 1.5;
-        private int exp = 100;
-        private String nome = "Esqueleto";
-        //             item = nome-minimo-maximo -----------------------------------------
-        private String[] item = {"Osso-1-3","pocaoHP-0-1","pocaoMP-0-1"};
+        //             item = id_minimo-maximo -----------------------------------------
+        private String[] item = {"id:2_1-3","id:3_0-1","id:4_0-1"};
     },
     LOBO_G{
         public double getMod() {
-            return modMoster;
+            return 1.6;
         }
         public String getNome(){
-            return nome;
+            return "Lobo de baixo rank";
         }
         public int getExp() {
-            return exp;
+            return 12;
         }
         public String[] getItem(){
             return item;
         }
-        private double modMoster = 1.6;
-        private int exp = 12;
-        private String nome = "Lobo de baixo rank";
-        //             item = nome-minimo-maximo -----------------------------------------
-        private String[] item = {"carne_C-1-2","pocaoHP-0-1","pocaoMP-0-1"};
+        //             item = id_minimo-maximo -----------------------------------------
+        private String[] item = {"id:6_1-2","id:3_0-1","id:4_0-1"};
     }
 }

@@ -1,5 +1,7 @@
 package br.com.vinicius.rpg.objetosTabelas;
 
+import android.support.annotation.NonNull;
+
 public class DungeonTable {
     private String nome;
     private String andares;
@@ -27,5 +29,14 @@ public class DungeonTable {
 
     public void setRank(String rank) {
         this.rank = rank;
+    }
+
+    @Override
+    public String toString() {
+        return "DungeonTable{" +
+                "nome='" + nome + '\'' +
+                ", andares='" + andares + '\'' +
+                ", rank='" + rank + '\'' +
+                '}';
     }
 }

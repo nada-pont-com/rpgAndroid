@@ -30,19 +30,22 @@
                     android:layout_height="wrap_content"
                     android:text="Nome"
                     android:textColor="@android:color/background_dark"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    tools:ignore="HardcodedText" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal"
                     android:paddingLeft="4dp"
-                    android:paddingRight="5dp">
+                    android:paddingRight="5dp"
+                    android:baselineAligned="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:baselineAligned="false">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -56,7 +59,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Exp"
-                                tools:ignore="NestedWeights" />
+                                tools:ignore="HardcodedText,NestedWeights" />
 
                             <TextView
                                 android:id="@+id/textView10"
@@ -65,7 +68,7 @@
                                 android:layout_weight="1"
                                 android:paddingRight="2dp"
                                 android:text="Vida"
-                                tools:ignore="RtlSymmetry" />
+                                tools:ignore="HardcodedText,RtlSymmetry" />
 
                         </LinearLayout>
 
@@ -81,7 +84,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:paddingRight="5dp"
-                                android:text="0/100"
                                 tools:ignore="RtlSymmetry" />
 
                             <TextView
@@ -90,7 +92,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:paddingRight="5dp"
-                                android:text="100/100"
                                 tools:ignore="RtlSymmetry" />
 
                         </LinearLayout>
@@ -107,17 +108,16 @@
                             style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:progress="10" />
 
                         <ProgressBar
                             android:id="@+id/progressVida"
-                            style="?android:attr/progressBarStyleHorizontal"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:max="100"
-                            android:progress="100" />
+                            android:progress="100"
+                            android:theme="@style/progressBarRed" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -136,26 +136,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
-                app:srcCompat="@android:color/background_dark" />
+                app:srcCompat="@android:color/background_dark"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp">
+                android:layout_marginStart="10dp">
 
                 <TextView
                     android:id="@+id/Level"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Level"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -164,7 +165,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Classe"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -175,16 +175,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
-                app:srcCompat="@android:color/background_dark" />
+                app:srcCompat="@android:color/background_dark"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -192,7 +194,6 @@
                         android:id="@+id/atk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Atk: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
@@ -200,7 +201,6 @@
                         android:id="@+id/def"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Def: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
@@ -208,8 +208,6 @@
                         android:id="@+id/agi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Agi: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
@@ -217,8 +215,6 @@
                         android:id="@+id/Int"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Int: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -226,7 +222,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -234,7 +230,6 @@
                         android:id="@+id/atkM"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="AtkM: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
@@ -242,7 +237,6 @@
                         android:id="@+id/defM"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="DefM: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
@@ -250,8 +244,6 @@
                         android:id="@+id/mp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Mp: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
@@ -259,8 +251,6 @@
                         android:id="@+id/Vit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Vit: 10"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
                 </LinearLayout>

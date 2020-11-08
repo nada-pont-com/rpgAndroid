@@ -83,6 +83,12 @@ public class Jogo extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jogo);
+        VisibleInvisibleDungeon(1);
+        VisibleInvisible(1);
+
+
+
+
         if(Tempo.timer==null){
             Tempo.setTimer(new Timer());
         }
@@ -124,6 +130,7 @@ public class Jogo extends AppCompatActivity{
         guild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("validando");
                 pause = true;
                 Intent it = new Intent(Jogo.this, Guilda.class);
                 startActivity(it);
@@ -142,6 +149,7 @@ public class Jogo extends AppCompatActivity{
             }
         });
         final int[] dungeonT = {0};
+
         dungeon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,20 +184,23 @@ public class Jogo extends AppCompatActivity{
                 startActivity(it);
             }
         });
+
         List<PersoTable> dados;
         load = Sessao.getLoad();
+        Bd banco = new Bd(this);
+        SQLiteDatabase db = banco.getWritableDatabase();
         if(Sessao.getDadosPerso()==null){
-            Bd banco = new Bd(this);
-            SQLiteDatabase db = banco.getWritableDatabase();
             Loads.comandos comandos = new Loads.comandos();
             dados = comandos.buscaDadosPorLoadId(db,load.getId(),-1);
             Sessao.setDadosPerso(dados);
             Sessao.HabilidadesPersoDados(db);
             dungeonsClass.atuDungeons(db,comandos);
-            db.close();
         }else{
             dados = Sessao.getDadosPerso();
+            Sessao.HabilidadesPersoDados(db);
         }
+        db.close();
+
         procurar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,6 +266,7 @@ public class Jogo extends AppCompatActivity{
             case 2:
                 home.setVisibility(View.INVISIBLE);
                 battle.setVisibility(View.VISIBLE);
+                System.out.println("aqui");
                 //config.setVisibility(View.INVISIBLE);
                 break;
             case 3:

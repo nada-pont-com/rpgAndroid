@@ -18,6 +18,7 @@ public class Habilidades {
         String[] extra = {"", "", "def,agi,defM", "atk"};
         String[] pontos = {"1", "5", "12", "8"};
         String[] descricao = {"Um ataque forte", "Um ataque que tem chance de nocaltear", "Aumanta a concentração do personagem", "Aumanta o ataque do personagem no proximo ataque"};
+        String[] custo = {"2","3","3","2"};
         HabilidadesTable habilidade;
         for(int i = 0;i<nome.length;i++) {
             habilidade = new HabilidadesTable();
@@ -30,6 +31,7 @@ public class Habilidades {
             habilidade.setNocalte(Integer.parseInt(nocalte[i]));
             habilidade.setExtra(extra[i]);
             habilidade.setPontos(Integer.parseInt(pontos[i]));
+            habilidade.setCusto(Integer.parseInt(custo[i]));
             habilidade.descricao(descricao[i]);
             System.out.println("habilidade "+i);
             habilidades.add(habilidade);

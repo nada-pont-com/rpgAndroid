@@ -11,6 +11,7 @@ public class HabilidadesTable {
     private String extra;//tipo de fortalecimento;
     private int pontos;//pontos necessarios para adquirir a habilidade;
     private String descricao;
+    private int custo; //custo de mp
 
     public void setId(int id) {
         this.id = id;
@@ -88,13 +89,20 @@ public class HabilidadesTable {
         return descricao;
     }
 
+    public void setCusto(int custo) {
+        this.custo = custo;
+    }
+
+    public int getCusto() {
+        return custo;
+    }
+
     public void descricao(String descricao){
         this.descricao = descricao+
-                "\n"+valor+
-                "\nAumento por level "+aumento+
-                "\n";
+                "\n"+valor+"%   Aumento por level "+aumento+
+                "\n"+custo+" MP";
         if(!extra.equals("")){
-            this.descricao = this.descricao+"Efeito:"+extra;
+            this.descricao = this.descricao+"\nEfeito:"+extra;
         }
     }
 

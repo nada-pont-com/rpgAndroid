@@ -17,8 +17,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Itens itens = new Itens();
-        itens.geraList();
+        //Itens itens = new Itens();
+        //itens.geraList();
 
         //System.exit(-1);
         Button NovoJogo = findViewById(R.id.NovoJogo);
@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(it);
             }
         });
+
+
 
     }
    /*

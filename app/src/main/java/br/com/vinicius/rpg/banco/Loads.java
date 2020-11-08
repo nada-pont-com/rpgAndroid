@@ -94,7 +94,7 @@ public final class Loads {
                 "tipo TINYINT UNSIGNED NOT NULL," +
                 "quant INT UNSIGNED)";
     }
-    public static class itensPerso implements BaseColumns{
+    public static class itensLoad implements BaseColumns{
         public static final String TABLE_NAME = "itens_perso";
         public static final String SQL_CREATE_ITENS_PERSO = "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+" (" +
                 "id INT NOT NULL," + // Id referente a posição do item na lista;
@@ -191,12 +191,12 @@ public final class Loads {
             banco.close();
         }
 
-        public boolean InserirItensPerso(SQLiteDatabase db, int load_id,int id,ItensTable itensTable){
+        public boolean InserirItensLoad(SQLiteDatabase db, int load_id,int id,int quant){
             ContentValues values = new ContentValues();
             values.put("id",id);
             values.put("load_id",load_id);
-            values.put("quantidade",itensTable.getQuantidade());
-            long newRowId = db.insert(Loads.itensPerso.TABLE_NAME, null, values);
+            values.put("quantidade",quant);
+            long newRowId = db.insert(Loads.itensLoad.TABLE_NAME, null, values);
             return newRowId != 1;
         }
 
@@ -415,6 +415,7 @@ public final class Loads {
         }
 
         public List<MissoesTable> buscaMissoes(SQLiteDatabase db,int load_id){
+            System.out.println("Load:"+load_id);
             String selection = "load_id="+load_id;
             Cursor cursor = db.query(
                     Loads.misseosLoad.TABLE_NAME,
@@ -514,10 +515,10 @@ public final class Loads {
             List<PersoTable> listaDeDados= buscaDadosPorLoadId(db,(int)id,-1);
             for (int i = 0;i<listaDeDados.size();i++){
                 int idPerso = listaDeDados.get(i).getId();
-                String comando = "perso_id="+idPerso;
-                db.delete(Loads.itensPerso.TABLE_NAME,comando,null);
-                db.delete(Loads.perso_tem_habilidades.TABLE_NAME,comando,null);
+                String comando2 = "perso_id="+idPerso;
+                db.delete(Loads.perso_tem_habilidades.TABLE_NAME,comando2,null);
             }
+            db.delete(Loads.itensLoad.TABLE_NAME,where2,null);
             db.delete(Loads.perso.TABLE_NAME,where2,null);
             db.delete(Loads.load.TABLE_NAME,where,null);
             return false;

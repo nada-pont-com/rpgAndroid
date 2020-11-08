@@ -1,9 +1,13 @@
 package br.com.vinicius.rpg.objetosTabelas;
 
+import android.support.annotation.NonNull;
+
 import br.com.vinicius.rpg.dados.Itens;
 import br.com.vinicius.rpg.jogo.monstros.MonstrosRG;
 
 public class MissoesTable {
+
+    private String nome;
     private int tipo; //salv
     private ItensTable item; //id
     private MonstroUni monstro; //id
@@ -66,20 +70,25 @@ public class MissoesTable {
             case 1:
                 dificuldade = quant*converte(item.getRaridade());
                 rank = item.getRaridade();
+                nome = "Encontrar "+item.getNome();
+                nome+="\nQuant:"+quant+"  Rank:" +rank+"  Dificuldade: "+dificuldade;
                 break;
             case 2:
                 dificuldade = quant*converte(monstro.getRank());
                 rank = monstro.getRank();
+                nome = "Matar "+monstro.getNome();
+                nome+="\nQuant:"+quant+"  Rank:" +rank+"  Dificuldade: "+dificuldade;
                 break;
             case 3:
-                int andar = Integer.parseInt((dungeon.getAndares().split("-"))[1]);
-                dificuldade = (andar*converte(dungeon.getRank()))/10;
+                dificuldade = (converte(dungeon.getRank()));
                 rank = dungeon.getRank();
+                nome = "Completar dungeon "+dungeon.getNome();
+                nome+="\nRank:" +rank+"  Dificuldade: "+dificuldade;
                 break;
         }
     }
 
-    private int converte(String string){
+    private int converte(String rank){
         switch (rank){
             case "S":
                 return 10;
@@ -136,5 +145,11 @@ public class MissoesTable {
                 dungeon.setRank(rank);
                 break;
         }
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return nome;
     }
 }

@@ -5,4 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="teste">#cc116f9d</color>
     <color name="ola">#d8e69839</color>
+    <color name="red">#FF0000</color>
+    <color name="blue">#0000FF</color>
 </resources>

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.vinicius.rpg.R;
@@ -29,8 +31,7 @@ import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesTable;
 
 
-public class
-PersonagemMenu extends AppCompatActivity {
+public class PersonagemMenu extends AppCompatActivity {
 
     private TextView Nome;
     private TextView Level;
@@ -49,30 +50,6 @@ PersonagemMenu extends AppCompatActivity {
     private ProgressBar VidaBar;
     private ProgressBar ExpBar;
 
-    private TextView valor;
-    private TextView valor2;
-    private TextView valor3;
-    private TextView valor4;
-    private TextView valor5;
-    private TextView valor6;
-    private TextView valor7;
-
-    private ImageButton mais;
-    private ImageButton mais2;
-    private ImageButton mais3;
-    private ImageButton mais4;
-    private ImageButton mais5;
-    private ImageButton mais6;
-    private ImageButton mais7;
-
-    private ImageButton menos;
-    private ImageButton menos2;
-    private ImageButton menos3;
-    private ImageButton menos4;
-    private ImageButton menos5;
-    private ImageButton menos6;
-    private ImageButton menos7;
-
     private Button hab;
     private Button status;
     private Button mag;
@@ -80,7 +57,6 @@ PersonagemMenu extends AppCompatActivity {
     private ListView Habilidades;
     private TextView NomeHab;
     private TextView DescricaoHab;
-    private Button AprenderHab;
 
     private PersoTable dado;
     private List<HabilidadesTable> habilidadeList;
@@ -177,7 +153,7 @@ PersonagemMenu extends AppCompatActivity {
 
         NomeHab = findViewById(R.id.NomeHab);
         DescricaoHab = findViewById(R.id.DescricaoHab);
-        AprenderHab = findViewById(R.id.AprenderHab);
+        Button aprenderHab = findViewById(R.id.AprenderHab);
         Habilidades = findViewById(R.id.HabilidadeLista);
 
         ArrayAdapter<HabilidadesTable> adapter = new ArrayAdapter<>(this,
@@ -187,39 +163,43 @@ PersonagemMenu extends AppCompatActivity {
         Button Voltar = findViewById(R.id.Voltar);
         Button Salvar = findViewById(R.id.Salvar);
 
+        final List<TextView> valor = new ArrayList<>();
+        List<ImageButton> mais = new ArrayList<>();
+        List<ImageButton> menos = new ArrayList<>();
+
         View layout;
-        final TextView[] valores = {valor,valor2,valor3,valor4,valor5,valor6,valor7};
-        ImageButton[] maises = {mais,mais2,mais3,mais4,mais5,mais6,mais7};
-        ImageButton[] menoes = {menos,menos2,menos3,menos4,menos5,mais6,mais7};
         int[] layouts =  {R.id.um,R.id.dois,R.id.tres,R.id.quatro,R.id.cinco,R.id.seis,R.id.sete};
+
+
+
         for(int i = 0;i<layouts.length;i++){
             layout = findViewById(layouts[i]);
-            valores[i] = layout.findViewById(R.id.valor);
-            maises[i] = layout.findViewById(R.id.mais);
-            menoes[i] = layout.findViewById(R.id.menos);
+            valor.add((TextView) layout.findViewById(R.id.valor));
+
+            mais.add( (ImageButton) layout.findViewById(R.id.mais));
+            menos.add( (ImageButton) layout.findViewById(R.id.menos));
 
             final int finalI = i;
-            maises[i].setOnClickListener(new View.OnClickListener() {
+            mais.get(i).setOnClickListener(new View.OnClickListener() {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onClick(View v) {
-                    int valorT = Integer.parseInt(valores[finalI].getText().toString());
                     if(pontos>0){
-                        valorT++;
-                        valores[finalI].setText(valorT+"");
+                        int valorT = Integer.parseInt(valor.get(finalI).getText().toString()) + 1;
+                        valor.get(finalI).setText(valorT+"");
                         pontos--;
                         Pontos.setText("Pontos: "+pontos);
                     }
                 }
             });
-            menoes[i].setOnClickListener(new View.OnClickListener() {
+            menos.get(i).setOnClickListener(new View.OnClickListener() {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onClick(View v) {
-                    int valorT = Integer.parseInt(valores[finalI].getText().toString());
+                    int valorT = Integer.parseInt(valor.get(finalI).getText().toString());
                     if(valorT>0){
                         valorT--;
-                        valores[finalI].setText(valorT+"");
+                        valor.get(finalI).setText(valorT+"");
                         pontos++;
                         Pontos.setText("Pontos: "+pontos);
                     }
@@ -240,13 +220,13 @@ PersonagemMenu extends AppCompatActivity {
         Salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int atk = Integer.parseInt(valores[0].getText().toString());
-                int def = Integer.parseInt(valores[1].getText().toString());
-                int agi = Integer.parseInt(valores[2].getText().toString());
-                int atkM = Integer.parseInt(valores[3].getText().toString());
-                int defM = Integer.parseInt(valores[4].getText().toString());
-                int intl = Integer.parseInt(valores[5].getText().toString());
-                int vit = Integer.parseInt(valores[6].getText().toString());
+                int atk = Integer.parseInt(valor.get(0).getText().toString());
+                int def = Integer.parseInt(valor.get(1).getText().toString());
+                int agi = Integer.parseInt(valor.get(2).getText().toString());
+                int atkM = Integer.parseInt(valor.get(3).getText().toString());
+                int defM = Integer.parseInt(valor.get(4).getText().toString());
+                int intl = Integer.parseInt(valor.get(5).getText().toString());
+                int vit = Integer.parseInt(valor.get(6).getText().toString());
 
                 //salvar pontos, zerar ou voltar para a home
                 dado.setAtk(dado.getAtk()+atk);
@@ -284,7 +264,7 @@ PersonagemMenu extends AppCompatActivity {
             }
         });
 
-        AprenderHab.setOnClickListener(new View.OnClickListener() {
+        aprenderHab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final HabilidadesTable habilidade =habilidadeList.get(positionHab);

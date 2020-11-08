@@ -15,34 +15,34 @@ import br.com.vinicius.rpg.R;
 
 //Adapter da lista de status do personagem
 public class AdapterPersoPersonalizado extends BaseAdapter {
-    private final List<PersoTable> dados;
+    private final List<PersoTable> persos;
     private final Activity activity;
 
-    public AdapterPersoPersonalizado(List<PersoTable> dados, Activity activity) {
-        this.dados = dados;
+    public AdapterPersoPersonalizado(List<PersoTable> persos, Activity activity) {
+        this.persos = persos;
         this.activity = activity;
     }
 
     @Override
     public int getCount() {
-        return dados.size();
+        return persos.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return dados.get(position);
+        return persos.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return dados.get(position).getId();
+        return persos.get(position).getId();
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = activity.getLayoutInflater().inflate(R.layout.perso_layout,parent,false);
-        PersoTable dado = dados.get(position);
+        PersoTable perso = persos.get(position);
 
         TextView Nome = view.findViewById(R.id.Nome);
         TextView Exp = view.findViewById(R.id.ExperienciaNunber);
@@ -61,23 +61,23 @@ public class AdapterPersoPersonalizado extends BaseAdapter {
         ProgressBar ExpBar = view.findViewById(R.id.progressExp);
         ProgressBar VidaBar = view.findViewById(R.id.progressVida);
 
-        Nome.setText(dado.getNome());
-        Exp.setText(dado.getExperiencia()+"/"+dado.getExpMax());
-        Level.setText("Level: "+dado.getLevel());
-        Classe.setText("Classe: "+dado.getClasse());
-        Vida.setText(dado.getVida()+"/"+dado.getVidaMax());
-        Atk.setText("Atk: "+dado.getAtk());
-        Def.setText("Def: "+dado.getDef());
-        AtkM.setText("AtkM: "+dado.getAtkM());
-        DefM.setText("DefM: "+dado.getDefM());
-        Agi.setText("Agi: "+dado.getAgi());
-        Mp.setText("Mp: "+dado.getMp()+"/"+dado.getMpMax());
-        Int.setText("Int: "+dado.getIntl());
-        Vit.setText("Vit: "+dado.getVit());
-        ExpBar.setMax(dado.getExpMax());
-        ExpBar.setProgress(dado.getExperiencia());
-        VidaBar.setMax(dado.getVidaMax());
-        VidaBar.setProgress(dado.getVida());
+        Nome.setText(perso.getNome());
+        Exp.setText(perso.getExperiencia()+"/"+perso.getExpMax());
+        Level.setText("Level: "+perso.getLevel());
+        Classe.setText("Classe: "+perso.getClasse());
+        Vida.setText(perso.getVida()+"/"+perso.getVidaMax());
+        Atk.setText("Atk: "+perso.getAtk());
+        Def.setText("Def: "+perso.getDef());
+        AtkM.setText("AtkM: "+perso.getAtkM());
+        DefM.setText("DefM: "+perso.getDefM());
+        Agi.setText("Agi: "+perso.getAgi());
+        Mp.setText("Mp: "+perso.getMp()+"/"+perso.getMpMax());
+        Int.setText("Int: "+perso.getIntl());
+        Vit.setText("Vit: "+perso.getVit());
+        ExpBar.setMax(perso.getExpMax());
+        ExpBar.setProgress(perso.getExperiencia());
+        VidaBar.setMax(perso.getVidaMax());
+        VidaBar.setProgress(perso.getVida());
 
         return view;
     }

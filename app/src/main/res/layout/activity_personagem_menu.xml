@@ -35,7 +35,8 @@
                         android:layout_height="wrap_content"
                         android:text="Nome"
                         android:textColor="@android:color/background_dark"
-                        android:textSize="24sp" />
+                        android:textSize="24sp"
+                        tools:ignore="HardcodedText" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -63,7 +64,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:text="Exp"
-                                    tools:ignore="NestedWeights" />
+                                    tools:ignore="HardcodedText,NestedWeights" />
 
                                 <TextView
                                     android:id="@+id/textView10"
@@ -72,7 +73,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="5dp"
                                     android:text="Vida"
-                                    tools:ignore="RtlSymmetry" />
+                                    tools:ignore="HardcodedText,RtlSymmetry" />
 
                             </LinearLayout>
 
@@ -89,7 +90,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="5dp"
                                     android:text="0/100"
-                                    tools:ignore="RtlSymmetry" />
+                                    tools:ignore="HardcodedText,RtlSymmetry" />
 
                                 <TextView
                                     android:id="@+id/Vida"
@@ -98,7 +99,7 @@
                                     android:layout_weight="1"
                                     android:paddingRight="5dp"
                                     android:text="100/100"
-                                    tools:ignore="RtlSymmetry" />
+                                    tools:ignore="HardcodedText,RtlSymmetry" />
 
                             </LinearLayout>
                         </LinearLayout>
@@ -163,7 +164,7 @@
                     android:text="Lv: 100"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
-                    tools:ignore="RtlHardcoded" />
+                    tools:ignore="HardcodedText,RtlHardcoded" />
 
                 <TextView
                     android:id="@+id/Classe"
@@ -173,7 +174,7 @@
                     android:text="Classe: Aventureiro"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
-                    tools:ignore="RtlHardcoded" />
+                    tools:ignore="HardcodedText,RtlHardcoded" />
 
                 <TextView
                     android:id="@+id/Pontos"
@@ -181,7 +182,8 @@
                     android:layout_height="wrap_content"
                     android:text="Pontos:"
                     android:textColor="@android:color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
 
             </LinearLayout>
 
@@ -190,7 +192,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
-                app:srcCompat="@android:color/background_dark" />
+                app:srcCompat="@android:color/background_dark"
+                tools:ignore="ContentDescription" />
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -211,7 +214,8 @@
                         android:gravity="center_horizontal"
                         android:text="Nome"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        tools:ignore="HardcodedText" />
 
                     <ImageView
                         android:id="@+id/imageView7"
@@ -223,7 +227,7 @@
 
                     <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="70dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -237,7 +241,8 @@
                                 android:overScrollMode="ifContentScrolls"
                                 android:text="Descrição"
                                 android:textColor="@android:color/black"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                tools:ignore="HardcodedText" />
                         </LinearLayout>
                     </ScrollView>
 
@@ -253,14 +258,16 @@
                         android:id="@+id/HabilidadeLista"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        tools:ignore="InefficientWeight" />
 
                     <Button
                         android:id="@+id/AprenderHab"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="30dp"
-                        android:text="Aprender" />
+                        android:text="Aprender"
+                        tools:ignore="HardcodedText" />
 
                 </LinearLayout>
 
@@ -279,7 +286,8 @@
                         android:gravity="center_horizontal"
                         android:text="Nome"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        tools:ignore="HardcodedText" />
 
                     <ImageView
                         android:id="@+id/imageView8"
@@ -295,7 +303,8 @@
                         android:layout_height="50dp"
                         android:text="Descrição"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        tools:ignore="HardcodedText" />
 
                     <ImageView
                         android:id="@+id/imageView9"
@@ -309,20 +318,23 @@
                         android:id="@+id/MagiaLista"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        tools:ignore="InefficientWeight" />
 
                     <Button
                         android:id="@+id/AprenderMag"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="30dp"
-                        android:text="Aprender" />
+                        android:text="Aprender"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/StatusLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:visibility="visible"
                     tools:ignore="MissingConstraints">
 
@@ -331,7 +343,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="2dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        tools:ignore="RtlHardcoded">
 
                         <TextView
                             android:id="@+id/atk"
@@ -341,7 +354,8 @@
                             android:layout_marginBottom="5dp"
                             android:text="Atk: 10"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/def"
@@ -351,7 +365,8 @@
                             android:layout_marginBottom="5dp"
                             android:text="Def: 10"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/agi"
@@ -361,7 +376,8 @@
                             android:layout_marginBottom="5dp"
                             android:text="Agi: 10"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/Int"
@@ -372,10 +388,12 @@
                             android:layout_weight="1"
                             android:text="Int: 0"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            tools:ignore="HardcodedText,InefficientWeight" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/test"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
@@ -423,7 +441,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            tools:ignore="InefficientWeight">
 
                             <include
                                 android:id="@+id/seis"
@@ -440,7 +459,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="2dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        tools:ignore="RtlHardcoded">
 
                         <TextView
                             android:id="@+id/atkM"
@@ -450,7 +470,8 @@
                             android:layout_marginBottom="5dp"
                             android:text="AtkM: 10"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/defM"
@@ -460,7 +481,8 @@
                             android:layout_marginBottom="5dp"
                             android:text="DefM: 10"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/mp"
@@ -471,7 +493,8 @@
                             android:layout_weight="1"
                             android:text="Mp: 10/10"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            tools:ignore="HardcodedText,InefficientWeight" />
 
                         <TextView
                             android:id="@+id/Vit"
@@ -483,11 +506,13 @@
                             android:layout_marginBottom="5dp"
                             android:text="Vit:"
                             android:textColor="@android:color/black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            tools:ignore="HardcodedText" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/test2"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
@@ -522,7 +547,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:layout_marginTop="3dp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            tools:ignore="UselessLeaf">
 
                         </LinearLayout>
 
@@ -563,7 +589,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Habilidades"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
 
                 <Button
                     android:id="@+id/Magias"
@@ -571,7 +598,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Magias"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
 
                 <Button
                     android:id="@+id/Status"
@@ -579,7 +607,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Status"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:ignore="ButtonStyle,HardcodedText" />
             </LinearLayout>
 
             <LinearLayout
@@ -592,14 +621,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Salvar" />
+                    android:text="Salvar"
+                    tools:ignore="ButtonStyle,HardcodedText" />
 
                 <Button
                     android:id="@+id/Voltar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Voltar" />
+                    android:text="Voltar"
+                    tools:ignore="ButtonStyle,HardcodedText" />
             </LinearLayout>
 
         </LinearLayout>

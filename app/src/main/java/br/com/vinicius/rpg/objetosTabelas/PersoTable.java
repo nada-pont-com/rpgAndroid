@@ -1,6 +1,5 @@
 package br.com.vinicius.rpg.objetosTabelas;
 
-
 public class PersoTable { //Dados do jogador
 
     private int id;
@@ -105,13 +104,14 @@ public class PersoTable { //Dados do jogador
         return LoadId;
     }
 
-    public void setClasse(String classesClasse) {
-        this.classe = classesClasse;
+    public void setClasse(String classe) {
+        this.classe = classe;
     }
 
     public String getClasse() {
         return classe;
     }
+
 
     public void setRank(String rank) {
         this.rank = rank;

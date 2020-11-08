@@ -49,12 +49,9 @@ public class AdapterSalvesPersonalizado extends BaseAdapter {
         SQLiteDatabase db = banco.getWritableDatabase();
         List<PersoTable> dados = new Loads.comandos().buscaDadosPorLoadId(db,load.getId(),0);
         PersoTable dado = dados.get(0);
-        TextView nome = (TextView)
-                view.findViewById(R.id.Nome);
-        TextView tempo = (TextView)
-                view.findViewById(R.id.Tempo);
-        TextView classe = (TextView)
-                view.findViewById(R.id.Classe);
+        TextView nome = (TextView) view.findViewById(R.id.Nome);
+        TextView tempo = (TextView) view.findViewById(R.id.Tempo);
+        TextView classe = (TextView) view.findViewById(R.id.Classe);
         //populando as Views
         nome.setText(load.getNome());
         tempo.setText(load.getTempo());

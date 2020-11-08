@@ -7,6 +7,7 @@ import java.util.List;
 
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.dados.Habilidades;
+import br.com.vinicius.rpg.objetosTabelas.MissoesTable;
 import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesTable;
@@ -19,6 +20,8 @@ public class Sessao {
     private static Tempo.autoSalve autoSalve;
     private static List<HabilidadesTable> habilidades;
     private static List<List<HabilidadesTable>> ListaDeHabilidadesDosPersonagens;
+    private static List<MissoesTable> ListaDeMissoes;
+    private static List<MissoesTable> ListaDeMissoesAceitas;
 
     public static LoadTable getLoad() {
         return load;
@@ -96,5 +99,21 @@ public class Sessao {
             HabilidadesPersoDados(db);
         }
         setListaDeHabilidadesDosPersonagens(ListaDeHabilidadesDosPersonagens);
+    }
+
+    public static List<MissoesTable> getListaDeMissoes() {
+        return ListaDeMissoes;
+    }
+
+    public static void setListaDeMissoes(List<MissoesTable> listaDeMissoes) {
+        ListaDeMissoes = listaDeMissoes;
+    }
+
+    public static void setListaDeMissoesAceitas(List<MissoesTable> listaDeMissoesAceitas) {
+        ListaDeMissoesAceitas = listaDeMissoesAceitas;
+    }
+
+    public static List<MissoesTable> getListaDeMissoesAceitas() {
+        return ListaDeMissoesAceitas;
     }
 }

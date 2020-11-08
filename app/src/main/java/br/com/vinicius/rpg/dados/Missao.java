@@ -10,7 +10,7 @@ import br.com.vinicius.rpg.objetosTabelas.MonstroUni;
 
 public class Missao {
     private Random random = new Random();
-    public void geraMissao(){
+    public MissoesTable geraMissao(){
         int tipo = random.nextInt(3)+1;
         int quant = -1;
         MissoesTable missao = new MissoesTable();
@@ -22,17 +22,17 @@ public class Missao {
             rank = rankMissao[rankRand];
             vali = Sessao.getDadosPerso().get(0).validadorRank(rank);
         }while (!vali);
+        System.out.println("test tipo"+tipo);
         switch (tipo){
             case 1: // encontrar Item (drop de monstro)
                 Itens itens  = new Itens();
                 do {
                     vali = true;
                     int valor = random.nextInt(itens.getListaDeItens().size());
-                    ItensTable item = itens.getListaDeItens().get(valor);
+                    ItensTable item = itens.getItensId(valor);
                     if(item.getRaridade().equals(rank)){
                         quant = random.nextInt(10)+1;
                         missao.setItem(item);
-                    }else{
                         vali = false;
                     }
                 }while(vali);
@@ -58,6 +58,7 @@ public class Missao {
                         break;
                     case "G":
                         valor = MonstrosRG.values().length;
+                        valor  = random.nextInt(valor);
                         MonstrosRG g = MonstrosRG.values()[valor];
                         monstro = new MonstroUni(rank,0,0,0,g.getNome(),0,0,g.getItem());
                         break;
@@ -77,6 +78,8 @@ public class Missao {
         missao.setTipo(tipo);
         missao.setQuant(quant);
         missao.setDificuldadeERank();
+        System.out.println("validando");
+        return missao;
     }
 }
 /*

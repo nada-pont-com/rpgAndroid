@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import br.com.vinicius.rpg.dados.Itens;
 import br.com.vinicius.rpg.jogo.dungeon.Dungeon;
 import br.com.vinicius.rpg.jogo.inicio.Jogo;
 import br.com.vinicius.rpg.R;
@@ -26,6 +27,7 @@ import br.com.vinicius.rpg.jogo.informacoes.Tempo;
 import br.com.vinicius.rpg.adapters.AdapterBattlePersoPersonalizado;
 import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
+import br.com.vinicius.rpg.objetosTabelas.ItensTable;
 import br.com.vinicius.rpg.objetosTabelas.MonstroUni;
 import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
@@ -58,9 +60,10 @@ public class Battle extends AppCompatActivity {
     private MonstroUni monstro;
     private AdapterBattlePersoPersonalizado adapter;
     private Random random = new Random();
-    private List<PersoTable> dados;
+    private List<PersoTable> persos;
     private List<String> listaAcoes = new ArrayList<>();
     private List<HabilidadesPersoTable> listaHabilidadesPerso;
+    private List<ItensTable> ListaDeItens = new ArrayList<>();
     private int nocalte = 0;
     private boolean pause = false;
 
@@ -105,15 +108,15 @@ public class Battle extends AppCompatActivity {
         NomeDungeon = bundle.getString("nomeDungeon");
         rank = bundle.getString("rank");
         andares = bundle.getString("andares");
-        //Pega os dados do monstro enviados da activy anterior
+        //Pega os persos do monstro enviados da activy anterior
         monstro  = (MonstroUni) bundle.getSerializable("monstro");
         assert monstro != null;
 
-        //Buscar dados do jogador
+        //Buscar persos do jogador
 
         Perso = findViewById(R.id.listaDePerso);
-        dados =  Sessao.getDadosPerso();
-        adapter = new AdapterBattlePersoPersonalizado(dados,this);
+        persos =  Sessao.getDadosPerso();
+        adapter = new AdapterBattlePersoPersonalizado(persos,this);
         Perso.setAdapter(adapter);
 
         atacar = findViewById(R.id.Atacar);
@@ -137,7 +140,7 @@ public class Battle extends AppCompatActivity {
         SQLiteDatabase db = banco.getWritableDatabase();
 
         // buscando habilidades do jogador
-        listaHabilidadesPerso = comandos.buscaHabilidadesDoPerso(db,-1,dados.get(PersoNunber).getId());
+        listaHabilidadesPerso = comandos.buscaHabilidadesDoPerso(db,-1,persos.get(PersoNunber).getId());
 
         atacar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,9 +165,12 @@ public class Battle extends AppCompatActivity {
 
         nome.setText(monstro.getNome());
         System.out.println(nome.getLayout());
-        level.setText("Lv:"+monstro.getLevel());
-        vida.setText(monstro.getVida()+"/"+monstro.getVida());
-        mp.setText(monstro.getMp()+"/"+monstro.getMp());
+        String lv="Lv:"+monstro.getLevel(),
+                hp = monstro.getVida()+"/"+monstro.getVida(),
+                mP = monstro.getMp()+"/"+monstro.getMp();
+        level.setText(lv);
+        vida.setText(hp);
+        mp.setText(mP);
         System.out.println(monstro.getVida());
 
         vidaBar.setMax(monstro.getVida());
@@ -181,49 +187,15 @@ public class Battle extends AppCompatActivity {
     //0 - atk
     //1 - defesa
     //2 - Habilidades
+    //3 - Magia
+    //4 - fuga
     private View.OnClickListener batalha(final int referencia){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (referencia){
                     case 0: //Atk Comum
-                        PersoTable dado = dados.get(PersoNunber);
-                        int atk = dado.getAtk();
-                        System.out.println(atk);
-                        double atkReal = atk - (monstro.getStatus()/5);
-                        if(atkReal<0){
-                            atkReal = 0;
-                        }
-                        System.out.println(atkReal);
-                        int dano = (int) atkReal;
-                        System.out.println(dano);
-                        String acao = dado.getNome()+": Atacou e causou "+dano+" de dano";
-                        listaAcoes.add(acao);
-                        ListaAcoes();
-                        System.out.println(listaAcoes);
-                        int validador = monstro.getVida()-dano;
-                        if (validador<=0){
-                            PersoNunber = 0;
-                            validador = 0;
-                            monsterMorto(dado);
-                        }else {
-                            System.out.println("-------------------Info------------------------");
-                            System.out.println(dados.size()+"<"+(PersoNunber+1));
-                            System.out.println(dados.size()<(PersoNunber+1));
-                            if (dados.size()<(PersoNunber+1)){
-                                PersoNunber++;
-                            }else{
-                                System.out.println("-----------Entrou----------------");
-                                PersoNunber = 0;
-                                monstroAtk();
-                            }
-                        }
-                        monstro.setVida(validador);
-                        vidaBar.setProgress(monstro.getVida());
-                        vida.setText(monstro.getVida()+"/"+vidaBar.getMax());
-                        LinearLayout acoes = findViewById(R.id.Acoes);
-                        adapter.select(PersoNunber,0);
-                        acoes.setMinimumWidth(0);
+                        atk(1,null);
                         break;
                     case 1://Defender
 
@@ -251,7 +223,6 @@ public class Battle extends AppCompatActivity {
                                 alert.setPositiveButton("Confimar", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-
                                         Habilidade(habi);
                                     }
                                 }).setNegativeButton("Voltar", new DialogInterface.OnClickListener() {
@@ -276,15 +247,77 @@ public class Battle extends AppCompatActivity {
             }
         };
     }
+
+    private void atk(int atks,HabilidadesTable habilidades){
+        PersoTable perso = persos.get(PersoNunber);
+        for (int i = 0;i<atks;i++){
+            int valor = 1,nocalteValor = 0,custo = 0;
+            if(habilidades!=null){
+                valor = habilidades.getValor();
+                nocalteValor = habilidades.getNocalte();
+            }
+            double atk = perso.getAtk()*valor*0.01+(perso.getAtk());
+            System.out.println("atk:"+atk);
+            double atkReal = atk - (double)(monstro.getStatus()/5);
+            if(atkReal<0){
+                atkReal = 0;
+            }
+            System.out.println("atkR:"+atkReal);
+            int dano = (int) atkReal;
+            int validador = monstro.getVida()-dano;
+            String acao = "";
+            if(habilidades!=null){
+                acao = perso.getNome()+": usou a habilidade "+habilidades.getNome()+" e causou "+dano+" de dano com "+habilidades.getNocalte()+"% de nocalte";
+            }else{
+                acao = perso.getNome()+": Atacou e causou "+dano+" de dano";
+            }
+            listaAcoes.add(acao);
+            if (validador<=0) {
+                PersoNunber = 0;
+                validador = 0;
+                monsterMorto(perso);
+            }else{
+                if(nocalteValor!=0){
+                    int rand = random.nextInt(100);
+                    if((rand<=nocalteValor) && (nocalte==0)){
+                        nocalte = 3;
+                        acao = "Montro foi nocalteado por 3 rodadas";
+                        listaAcoes.add(acao);
+                    }
+                }
+                if (persos.size()<(PersoNunber+1)){
+                    PersoNunber++;
+                }else{
+                    System.out.println("-----------Entrou----------------");
+                    PersoNunber = 0;
+                }
+                if(nocalte!=0){
+                    acao = "Monstro nocalteado por "+nocalte+" rodada(s)";
+                    listaAcoes.add(acao);
+                }else{
+                    monstroAtk();
+                }
+
+            }
+            ListaAcoes();
+            monstro.setVida(validador);
+            vidaBar.setProgress(monstro.getVida());
+            vida.setText(monstro.getVida()+"/"+vidaBar.getMax());
+            LinearLayout acoes = findViewById(R.id.Acoes);
+            adapter.select(PersoNunber,0);
+            acoes.setMinimumWidth(0);
+        }
+    }
+
     private void monstroAtk(){
         if(nocalte==0){
-            int personagens = dados.size()-1;
+            int personagens = persos.size()-1;
             if (personagens!=0){
                 personagens = random.nextInt(personagens);
             }
-            PersoTable dado = dados.get(personagens);
+            PersoTable perso = persos.get(personagens);
             int atk = monstro.getStatus();
-            double atkReal = atk - (dado.getDef()/5);
+            double atkReal = atk - (perso.getDef()/5);
             if(atkReal<0){
                 atkReal = 0;
             }
@@ -292,10 +325,10 @@ public class Battle extends AppCompatActivity {
             String acao = monstro.getNome()+": Atacou e causou "+dano+" de dano";
             listaAcoes.add(acao);
             ListaAcoes();
-            int validador = dado.getVida()-dano;
+            int validador = perso.getVida()-dano;
             if(validador<=0){
                 validador = 0;
-                dado.setVida(validador);
+                perso.setVida(validador);
                 Salvar();
                 AlertDialog.Builder alert = new AlertDialog.Builder(Battle.this);
                 alert.setCancelable(false);
@@ -310,7 +343,7 @@ public class Battle extends AppCompatActivity {
                 });
                 alert.show();
             }
-            dado.setVida(validador);
+            perso.setVida(validador);
         }else{
             nocalte--;
         }
@@ -318,53 +351,24 @@ public class Battle extends AppCompatActivity {
 
     //Ação das habilidades
     private void Habilidade(HabilidadesTable habilidades){
-        PersoTable dado = dados.get(PersoNunber);
+        PersoTable perso = persos.get(PersoNunber);
         int tipo = Integer.parseInt(habilidades.getTipo());
-        if(tipo==1){
-            int atks = habilidades.getNuberAtk();
-            System.out.println(habilidades.getValor());
-            System.out.println(atks);
-            for (int i = 0;i<atks;i++){
-                double atk = dado.getAtk()*habilidades.getValor()*0.01+(dado.getAtk());
-                System.out.println("atk:"+atk);
-                double atkReal = atk - (monstro.getStatus()/6);
-                if(atkReal<0){
-                    atkReal = 0;
-                }
-                System.out.println("atkR:"+atkReal);
-                int dano = (int) atkReal;
-                int validador = monstro.getVida()-dano;
-
-                String acao = dado.getNome()+": usou a habilidade "+habilidades.getNome()+" e causou "+dano+" de dano com "+habilidades.getNocalte()+"% de nocalte";
-                listaAcoes.add(acao);
-                if (validador<=0) {
-                    validador = 0;
-                    monsterMorto(dado);
-                }else{
-                    int valor = random.nextInt(100);
-                    if((valor<=habilidades.getNocalte()) && (valor!=0) && (nocalte==0)){
-                        nocalte = 3;
-                        acao = "Montro foi nocalteado por 3 rodadas";
-                        listaAcoes.add(acao);
-                    }else if(nocalte!=0){
-                        acao = "Monstro já nocalteado por "+nocalte+" rodada(s)";
-                        listaAcoes.add(acao);
-                    }
-                    monstroAtk();
-                }
-                ListaAcoes();
-                monstro.setVida(validador);
-                vidaBar.setProgress(monstro.getVida());
-                vida.setText(monstro.getVida()+"/"+vidaBar.getMax());
+        int mp = perso.getMp(),custo = habilidades.getCusto();
+        if(mp>custo){
+            perso.setMp(mp-custo);
+            mpBar.setProgress(perso.getMp());
+            if(tipo==1){
+                int atks = habilidades.getNuberAtk();
+                atk(atks,habilidades);
+            }else{
+                monstroAtk();
             }
-        }else{
-            monstroAtk();
         }
-
     }
 
-    private void monsterMorto(PersoTable dado){
-        dado.setExperiencia(monstro.getEx()+dado.getExperiencia());
+    private void monsterMorto(PersoTable perso){
+        perso.setExperiencia(monstro.getEx()+perso.getExperiencia());
+        monstroItens();
         Salvar();
         AlertDialog.Builder alert = new AlertDialog.Builder(Battle.this);
         alert.setCancelable(false);
@@ -391,6 +395,27 @@ public class Battle extends AppCompatActivity {
         alert.show();
     }
 
+    private void monstroItens(){
+        String[] itens =  monstro.getItem();
+        String[] itens2;
+        int cont = itens.length;
+        int[][] minMax = new int[cont][2];
+        int[] quant = new int[cont];
+        for (int i = 0;i<cont;i++){
+            itens2 = itens[i].split("_");
+            itens[i] = itens2[0].split(":")[1];
+            itens2 = itens2[1].split("-");
+            minMax[i][0] = Integer.parseInt(itens2[0]);
+            minMax[i][1] = Integer.parseInt(itens2[1]);
+            quant[i] = random.nextInt(minMax[i][1])+minMax[i][0];
+            if(quant[i]>0){
+                ItensTable item = new Itens().getItensId(Integer.parseInt(itens[i]));
+                item.setQuantidade(quant[i]);
+                ListaDeItens.add(item);
+            }
+        }
+    }
+
     private void ListaAcoes(){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, listaAcoes);
@@ -401,8 +426,11 @@ public class Battle extends AppCompatActivity {
         Bd banco = new Bd(getBaseContext());
         SQLiteDatabase db = banco.getWritableDatabase();
         Loads.comandos comandos = new Loads.comandos();
-        for (int i = 0;i<dados.size();i++){
-            comandos.atulizarDados(db,dados.get(i),dados.get(i).getLoadId(),dados.get(i).getId());
+        for (int i = 0;i<ListaDeItens.size();i++){
+            comandos.InserirItensLoad(db,ListaDeItens.get(i).getId(),persos.get(0).getLoadId(),ListaDeItens.get(i).getQuantidade());
+        }
+        for (int i = 0;i<persos.size();i++){
+            comandos.atulizarDados(db,persos.get(i),persos.get(i).getLoadId(),persos.get(i).getId());
         }
         db.close();
     }

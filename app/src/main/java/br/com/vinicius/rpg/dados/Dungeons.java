@@ -34,6 +34,7 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
     public void list(Context context,boolean missao){
         Random random = new Random();
         int andar = random.nextInt(andares.length);
+        System.out.println(andar);
         int vali;
         do{
             int randRank = random.nextInt(rank.length);

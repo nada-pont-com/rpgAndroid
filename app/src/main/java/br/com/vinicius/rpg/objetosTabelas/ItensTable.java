@@ -1,11 +1,20 @@
 package br.com.vinicius.rpg.objetosTabelas;
 
 public class ItensTable {
+    private int id;
     private String nome;
     private String raridade;
     private int quantidade;
     private String[] referencia;
     private int[] valor;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;

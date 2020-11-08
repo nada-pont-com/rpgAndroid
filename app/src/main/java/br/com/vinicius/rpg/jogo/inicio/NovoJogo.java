@@ -21,7 +21,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.vinicius.rpg.dados.ClassesPerso;
 import br.com.vinicius.rpg.R;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.banco.Bd;
@@ -46,7 +45,7 @@ public class NovoJogo extends AppCompatActivity {
     private RadioButton classExpl;
     private EditText nomePerso;
     private EditText Nome;
-    private ClassesPerso classe;
+    private String classe;
     private int loadId;
     private Bd banco;
 
@@ -141,9 +140,9 @@ public class NovoJogo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(classExpl.isChecked()){
-                    classe = ClassesPerso.explorador;
+                    classe = "Explorador";
                 }else if(classGue.isChecked()){
-                    classe = ClassesPerso.guerreiro;
+                    classe = "Guerreiro";
                 }else{
                     visualizar("Selecione um!","Alerta!");
                     return;
@@ -168,24 +167,31 @@ public class NovoJogo extends AppCompatActivity {
                     boolean valor = comandos.Inserir(load,getBaseContext());
                     if(valor){
                         if((loadId!=0) || (classe!=null)){
-                            PersoTable dados = classe.getStatus();
-                            dados.setId(0);
-                            dados.setLoadId(loadId);
-                            dados.setLevel(1);
-                            dados.setNome(nome);
-                            dados.setExperiencia(0);
-                            dados.setVida(100);
-                            dados.setVidaMax(100);
-                            dados.setMp(10);
-                            dados.setMpMax(10);
-                            dados.setRank("G");
-                            dados.setRankExp(0);
-                            dados.setPontosHab(0);
-                            dados.setPontosExp(0);
-                            boolean retorno = comandos.InserirDados(dados,db);
+                            List<PersoTable> classes = Loads.perso.SQL_LIST_DADOS;
+                            PersoTable perso = new PersoTable();
+                            for (int i = 0;i<classes.size();i++){
+                                if(classes.get(i).getClasse().equals(classe)){
+                                    perso = classes.get(i);
+                                    break;
+                                }
+                            }
+                            perso.setId(0);
+                            perso.setLoadId(loadId);
+                            perso.setLevel(1);
+                            perso.setNome(nome);
+                            perso.setExperiencia(0);
+                            perso.setVida(100);
+                            perso.setVidaMax(100);
+                            perso.setMp(10);
+                            perso.setMpMax(10);
+                            perso.setRank("G");
+                            perso.setRankExp(0);
+                            perso.setPontosHab(0);
+                            perso.setPontosExp(0);
+                            boolean retorno = comandos.InserirDados(perso,db);
                             if(retorno){
                                 List<PersoTable> dado = new ArrayList<PersoTable>();
-                                dado.add(dados);
+                                dado.add(perso);
                                 Sessao.setDadosPerso(dado);
                                 Sessao.setLoad(load);
                                 Sessao.setHabilidades();
