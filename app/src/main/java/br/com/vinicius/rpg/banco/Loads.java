@@ -12,7 +12,6 @@ import java.util.List;
 import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.DungeonTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
-import br.com.vinicius.rpg.objetosTabelas.ItensTable;
 import br.com.vinicius.rpg.objetosTabelas.LoadTable;
 import br.com.vinicius.rpg.objetosTabelas.MissoesTable;
 
@@ -25,7 +24,10 @@ public final class Loads {
         public static final String TABLE_NAME = "load";
         public static final String SQL_CREATE_LOADS = " (id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "nome VARCHAR(45) NOT NULL UNIQUE," +
-                "tempo VARCHAR(255) NOT NULL" +
+                "tempo VARCHAR(255) NOT NULL," +
+                "cobre INT UNSIGNED NOT NULL," +
+                "prata INT UNSIGNED NOT NULL," +
+                "ouro INT UNSIGNED NOT NULL" +
                 ")";
     }
     public static class perso implements BaseColumns{
@@ -138,12 +140,18 @@ public final class Loads {
             values.put("id", load.getId());
             values.put("nome", load.getNome());
             values.put("tempo", load.getTempo());
+            System.out.print(load.getPrata());
+            values.put("cobre", load.getCobre());
+            values.put("prata", load.getPrata());
+            values.put("ouro", load.getOuro());
             long newRowId = db.insert(Loads.load.TABLE_NAME, null, values);
             banco.close();
             return newRowId != -1;
         }
 
-        public boolean InserirDados(PersoTable dados, SQLiteDatabase db) {
+        public boolean InserirDados(PersoTable dados, Context context) {
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put("id", dados.getId());
             values.put("nome",dados.getNome());
@@ -168,15 +176,19 @@ public final class Loads {
             values.put("inteli",dados.getIntl());
 
             long newRowId = db.insert(perso.TABLE_NAME, null, values);
+            db.close();
             return newRowId != -1;
         }
 
-        public void InserirHabilidadePerso(int id, int perso_id, SQLiteDatabase db){
+        public void InserirHabilidadePerso(int id, int perso_id, Context context){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put("id",id);
             values.put("perso_id",perso_id);
             values.put("level",0);
             db.insert(perso_tem_habilidades.TABLE_NAME, null, values);
+            db.close();
         }
 
         public void InserirDungeon(int loadId,DungeonTable dungeon, Context context){
@@ -191,19 +203,67 @@ public final class Loads {
             banco.close();
         }
 
-        public boolean InserirItensLoad(SQLiteDatabase db, int load_id,int id,int quant){
+        public void NewItemLoad(Context context,int load_id,int id,int quant){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
+            String[] colunas = {"quantidade"};
+            String[] args = { load_id+"", id+""};
+
+            Cursor cursor = db.query(
+                itensLoad.TABLE_NAME,
+                colunas,
+                "load_id=? AND id=?",
+                args,
+                null,
+                null,
+                null);
+            boolean valida = false;
+            if(cursor.moveToNext()){
+                quant += cursor.getInt(0);
+                valida = true;
+            }
+            if (valida) {
+                AtualizaItens(context, load_id, id, quant);
+            } else {
+                InserirItensLoad(context, load_id, id, quant);
+            }
+            db.close();
+        }
+
+        public boolean InserirItensLoad(Context context, int load_id,int id,int quant){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put("id",id);
             values.put("load_id",load_id);
             values.put("quantidade",quant);
             long newRowId = db.insert(Loads.itensLoad.TABLE_NAME, null, values);
+            db.close();
             return newRowId != 1;
         }
 
-        public List<LoadTable> buscaLoad(SQLiteDatabase db){
+        public boolean AtualizaItens(Context context, int load_id,int id,int quant){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
+            String where = "id="+id+" AND load_id="+load_id;
+            ContentValues values = new ContentValues();
+            values.put("quantidade", quant);
+            boolean retorno =  (1 == db.update(Loads.itensLoad.TABLE_NAME,values,where,null));
+            db.close();
+            return retorno;
+
+        }
+
+        public List<LoadTable> buscaLoad(Context context){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             String[] colunas = {"id",
                     "nome",
-                    "tempo"};
+                    "tempo",
+                    "cobre",
+                    "prata",
+                    "ouro"
+                    };
             Cursor cursor = db.query(
                     Loads.load.TABLE_NAME,
                     colunas,
@@ -219,12 +279,17 @@ public final class Loads {
                 load.setId(cursor.getInt(0));
                 load.setNome(cursor.getString(1));
                 load.setTempo(cursor.getString(2));
+                load.setMoeda(cursor.getInt(3),cursor.getInt(4),cursor.getInt(5));
                 listaDeLoads.add(load);
             }
+
+            db.close();
             return listaDeLoads;
         }
 
-        public List<PersoTable> buscaDados(SQLiteDatabase db){
+        public List<PersoTable> buscaDados(Context context){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             List<PersoTable> listaDeDados = new ArrayList<>();
             PersoTable dados;
             String[] colunas = {
@@ -284,10 +349,13 @@ public final class Loads {
 
                 listaDeDados.add(dados);
             }
+            db.close();
             return listaDeDados;
         }
 
-        public List<PersoTable> buscaDadosPorLoadId(SQLiteDatabase db, int loadId, int id){
+        public List<PersoTable> buscaDadosPorLoadId(Context context, int loadId, int id){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             PersoTable dados;
             List<PersoTable> listaDeDados = new ArrayList<>();
             String[] colunas = {"id",
@@ -354,10 +422,13 @@ public final class Loads {
 
                 listaDeDados.add(dados);
             }
+            db.close();
             return listaDeDados;
         }
 
-        public List<HabilidadesPersoTable> buscaHabilidadesDoPerso(SQLiteDatabase db, int id, int perso_id){
+        public List<HabilidadesPersoTable> buscaHabilidadesDoPerso(Context context, int id, int perso_id){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             String[] colunas = {"id","perso_id","level"};
             String selection = "perso_id=?";
             String[] arg;
@@ -367,7 +438,7 @@ public final class Loads {
             }else{
                 arg = new String[]{perso_id + ""};
             }
-            System.out.print(Arrays.toString(arg));
+//            System.out.print(Arrays.toString(arg));
             Cursor cursor = db.query(
                     Loads.perso_tem_habilidades.TABLE_NAME,
                     colunas,
@@ -386,10 +457,13 @@ public final class Loads {
 
                 listHabilidades.add(habilidades);
             }
+            db.close();
             return listHabilidades;
         }
 
-        public List<DungeonTable> buscaDungeons(SQLiteDatabase db,int load_id){
+        public List<DungeonTable> buscaDungeons(Context context,int load_id){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             String[] colunas = {"andares",
                     "nome",
                     "rank"};
@@ -411,10 +485,13 @@ public final class Loads {
                 dungeons.setRank(cursor.getString(2));
                 listaDeDungeons.add(dungeons);
             }
+            db.close();
             return listaDeDungeons;
         }
 
-        public List<MissoesTable> buscaMissoes(SQLiteDatabase db,int load_id){
+        public List<MissoesTable> buscaMissoes(Context context,int load_id){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             System.out.println("Load:"+load_id);
             String selection = "load_id="+load_id;
             Cursor cursor = db.query(
@@ -434,7 +511,7 @@ public final class Loads {
                 missao.setDados(cursor.getInt(2),cursor.getInt(3),cursor.getString(4),cursor.getString(5));
                 listaDeMissoes.add(missao);
             }
-
+            db.close();
             return listaDeMissoes;
         }
         /*
@@ -468,7 +545,9 @@ public final class Loads {
             return listHabilidades;
         }
         */
-        public void atulizarDados(SQLiteDatabase db, PersoTable dados, int loadId, int id){
+        public void atulizarDados(Context context, PersoTable dados, int loadId, int id){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             String where = "load_id="+loadId+" AND id="+id;
             ContentValues values = new ContentValues();
             values.put("nome",dados.getNome());
@@ -491,28 +570,35 @@ public final class Loads {
             values.put("inteli",dados.getIntl());
 
             db.update(Loads.perso.TABLE_NAME,values,where,null);
+            db.close();
         }
 
-        public void atulizarLoad(SQLiteDatabase db,LoadTable load){
-
+        public void atulizarLoad(Context context,LoadTable load){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             String where = "id="+load.getId();
             ContentValues values = new ContentValues();
             values.put("nome", load.getNome());
             values.put("tempo", load.getTempo());
             db.update(Loads.load.TABLE_NAME,values,where,null);
-
+            db.close();
         }
 
-        public void deletaLoad(SQLiteDatabase db,LoadTable load){
+        public void deletaLoad(Context context,LoadTable load){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             String where = "id="+load.getId();
             db.delete(Loads.load.TABLE_NAME,where,null);
+            db.close();
+
         }
 
-        public boolean deletaSave(SQLiteDatabase db,long id){
-
+        public boolean deletaSave(Context context,long id){
+            Bd banco = new Bd(context);
+            SQLiteDatabase db = banco.getWritableDatabase();
             String where2 = "load_id="+id;
             String where = "id="+id;
-            List<PersoTable> listaDeDados= buscaDadosPorLoadId(db,(int)id,-1);
+            List<PersoTable> listaDeDados= buscaDadosPorLoadId(context,(int)id,-1);
             for (int i = 0;i<listaDeDados.size();i++){
                 int idPerso = listaDeDados.get(i).getId();
                 String comando2 = "perso_id="+idPerso;
@@ -521,6 +607,7 @@ public final class Loads {
             db.delete(Loads.itensLoad.TABLE_NAME,where2,null);
             db.delete(Loads.perso.TABLE_NAME,where2,null);
             db.delete(Loads.load.TABLE_NAME,where,null);
+            db.close();
             return false;
         }
     }

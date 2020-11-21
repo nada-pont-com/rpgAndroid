@@ -73,7 +73,7 @@ public class Guilda extends AppCompatActivity { //TODO Fazer um explorador autom
                 switch (valida){
                     case -1:
                         Intent it = new Intent(Guilda.this, Jogo.class);
-                        it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(it);
                         break;
                     case 5:
@@ -187,7 +187,7 @@ public class Guilda extends AppCompatActivity { //TODO Fazer um explorador autom
         if(Sessao.getListaDeMissoes()==null){
             Missao missao  = new Missao();
             for (int i = 0;i<5;i++){
-                System.out.println("test for"+i);
+//                System.out.println("test for"+i);
                 MissoesTable missoesTable = missao.geraMissao();
                 listaDeMissoes.add(missoesTable);
             }

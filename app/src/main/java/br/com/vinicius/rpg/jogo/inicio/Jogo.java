@@ -1,7 +1,7 @@
 package br.com.vinicius.rpg.jogo.inicio;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 import java.util.Timer;
@@ -22,7 +23,6 @@ import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.jogo.informacoes.Tempo;
 import br.com.vinicius.rpg.adapters.AdapterDungeonsPersonalizado;
 import br.com.vinicius.rpg.adapters.AdapterPersoPersonalizado;
-import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.inicio.MainActivity;
 import br.com.vinicius.rpg.objetosTabelas.PersoTable;
@@ -34,6 +34,7 @@ public class Jogo extends AppCompatActivity{
     private ImageView home;
     private ImageView battle;
     private ImageView config;
+    private TextView moedas;
     private ListView perso;
     private Button voltar;
     private Button voltar2;
@@ -60,10 +61,7 @@ public class Jogo extends AppCompatActivity{
             autoSalve.setONOFF(false);
             Sessao.setNull();
             Loads.comandos comandos = new Loads.comandos();
-            Bd banco = new Bd(Jogo.this);
-            SQLiteDatabase db = banco.getWritableDatabase();
-            comandos.atulizarLoad(db,load);
-            db.close();
+            comandos.atulizarLoad(getBaseContext(),load);
             this.finishAffinity();
         }
     }
@@ -79,15 +77,13 @@ public class Jogo extends AppCompatActivity{
         // não chame o super desse método //Impede o botão de voltar do celular voltar para Activy anterior.
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jogo);
         VisibleInvisibleDungeon(1);
         VisibleInvisible(1);
-
-
-
 
         if(Tempo.timer==null){
             Tempo.setTimer(new Timer());
@@ -107,6 +103,7 @@ public class Jogo extends AppCompatActivity{
         dungeons = findViewById(R.id.dungeons);
         procurar = findViewById(R.id.procurarD);
         excluir = findViewById(R.id.excluirD);
+        moedas = findViewById(R.id.moedas);
 
 
         voltar.setOnClickListener(new View.OnClickListener() {
@@ -118,10 +115,8 @@ public class Jogo extends AppCompatActivity{
                 autoSalve.setONOFF(false);
                 Sessao.setNull();
                 Loads.comandos comandos = new Loads.comandos();
-                Bd banco = new Bd(Jogo.this);
-                SQLiteDatabase db = banco.getWritableDatabase();
-                comandos.atulizarLoad(db,load);
-                db.close();
+
+                comandos.atulizarLoad(getBaseContext(),load);
                 Intent it = new Intent(Jogo.this, MainActivity.class);
                 it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(it);
@@ -187,24 +182,23 @@ public class Jogo extends AppCompatActivity{
 
         List<PersoTable> dados;
         load = Sessao.getLoad();
-        Bd banco = new Bd(this);
-        SQLiteDatabase db = banco.getWritableDatabase();
+        Loads.comandos comandos = new Loads.comandos();
         if(Sessao.getDadosPerso()==null){
-            Loads.comandos comandos = new Loads.comandos();
-            dados = comandos.buscaDadosPorLoadId(db,load.getId(),-1);
+            dados = comandos.buscaDadosPorLoadId(getBaseContext(), load.getId(), -1);
             Sessao.setDadosPerso(dados);
-            Sessao.HabilidadesPersoDados(db);
-            dungeonsClass.atuDungeons(db,comandos);
+            Sessao.HabilidadesPersoDados(getBaseContext());
         }else{
             dados = Sessao.getDadosPerso();
-            Sessao.HabilidadesPersoDados(db);
+            Sessao.HabilidadesPersoDados(getBaseContext());
         }
-        db.close();
+        dungeonsClass.atuDungeons(getBaseContext(), comandos);
+
+        moedas.setText("C: " + load.getCobre() + " P: " + load.getPrata() + " O: " + load.getOuro());
 
         procurar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dungeonsClass.list(Jogo.this,false);
+                dungeonsClass.list(Jogo.this, false);
                 atualizaDungeons();
             }
         });

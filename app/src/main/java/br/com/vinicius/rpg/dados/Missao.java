@@ -2,7 +2,6 @@ package br.com.vinicius.rpg.dados;
 
 import java.util.Random;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
-import br.com.vinicius.rpg.jogo.monstros.MonstrosRG;
 import br.com.vinicius.rpg.objetosTabelas.DungeonTable;
 import br.com.vinicius.rpg.objetosTabelas.ItensTable;
 import br.com.vinicius.rpg.objetosTabelas.MissoesTable;
@@ -25,11 +24,11 @@ public class Missao {
         System.out.println("test tipo"+tipo);
         switch (tipo){
             case 1: // encontrar Item (drop de monstro)
-                Itens itens  = new Itens();
                 do {
                     vali = true;
-                    int valor = random.nextInt(itens.getListaDeItens().size());
-                    ItensTable item = itens.getItensId(valor);
+                    int valor = random.nextInt(ItensDados.values().length);
+                    ItensTable item = new ItensTable(ItensDados.values()[valor]);
+
                     if(item.getRaridade().equals(rank)){
                         quant = random.nextInt(10)+1;
                         missao.setItem(item);
@@ -57,10 +56,7 @@ public class Missao {
                     case "F":
                         break;
                     case "G":
-                        valor = MonstrosRG.values().length;
-                        valor  = random.nextInt(valor);
-                        MonstrosRG g = MonstrosRG.values()[valor];
-                        monstro = new MonstroUni(rank,0,0,0,g.getNome(),0,0,g.getItem());
+                        monstro = new MonstroUni(0,100,0,"G");
                         break;
                 }
                 missao.setMonstro(monstro);

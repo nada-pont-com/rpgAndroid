@@ -393,7 +393,6 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/test"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
@@ -511,7 +510,6 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/test2"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="vertical">

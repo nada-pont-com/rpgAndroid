@@ -1,6 +1,7 @@
 package br.com.vinicius.rpg.jogo.informacoes;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.annotation.SuppressLint;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Sessao {
     private static LoadTable load;
     private static List<PersoTable> dadosPerso;
     private static Tempo.tempo tempo;
+    @SuppressLint("StaticFieldLeak")
     private static Tempo.autoSalve autoSalve;
     private static List<HabilidadesTable> habilidades;
     private static List<List<HabilidadesTable>> ListaDeHabilidadesDosPersonagens;
@@ -81,22 +83,22 @@ public class Sessao {
         return ListaDeHabilidadesDosPersonagens;
     }
 
-    public static void HabilidadesPersoDados(SQLiteDatabase db){
+    public static void HabilidadesPersoDados(Context context){
         Loads.comandos comandos = new Loads.comandos();
         List<List<HabilidadesTable>> ListaDeHabilidadesDosPersonagens = new ArrayList<>();
         if(dadosPerso!=null){
             for (int i3 = 0;i3<dadosPerso.size();i3++){
-                List<HabilidadesPersoTable> HabilidadesPerso = comandos.buscaHabilidadesDoPerso(db,0,dadosPerso.get(i3).getId());
+                List<HabilidadesPersoTable> HabilidadesPerso = comandos.buscaHabilidadesDoPerso(context,0,dadosPerso.get(i3).getId());
                 List<HabilidadesTable> habiPerso = new ArrayList<>();
                 for (int i = 0;i<HabilidadesPerso.size();i++){
-                    habiPerso.add(habilidades.get(habiPerso.get(i).getId()));
+                    habiPerso.add(habilidades.get(HabilidadesPerso.get(i).getHabilidadesId()));
                 }
                 System.out.println(dadosPerso.get(i3).getId());
                 ListaDeHabilidadesDosPersonagens.add(habiPerso);
             }
         }else{
-            setDadosPerso(comandos.buscaDados(db));
-            HabilidadesPersoDados(db);
+            setDadosPerso(comandos.buscaDados(context));
+            HabilidadesPersoDados(context);
         }
         setListaDeHabilidadesDosPersonagens(ListaDeHabilidadesDosPersonagens);
     }

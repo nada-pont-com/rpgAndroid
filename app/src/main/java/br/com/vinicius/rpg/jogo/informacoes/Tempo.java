@@ -29,7 +29,7 @@ public class Tempo {
             return ONOFF;
         }
 
-        private LoadTable load;
+        private final LoadTable load;
 
         public tempo(LoadTable load){
             this.load = load;
@@ -79,8 +79,8 @@ public class Tempo {
             return ONOFF;
         }
 
-        private Context context;
-        private LoadTable load;
+        private final Context context;
+        private final LoadTable load;
 
         public autoSalve(LoadTable load, Context context){
             this.context = context;
@@ -88,12 +88,9 @@ public class Tempo {
         }
         @Override
         public void run() {
-            Bd Banco = new Bd(context);
-            SQLiteDatabase db = Banco.getWritableDatabase();
             Loads.comandos comandos = new Loads.comandos();
             System.out.println(load.getTempo());
-            comandos.atulizarLoad(db,load);
-            db.close();
+            comandos.atulizarLoad(context,load);
         }
     }
 }

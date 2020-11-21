@@ -243,6 +243,7 @@ public class PersoTable { //Dados do jogador
                 return false;
         }
     }
+
     @Override
     public String toString() {
         return "Id: " + id+ ", Nome: " + nome +" Level: "+level +" Classe: "+classe+" atk: "+atk +" def: "+def+" agi: "+agi+" atkM: "+atkM+" defM: "+defM;

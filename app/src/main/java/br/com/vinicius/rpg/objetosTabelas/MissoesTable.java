@@ -2,8 +2,8 @@ package br.com.vinicius.rpg.objetosTabelas;
 
 import android.support.annotation.NonNull;
 
-import br.com.vinicius.rpg.dados.Itens;
-import br.com.vinicius.rpg.jogo.monstros.MonstrosRG;
+import br.com.vinicius.rpg.dados.ItensDados;
+import br.com.vinicius.rpg.dados.Monstros;
 
 public class MissoesTable {
 
@@ -113,8 +113,7 @@ public class MissoesTable {
     public void setDados(int itemId,int monstroId,String rank,String dungeonNome){
         switch (tipo){
             case 1:
-                Itens itens = new Itens();
-                item = itens.getListaDeItens().get(itemId);
+                this.item = new ItensTable(ItensDados.values()[itemId]);
                 break;
             case 2:
                 String nome = "";
@@ -134,7 +133,7 @@ public class MissoesTable {
                     case "F":
                         break;
                     case "G":
-                        nome = MonstrosRG.values()[monstroId].getNome();
+                        nome = Monstros.values()[monstroId].getNome();
                         break;
                 }
                 monstro.setRank(rank);

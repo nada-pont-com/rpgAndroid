@@ -1,4 +1,4 @@
-package br.com.vinicius.rpg.jogo.interfaces;
+package br.com.vinicius.rpg.interfaces;
 
 import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 

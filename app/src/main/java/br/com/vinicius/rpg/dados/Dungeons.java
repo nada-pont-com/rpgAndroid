@@ -1,7 +1,6 @@
 package br.com.vinicius.rpg.dados;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +26,8 @@ public class Dungeons { //TODO nomes novos de acordo com o rank; limitar monstro
         return listaDeDungeons;
     }
 
-    public void atuDungeons(SQLiteDatabase db, Loads.comandos comandos){
-        listaDeDungeons = comandos.buscaDungeons(db,Sessao.getLoad().getId());
+    public void atuDungeons(Context context, Loads.comandos comandos){
+        listaDeDungeons = comandos.buscaDungeons(context,Sessao.getLoad().getId());
     }
 
     public void list(Context context,boolean missao){

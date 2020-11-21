@@ -1,8 +1,8 @@
 package br.com.vinicius.rpg.jogo.batalha;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,14 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import br.com.vinicius.rpg.dados.Itens;
 import br.com.vinicius.rpg.jogo.dungeon.Dungeon;
 import br.com.vinicius.rpg.jogo.inicio.Jogo;
 import br.com.vinicius.rpg.R;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.jogo.informacoes.Tempo;
 import br.com.vinicius.rpg.adapters.AdapterBattlePersoPersonalizado;
-import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.objetosTabelas.ItensTable;
 import br.com.vinicius.rpg.objetosTabelas.MonstroUni;
@@ -81,10 +79,7 @@ public class Battle extends AppCompatActivity {
             Sessao.getTempo().setONOFF(false);
             Sessao.getAutoSalve().setONOFF(false);
             Loads.comandos comandos = new Loads.comandos();
-            Bd banco = new Bd(Battle.this);
-            SQLiteDatabase db = banco.getWritableDatabase();
-            comandos.atulizarLoad(db,Sessao.getLoad());
-            db.close();
+            comandos.atulizarLoad(getBaseContext(),Sessao.getLoad());
             Sessao.setNull();
             this.finishAffinity();
         }
@@ -136,11 +131,9 @@ public class Battle extends AppCompatActivity {
         });
 
         Loads.comandos comandos = new Loads.comandos();
-        Bd banco = new Bd(this);
-        SQLiteDatabase db = banco.getWritableDatabase();
 
         // buscando habilidades do jogador
-        listaHabilidadesPerso = comandos.buscaHabilidadesDoPerso(db,-1,persos.get(PersoNunber).getId());
+        listaHabilidadesPerso = comandos.buscaHabilidadesDoPerso(getBaseContext(),-1,persos.get(PersoNunber).getId());
 
         atacar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,20 +157,20 @@ public class Battle extends AppCompatActivity {
         mpBar = findViewById(R.id.BarMp);
 
         nome.setText(monstro.getNome());
-        System.out.println(nome.getLayout());
+//        System.out.println(nome.getLayout());
         String lv="Lv:"+monstro.getLevel(),
                 hp = monstro.getVida()+"/"+monstro.getVida(),
-                mP = monstro.getMp()+"/"+monstro.getMp();
+                mP = monstro.getMp()+"/"+monstro.getMpMax();
         level.setText(lv);
         vida.setText(hp);
         mp.setText(mP);
-        System.out.println(monstro.getVida());
+//        System.out.println(monstro.getVida());
 
         vidaBar.setMax(monstro.getVida());
         vidaBar.setProgress(monstro.getVida());
 
         mpBar.setMax(monstro.getMp());
-        mpBar.setProgress(monstro.getMp());
+        mpBar.setProgress(monstro.getMpMax());
 
         ListaAcoes = findViewById(R.id.ListaAcoes);
 
@@ -215,7 +208,7 @@ public class Battle extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
                                 dialogInterface.dismiss();
-                                System.out.println(habiPerso.get(which).getNome());
+//                                System.out.println(habiPerso.get(which).getNome());
                                 AlertDialog.Builder alert = new AlertDialog.Builder(Battle.this);
                                 alert.setTitle("Deseja utilizar "+habiPerso.get(which).getNome());
                                 alert.setMessage(habiPerso.get(which).getDescricao());
@@ -248,7 +241,8 @@ public class Battle extends AppCompatActivity {
         };
     }
 
-    private void atk(int atks,HabilidadesTable habilidades){
+    @SuppressLint("SetTextI18n")
+    private void atk(int atks, HabilidadesTable habilidades){
         PersoTable perso = persos.get(PersoNunber);
         for (int i = 0;i<atks;i++){
             int valor = 1,nocalteValor = 0,custo = 0;
@@ -257,12 +251,12 @@ public class Battle extends AppCompatActivity {
                 nocalteValor = habilidades.getNocalte();
             }
             double atk = perso.getAtk()*valor*0.01+(perso.getAtk());
-            System.out.println("atk:"+atk);
-            double atkReal = atk - (double)(monstro.getStatus()/5);
+//            System.out.println("atk:"+atk);
+            double atkReal = atk - (double)(monstro.getDef()/5);
             if(atkReal<0){
                 atkReal = 0;
             }
-            System.out.println("atkR:"+atkReal);
+//            System.out.println("atkR:"+atkReal);
             int dano = (int) atkReal;
             int validador = monstro.getVida()-dano;
             String acao = "";
@@ -288,7 +282,7 @@ public class Battle extends AppCompatActivity {
                 if (persos.size()<(PersoNunber+1)){
                     PersoNunber++;
                 }else{
-                    System.out.println("-----------Entrou----------------");
+//                    System.out.println("-----------Entrou----------------");
                     PersoNunber = 0;
                 }
                 if(nocalte!=0){
@@ -316,7 +310,7 @@ public class Battle extends AppCompatActivity {
                 personagens = random.nextInt(personagens);
             }
             PersoTable perso = persos.get(personagens);
-            int atk = monstro.getStatus();
+            int atk = monstro.getAtk();
             double atkReal = atk - (perso.getDef()/5);
             if(atkReal<0){
                 atkReal = 0;
@@ -396,21 +390,17 @@ public class Battle extends AppCompatActivity {
     }
 
     private void monstroItens(){
-        String[] itens =  monstro.getItem();
-        String[] itens2;
-        int cont = itens.length;
-        int[][] minMax = new int[cont][2];
-        int[] quant = new int[cont];
+        int cont = monstro.getItemQuant().length;
+        int[] minMax = new int[2];
+        int quant;
         for (int i = 0;i<cont;i++){
-            itens2 = itens[i].split("_");
-            itens[i] = itens2[0].split(":")[1];
-            itens2 = itens2[1].split("-");
-            minMax[i][0] = Integer.parseInt(itens2[0]);
-            minMax[i][1] = Integer.parseInt(itens2[1]);
-            quant[i] = random.nextInt(minMax[i][1])+minMax[i][0];
-            if(quant[i]>0){
-                ItensTable item = new Itens().getItensId(Integer.parseInt(itens[i]));
-                item.setQuantidade(quant[i]);
+            String[] itens = monstro.getItemQuant()[i].split("-");
+            minMax[0] = Integer.parseInt(itens[0]);
+            minMax[1] = Integer.parseInt(itens[1]);
+            quant = random.nextInt(minMax[1])+minMax[0];
+            if(quant>0){
+                ItensTable item = new ItensTable(monstro.getItens()[i]);
+                item.setQuantidade(quant);
                 ListaDeItens.add(item);
             }
         }
@@ -423,15 +413,15 @@ public class Battle extends AppCompatActivity {
     }
 
     private void Salvar(){
-        Bd banco = new Bd(getBaseContext());
-        SQLiteDatabase db = banco.getWritableDatabase();
+//        Bd banco = new Bd(getBaseContext());
+//        SQLiteDatabase db = banco.getWritableDatabase();
         Loads.comandos comandos = new Loads.comandos();
         for (int i = 0;i<ListaDeItens.size();i++){
-            comandos.InserirItensLoad(db,ListaDeItens.get(i).getId(),persos.get(0).getLoadId(),ListaDeItens.get(i).getQuantidade());
+            comandos.NewItemLoad(getBaseContext(),ListaDeItens.get(i).getId(),persos.get(0).getLoadId(),ListaDeItens.get(i).getQuantidade());
         }
         for (int i = 0;i<persos.size();i++){
-            comandos.atulizarDados(db,persos.get(i),persos.get(i).getLoadId(),persos.get(i).getId());
+            comandos.atulizarDados(getBaseContext(),persos.get(i),persos.get(i).getLoadId(),persos.get(i).getId());
         }
-        db.close();
+//        db.close();
     }
 }

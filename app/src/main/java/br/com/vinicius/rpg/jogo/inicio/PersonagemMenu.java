@@ -3,11 +3,9 @@ package br.com.vinicius.rpg.jogo.inicio;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,7 +22,6 @@ import java.util.List;
 import br.com.vinicius.rpg.R;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.jogo.informacoes.Tempo;
-import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
@@ -75,10 +72,7 @@ public class PersonagemMenu extends AppCompatActivity {
             Sessao.getTempo().setONOFF(false);
             Sessao.getAutoSalve().setONOFF(false);
             Loads.comandos comandos = new Loads.comandos();
-            Bd banco = new Bd(PersonagemMenu.this);
-            SQLiteDatabase db = banco.getWritableDatabase();
-            comandos.atulizarLoad(db,Sessao.getLoad());
-            db.close();
+            comandos.atulizarLoad(getBaseContext(),Sessao.getLoad());
             Sessao.setNull();
             this.finishAffinity();
         }
@@ -238,9 +232,9 @@ public class PersonagemMenu extends AppCompatActivity {
                 dado.setIntl(dado.getIntl()+intl);
                 dado.setPontosExp(pontos);
                 Loads.comandos comandos = new Loads.comandos();
-                Bd Banco = new Bd(PersonagemMenu.this);
-                SQLiteDatabase db = Banco.getWritableDatabase();
-                comandos.atulizarDados(db,dado,dado.getLoadId(),dado.getId());
+//                Bd Banco = new Bd(PersonagemMenu.this);
+//                SQLiteDatabase db = Banco.getWritableDatabase();
+                comandos.atulizarDados(getBaseContext(),dado,dado.getLoadId(),dado.getId());
 
                 pause = true;
                 Intent it = new Intent(PersonagemMenu.this,Jogo.class);
@@ -277,16 +271,16 @@ public class PersonagemMenu extends AppCompatActivity {
                         int valida = pontosHab-habilidade.getPontos();
                         AlertDialog.Builder alert = new AlertDialog.Builder(PersonagemMenu.this);
                         if(valida>=0){
-                            Bd banco = new Bd(PersonagemMenu.this);
-                            SQLiteDatabase db = banco.getWritableDatabase();
+//                            Bd banco = new Bd(PersonagemMenu.this);
+//                            SQLiteDatabase db = banco.getWritableDatabase();
                             Loads.comandos comandos = new Loads.comandos();
-                            List<HabilidadesPersoTable> habilidadesPerso = comandos.buscaHabilidadesDoPerso(db,habilidade.getId(),dado.getId());
+                            List<HabilidadesPersoTable> habilidadesPerso = comandos.buscaHabilidadesDoPerso(getBaseContext(),habilidade.getId(),dado.getId());
                             if(habilidadesPerso.size()==0){
-                                comandos.InserirHabilidadePerso(habilidade.getId(),dado.getId(),db);
+                                comandos.InserirHabilidadePerso(habilidade.getId(),dado.getId(),getBaseContext());
                                 alert.setMessage("Habilidade Aprendida: "+ habilidade.getNome());
                                 pontosHab = valida;
                                 dado.setPontosHab(pontosHab);
-                                comandos.atulizarDados(db,dado,dado.getLoadId(),dado.getId());
+                                comandos.atulizarDados(getBaseContext(),dado,dado.getLoadId(),dado.getId());
                                 Pontos.setText("Pontos: "+pontosHab);
                             }else{
                                 alert.setTitle("Aviso");

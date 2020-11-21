@@ -18,8 +18,12 @@ public class Bd extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS "+itensLoad.TABLE_NAME;
     private static final String SQL_DELETE_PERSO_TEM_HABILIDADES =
             "DROP TABLE IF EXISTS "+perso_tem_habilidades.TABLE_NAME;
+    private static final String SQL_DELETE_MISSES_LOAD =
+            "DROP TABLE IF EXISTS "+misseosLoad.TABLE_NAME;
+    private static final String SQL_DELETE_DUNGEONS_LOAD =
+            "DROP TABLE IF EXISTS "+dungions_tem_loads.TABLE_NAME;
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "RPG.db";
 
     public Bd(Context context) {
@@ -35,10 +39,13 @@ public class Bd extends SQLiteOpenHelper {
         db.execSQL(dungions_tem_loads.SQL_CREATE_DUNGEONS_TEM_LOADS);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(SQL_DELETE_MISSES_LOAD);
+        db.execSQL(SQL_DELETE_DUNGEONS_LOAD);
         db.execSQL(SQL_DELETE_ITENS);
         db.execSQL(SQL_DELETE_PERSO_TEM_HABILIDADES);
         db.execSQL(SQL_DELETE_PERSO);
         db.execSQL(SQL_DELETE_LOADS);
+
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {

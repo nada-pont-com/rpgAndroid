@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +22,6 @@ import java.util.List;
 
 import br.com.vinicius.rpg.R;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
-import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.inicio.MainActivity;
 import br.com.vinicius.rpg.objetosTabelas.PersoTable;
@@ -47,7 +45,6 @@ public class NovoJogo extends AppCompatActivity {
     private EditText Nome;
     private String classe;
     private int loadId;
-    private Bd banco;
 
 
     @Override
@@ -58,7 +55,6 @@ public class NovoJogo extends AppCompatActivity {
         if(Loads.perso.SQL_LIST_DADOS==null) {
             Loads.perso.dados();
         }
-        banco = new  Bd(getBaseContext());
         Cancelar = (Button) findViewById(R.id.Cancelar);
         avancar = (Button) findViewById(R.id.Avancar);
         avancar2 = (Button) findViewById(R.id.Avancar2);
@@ -86,21 +82,7 @@ public class NovoJogo extends AppCompatActivity {
                 if((Nome.getText().toString()).equals("")){
                     Nome.setError("Prenecha o campo");
                 }else{
-                    SQLiteDatabase db = banco.getReadableDatabase();
-                    String[] projection = {
-                            "id",
-                            "nome",
-                            "tempo"
-                    };
-                    Cursor cursor = db.query(
-                            Loads.load.TABLE_NAME,
-                            projection,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null);
-                    if(validador(cursor)){
+                    if(validador(new Loads.comandos().buscaLoad(getBaseContext()))){
                         VisibleInviseble2(1);
                     }
                 }
@@ -123,11 +105,7 @@ public class NovoJogo extends AppCompatActivity {
                 if(!texto.equals("Selecionado")){
                     String[] t = texto.split(",");
                     t = t[0].split(": ");
-                    String where = "id="+t[1];
-                    String where2 = "load_id="+t[1];
-                    SQLiteDatabase db = banco.getReadableDatabase();
-                    db.delete(Loads.perso.TABLE_NAME,where2,null);
-                    db.delete(Loads.load.TABLE_NAME,where,null);
+                    new Loads.comandos().deletaSave(getBaseContext(), Long.parseLong(t[1]));
                     textView.setText("Selecionado");
                     geraLista();
                 }else{
@@ -158,12 +136,12 @@ public class NovoJogo extends AppCompatActivity {
                 if(nome.equals("")){
                     nomePerso.setError("Preencha o campo");
                 }else {
-                    SQLiteDatabase db = banco.getWritableDatabase();
                     Loads.comandos comandos = new Loads.comandos();
                     LoadTable load = new LoadTable();
                     load.setNome(Nome.getText().toString());
                     load.setId(loadId);
                     load.setTempo("00:00:01");
+                    load.setMoeda(0,2,0);
                     boolean valor = comandos.Inserir(load,getBaseContext());
                     if(valor){
                         if((loadId!=0) || (classe!=null)){
@@ -188,7 +166,7 @@ public class NovoJogo extends AppCompatActivity {
                             perso.setRankExp(0);
                             perso.setPontosHab(0);
                             perso.setPontosExp(0);
-                            boolean retorno = comandos.InserirDados(perso,db);
+                            boolean retorno = comandos.InserirDados(perso,getBaseContext());
                             if(retorno){
                                 List<PersoTable> dado = new ArrayList<PersoTable>();
                                 dado.add(perso);
@@ -198,7 +176,7 @@ public class NovoJogo extends AppCompatActivity {
                                 Intent it =  new Intent(NovoJogo.this, Jogo.class);
                                 startActivity(it);
                             }else{
-                                comandos.deletaLoad(db,load);
+                                comandos.deletaLoad(getBaseContext(),load);
                                 visualizar("Erro ao cadastrar novo salve","Erro");
                             }
                         }else{
@@ -211,7 +189,6 @@ public class NovoJogo extends AppCompatActivity {
                         Intent it =  new Intent(NovoJogo.this,MainActivity.class);
                         startActivity(it);
                     }
-                    banco.close();
                 }
             }
         });
@@ -246,48 +223,23 @@ public class NovoJogo extends AppCompatActivity {
     }
 
     private void geraLista(){
-        SQLiteDatabase db = banco.getReadableDatabase();
-        String[] projection = {
-                "id",
-                "nome",
-                "tempo"
-        };
-        Cursor cursor = db.query(
-                Loads.load.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null);
-        LoadTable load;
-        List<LoadTable> loads = new ArrayList<>();
-        while (cursor.moveToNext()){
-            load = new LoadTable();
-            load.setId(cursor.getInt(0));
-            load.setNome(cursor.getString(1));
-            load.setTempo(cursor.getString(2));
-            loads.add(load);
-        }
+        Loads.comandos comandos = new Loads.comandos();
+        List<LoadTable> loads = comandos.buscaLoad(getBaseContext());;
+
         ArrayAdapter<LoadTable> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, loads);
         lista.setAdapter(adapter);
     }
 
-    private boolean validador(Cursor cursor){
+    private boolean validador(List<LoadTable> loads){
         int cont = 0;
         boolean nomeRepetido = false;
-        LoadTable load;
-        List<LoadTable> loads = new ArrayList<>();
-        while (cursor.moveToNext()){
-            load = new LoadTable();
-            load.setId(cursor.getInt(0));
-            load.setNome(cursor.getString(1));
-            load.setTempo(cursor.getString(2));
-            if(Nome.getText().toString().equals(cursor.getString(1))){
+//        LoadTable load;
+//        List<LoadTable> loads = new ArrayList<>();
+        for (LoadTable load : loads){
+            if(Nome.getText().toString().equals(load.getNome())){
                 nomeRepetido = true;
             }
-            loads.add(load);
             cont++;
         }
 
@@ -309,7 +261,6 @@ public class NovoJogo extends AppCompatActivity {
             alert.setNegativeButton("Voltar ao Inicio", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    banco.close();
                     Intent it =  new Intent(NovoJogo.this, MainActivity.class);
                     startActivity(it);
                 }

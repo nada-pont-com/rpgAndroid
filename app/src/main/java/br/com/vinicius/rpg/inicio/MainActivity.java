@@ -7,9 +7,6 @@ import android.view.View;
 import android.widget.Button;
 
 import br.com.vinicius.rpg.R;
-import br.com.vinicius.rpg.banco.Loads;
-import br.com.vinicius.rpg.dados.Habilidades;
-import br.com.vinicius.rpg.dados.Itens;
 
 public class MainActivity extends AppCompatActivity {
 

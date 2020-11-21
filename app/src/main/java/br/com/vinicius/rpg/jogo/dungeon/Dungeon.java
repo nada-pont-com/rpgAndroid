@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,12 +17,10 @@ import java.util.Random;
 import br.com.vinicius.rpg.R;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.jogo.informacoes.Tempo;
-import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.jogo.inicio.Jogo;
 import br.com.vinicius.rpg.objetosTabelas.MonstroUni;
 import br.com.vinicius.rpg.jogo.batalha.Battle;
-import br.com.vinicius.rpg.jogo.monstros.Monstros;
 import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 
 //Dungeon
@@ -62,10 +59,7 @@ public class Dungeon extends AppCompatActivity {
             Sessao.getTempo().setONOFF(false);
             Sessao.getAutoSalve().setONOFF(false);
             Loads.comandos comandos = new Loads.comandos();
-            Bd banco = new Bd(Dungeon.this);
-            SQLiteDatabase db = banco.getWritableDatabase();
-            comandos.atulizarLoad(db, Sessao.getLoad());
-            db.close();
+            comandos.atulizarLoad(getBaseContext(), Sessao.getLoad());
             Sessao.setNull();
             this.finishAffinity();
         }
@@ -216,11 +210,7 @@ public class Dungeon extends AppCompatActivity {
             if (vida<dado.getVidaMax()){
                 int reg = dado.getVidaMax()/100;
                 System.out.println("Reg: "+reg);
-                if((vida+reg)>dado.getVidaMax()){
-                    dado.setVida(dado.getVidaMax());
-                }else{
-                    dado.setVida(vida+reg);
-                }
+                dado.setVida(Math.min((vida + reg), dado.getVidaMax()));
             }
         }
     }
@@ -245,7 +235,8 @@ public class Dungeon extends AppCompatActivity {
                         agiT+=  dados.get(i).getAgi();
                     }
                     int agiM = agiT/dados.size();
-                    int fuga = (agiM/monstro.getStatus())*100;
+
+                    int fuga = (agiM/Math.max(monstro.getAgi(),1))*100;
                     int valor = gerador.nextInt(100);
                     System.out.println("valor: "+valor);
                     System.out.println("Fuga: "+fuga);
@@ -263,8 +254,7 @@ public class Dungeon extends AppCompatActivity {
     }
 
     private void invocaMonstro(int tipo) {
-        Monstros monstros = Monstros.G;//TODO tornar a chamada para todos os ranks não somente "G"
-        monstro =  monstros.monstro(andar,andarMax,tipo);
+        monstro = new MonstroUni(andar,andarMax,tipo,rank);
     }
 
     private void batalha(){
@@ -285,7 +275,7 @@ public class Dungeon extends AppCompatActivity {
     }
 
     private void boss(){
-        if ((gerador.nextInt(99)>49)  || (passos==100)) {//TODO colocar o boss no final do nome do monstro e alterar vida. adicionar jogo casual ou hard(3 vidas)
+        if ((gerador.nextInt(99)>79)  || (passos==100)) {//TODO colocar o boss no final do nome do monstro e alterar vida. adicionar jogo casual ou hard(3 vidas)
             invocaMonstro(3);
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Aviso");

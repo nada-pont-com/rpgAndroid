@@ -1,7 +1,6 @@
 package br.com.vinicius.rpg.jogo.inicio;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +14,6 @@ import java.util.List;
 import br.com.vinicius.rpg.R;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.adapters.AdapterSalvesPersonalizado;
-import br.com.vinicius.rpg.banco.Bd;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.inicio.MainActivity;
 import br.com.vinicius.rpg.objetosTabelas.LoadTable;
@@ -39,20 +37,17 @@ public class Continuar extends AppCompatActivity {
         Salves.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bd banco = new Bd(Continuar.this);
-                SQLiteDatabase db = banco.getReadableDatabase();
                 if(Deletar){
                     Loads.comandos comandos = new Loads.comandos();
-                    comandos.deletaSave(db,id);
+                    comandos.deletaSave(getBaseContext(),id);
                     System.out.println(id);
 
-                    listaDeLoad = comandos.buscaLoad(db);
+                    listaDeLoad = comandos.buscaLoad(getBaseContext());
                     lista();
                 }else{
                     Loads.comandos comandos = new Loads.comandos();
-                    List<LoadTable> listaDeLoad = comandos.buscaLoad(db);
+                    List<LoadTable> listaDeLoad = comandos.buscaLoad(getBaseContext());
                     Sessao.setHabilidades();
-                    db.close();
                     System.out.println(position);
                     Sessao.setLoad(listaDeLoad.get(position));
                     Intent it =  new Intent(Continuar.this, Jogo.class);
@@ -86,12 +81,9 @@ public class Continuar extends AppCompatActivity {
         lista();
     }
     private void lista(){
-        Bd banco = new Bd(this);
-        SQLiteDatabase db = banco.getWritableDatabase();
         Loads.comandos comandos = new Loads.comandos();
-        listaDeLoad = comandos.buscaLoad(db);
+        listaDeLoad = comandos.buscaLoad(getBaseContext());
         AdapterSalvesPersonalizado adapter = new AdapterSalvesPersonalizado(listaDeLoad,this);
         Salves.setAdapter(adapter);
-        db.close();
     }
 }

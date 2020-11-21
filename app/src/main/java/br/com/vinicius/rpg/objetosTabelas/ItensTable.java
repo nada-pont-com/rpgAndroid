@@ -1,5 +1,7 @@
 package br.com.vinicius.rpg.objetosTabelas;
 
+import br.com.vinicius.rpg.dados.ItensDados;
+
 public class ItensTable {
     private int id;
     private String nome;
@@ -7,6 +9,15 @@ public class ItensTable {
     private int quantidade;
     private String[] referencia;
     private int[] valor;
+
+    public ItensTable(ItensDados item){
+        this.id = item.getId();
+        this.nome = item.getNome();
+        this.raridade = item.getRaridade();
+        if(!item.getEstatisticas().equals("")){
+            Estatisticas(item.getEstatisticas());
+        }
+    }
 
     public int getId() {
         return id;
