@@ -1,0 +1,24 @@
+guilda: 
+ -- Pronto: 
+	- botão voltar
+	- tabela missão(e loads)
+ -- Fazer:
+	- missões:
+	- grupo(contratar novos personagens), depois do mercado e add as moedas(*drop de monstros);
+	- mercado;
+	- fazer a busca de missões pegas.
+ -- Opcional
+
+batalha:
+ -- Pronto: 
+	**
+ -- Fazer:
+	- configurar magias(*add magias);
+	- mostrar mensagem "não tem habilidades", quando o usuario não tiver habiliadades ou bloquear botão;
+ -- Opcional:
+	- ajeitar menu da batalha.
+Dungeon:
+ -- Pronto: 
+	**
+ -- Fazer:
+	- configurar limite de dungeons por rank. 

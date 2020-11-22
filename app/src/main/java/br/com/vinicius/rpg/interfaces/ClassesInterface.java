@@ -4,6 +4,7 @@ import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 
 public interface ClassesInterface {
     String Classe = "";
+    String getClasse();
     PersoTable getStatus();
     int Atk = 0;
     int Def = 0;

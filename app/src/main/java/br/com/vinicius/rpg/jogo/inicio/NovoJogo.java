@@ -60,9 +60,9 @@ public class NovoJogo extends AppCompatActivity {
         Voltar2 = (Button) findViewById(R.id.Voltar2);
         Voltar3 = (Button) findViewById(R.id.Voltar3);
         nomePerso = (EditText) findViewById(R.id.NomePerso);
-//        classGue = (RadioButton) findViewById(R.id.ClasseGue);
-//        classExpl = (RadioButton) findViewById(R.id.ClasseExpl);
+
         RadioGroup radio = findViewById(R.id.radioGrupoClasse);
+
         final ArrayList<RadioButton> classes = new ArrayList<>();
         for (Classes classe : Classes.values()){
             RadioButton classeButton = new RadioButton(getBaseContext());
@@ -70,6 +70,7 @@ public class NovoJogo extends AppCompatActivity {
             classes.add(classeButton);
             radio.addView(classeButton);
         }
+
         Nome = (EditText) findViewById(R.id.Nome);
         textView = (TextView) findViewById(R.id.Selecionado);
         lista = (ListView) findViewById(R.id.lista);

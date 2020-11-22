@@ -5,6 +5,10 @@ import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 
 public enum Classes implements ClassesInterface {
     GUERREIRO{
+        public String getClasse() {
+            return Classe;
+        }
+
         private String Classe = "Guerreiro";
 
         private int Atk = 10;
@@ -39,6 +43,11 @@ public enum Classes implements ClassesInterface {
         }
     },
     ESPLORADOR{
+
+        public String getClasse() {
+            return Classe;
+        }
+
         private String Classe  = "Explorador";
 
         private int Atk  = 6;

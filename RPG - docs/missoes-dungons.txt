@@ -1,0 +1,16 @@
+missoes - tipo - encontrar, matar, completar dungeon
+	-         "itens","monst", "o que o nome diz"
+        - quant- nun-NAN  , nun  , NAN
+	- exp  - a*       , b*   , c*
+	- dif  - a*       , b*	 , c*
+	- rank - a1*	  , b1*  , c1*
+	
+
+	a = "quant*raridade"
+	b = "quant*dificuldade"
+	c = "andares*(RankMonsters*nivelsMonsters)"
+	a1= "rank do Lugar que se encontra"
+	b1= "rank do munstro/lugar"
+	c1= "rank da dungeon"
+
+dungeons - criar criador de dungeon aletorias "scarlet,cubias,dragonideos,planice"

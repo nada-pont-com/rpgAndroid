@@ -1,0 +1,10 @@
+
+adicionar monstro normal(1x) e alfa(2x)
+boss - mod de 4x a 7x -  variante por andar diminuir poder quanto mais a cima de 1.1 a 3.5
+
+
+dungeon -  sortear um nome - andares - rank(de acordo com o do perso 1) - 
+	- tabela - dungeons ( nome(primary) - andares - loadid - rank - andar maximo)
+
+
+monstro - adicionar monstros com mod em um status. Ex: (esqueleto com espada) mod de 1.5 em Atk.
