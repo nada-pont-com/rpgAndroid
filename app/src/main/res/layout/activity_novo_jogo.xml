@@ -173,22 +173,25 @@
                 tools:layout_editor_absoluteY="72dp" />
 
             <RadioGroup
+                android:id="@+id/radioGrupoClasse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <RadioButton
+                <!--<RadioButton
                     android:id="@+id/ClasseGue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Guerreiro" />
+                    android:text="Guerreiro"
+                    android:visibility="invisible" />
 
                 <RadioButton
                     android:id="@+id/ClasseExpl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Explorador" />
+                    android:text="Explorador"
+                    android:visibility="invisible" />-->
             </RadioGroup>
 
             <Button

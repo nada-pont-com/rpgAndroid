@@ -57,33 +57,6 @@ public final class Loads {
                 "REFERENCES load (id)," +
                 "PRIMARY KEY (load_id,id)" +
                 ")";
-        public static List<PersoTable> SQL_LIST_DADOS = null;
-        public static void dados(){
-            SQL_LIST_DADOS = new ArrayList<PersoTable>();
-            String classe[] = {"Guerreiro","Explorador"};
-            String atk[] =  {"10"       ,"7"};
-            String def[] =  {"10"       ,"6"};
-            String agi[] =  {"5"        ,"9"};
-            String atkM[] = {"2"        ,"5"};
-            String defM[] = {"2"        ,"6"};
-            String vit[] =  {"0"        ,"0"};
-            String intl[] = {"0"        ,"0"};
-
-            PersoTable dado;
-            for (int i=0;i<classe.length;i++){
-                dado = new PersoTable();
-                dado.setClasse(classe[i]);
-                dado.setAgi(Integer.parseInt(agi[i]));
-                dado.setAtk(Integer.parseInt(atk[i]));
-                dado.setAtkM(Integer.parseInt(atkM[i]));
-                dado.setDef(Integer.parseInt(def[i]));
-                dado.setDefM(Integer.parseInt(defM[i]));
-                dado.setVit(Integer.parseInt(vit[i]));
-                dado.setIntl(Integer.parseInt(intl[i]));
-
-                SQL_LIST_DADOS.add(dado);
-            }
-        }
     }
     public static class misseosLoad implements BaseColumns{
         public static final String TABLE_NAME = "missoes_load";

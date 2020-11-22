@@ -15,12 +15,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.vinicius.rpg.R;
+import br.com.vinicius.rpg.dados.Classes;
 import br.com.vinicius.rpg.jogo.informacoes.Sessao;
 import br.com.vinicius.rpg.banco.Loads;
 import br.com.vinicius.rpg.inicio.MainActivity;
@@ -39,11 +41,11 @@ public class NovoJogo extends AppCompatActivity {
     private Button Voltar3;
     private TextView textView;
     private ListView lista;
-    private RadioButton classGue;
-    private RadioButton classExpl;
+//    private RadioButton classGue;
+//    private RadioButton classExpl;
     private EditText nomePerso;
     private EditText Nome;
-    private String classe;
+    private Classes classe;
     private int loadId;
 
 
@@ -52,17 +54,22 @@ public class NovoJogo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_novo_jogo);
 
-        if(Loads.perso.SQL_LIST_DADOS==null) {
-            Loads.perso.dados();
-        }
         Cancelar = (Button) findViewById(R.id.Cancelar);
         avancar = (Button) findViewById(R.id.Avancar);
         avancar2 = (Button) findViewById(R.id.Avancar2);
         Voltar2 = (Button) findViewById(R.id.Voltar2);
         Voltar3 = (Button) findViewById(R.id.Voltar3);
         nomePerso = (EditText) findViewById(R.id.NomePerso);
-        classGue = (RadioButton) findViewById(R.id.ClasseGue);
-        classExpl = (RadioButton) findViewById(R.id.ClasseExpl);
+//        classGue = (RadioButton) findViewById(R.id.ClasseGue);
+//        classExpl = (RadioButton) findViewById(R.id.ClasseExpl);
+        RadioGroup radio = findViewById(R.id.radioGrupoClasse);
+        final ArrayList<RadioButton> classes = new ArrayList<>();
+        for (Classes classe : Classes.values()){
+            RadioButton classeButton = new RadioButton(getBaseContext());
+            classeButton.setText(classe.getClasse());
+            classes.add(classeButton);
+            radio.addView(classeButton);
+        }
         Nome = (EditText) findViewById(R.id.Nome);
         textView = (TextView) findViewById(R.id.Selecionado);
         lista = (ListView) findViewById(R.id.lista);
@@ -117,15 +124,16 @@ public class NovoJogo extends AppCompatActivity {
         avancar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(classExpl.isChecked()){
-                    classe = "Explorador";
-                }else if(classGue.isChecked()){
-                    classe = "Guerreiro";
-                }else{
-                    visualizar("Selecione um!","Alerta!");
-                    return;
+                int cont = 0;
+                for (RadioButton radioClasse : classes){
+                    if(radioClasse.isChecked()){
+                        classe = Classes.values()[cont];
+                        VisibleInviseble2(2);
+                        return;
+                    }
+                    cont++;
                 }
-                VisibleInviseble2(2);
+                visualizar("Selecione um!","Alerta!");
             }
         });
 
@@ -145,14 +153,7 @@ public class NovoJogo extends AppCompatActivity {
                     boolean valor = comandos.Inserir(load,getBaseContext());
                     if(valor){
                         if((loadId!=0) || (classe!=null)){
-                            List<PersoTable> classes = Loads.perso.SQL_LIST_DADOS;
-                            PersoTable perso = new PersoTable();
-                            for (int i = 0;i<classes.size();i++){
-                                if(classes.get(i).getClasse().equals(classe)){
-                                    perso = classes.get(i);
-                                    break;
-                                }
-                            }
+                            PersoTable perso = classe.getStatus();
                             perso.setId(0);
                             perso.setLoadId(loadId);
                             perso.setLevel(1);
