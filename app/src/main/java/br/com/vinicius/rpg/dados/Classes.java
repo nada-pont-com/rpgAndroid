@@ -38,7 +38,7 @@ public enum Classes implements ClassesInterface {
             perso.setDef(Def);
             perso.setDefM(DefM);
             perso.setVit(Vit);
-            perso.setIntl(Agi);
+            perso.setIntl(Int);
             return perso;
         }
     },
@@ -77,7 +77,7 @@ public enum Classes implements ClassesInterface {
             perso.setDef(Def);
             perso.setDefM(DefM);
             perso.setVit(Vit);
-            perso.setIntl(Agi);
+            perso.setIntl(Int);
             return perso;
         }
     }
