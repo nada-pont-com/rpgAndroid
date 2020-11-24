@@ -9,7 +9,7 @@ public enum Classes implements ClassesInterface {
             return Classe;
         }
 
-        private String Classe = "Guerreiro";
+        private final String Classe = "Guerreiro";
 
         private int Atk = 10;
 

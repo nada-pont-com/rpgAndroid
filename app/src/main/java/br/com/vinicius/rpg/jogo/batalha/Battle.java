@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import br.com.vinicius.rpg.dados.HabilidadesDados;
 import br.com.vinicius.rpg.jogo.dungeon.Dungeon;
 import br.com.vinicius.rpg.jogo.inicio.Jogo;
 import br.com.vinicius.rpg.R;
@@ -196,7 +197,10 @@ public class Battle extends AppCompatActivity {
                     case 2:
                         //LinearLayout habilidadesMagias  = findViewById(R.id.HabilidadeMagia);
                         //habilidadesMagias.setVisibility(View.VISIBLE);
-                        final List<HabilidadesTable> habiPerso = Sessao.getListaDeHabilidadesDosPersonagens().get(PersoNunber);
+                        final List<HabilidadesTable> habiPerso = new ArrayList<>();
+                        for (HabilidadesPersoTable habPerso : Sessao.getListaDeHabilidadesDosPersonagens().get(PersoNunber)){
+                            habiPerso.add(new HabilidadesTable(HabilidadesDados.values()[habPerso.getHabilidadesId()]));
+                        }
 
                         ArrayAdapter<HabilidadesTable> adapterHab = new ArrayAdapter<>(Battle.this,
                                 android.R.layout.simple_list_item_1, habiPerso);
@@ -346,7 +350,7 @@ public class Battle extends AppCompatActivity {
     //Ação das habilidades
     private void Habilidade(HabilidadesTable habilidades){
         PersoTable perso = persos.get(PersoNunber);
-        int tipo = Integer.parseInt(habilidades.getTipo());
+        int tipo = habilidades.getTipo();
         int mp = perso.getMp(),custo = habilidades.getCusto();
         if(mp>custo){
             perso.setMp(mp-custo);

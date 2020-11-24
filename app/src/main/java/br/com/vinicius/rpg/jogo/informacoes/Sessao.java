@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.vinicius.rpg.banco.Loads;
-import br.com.vinicius.rpg.dados.Habilidades;
+import br.com.vinicius.rpg.dados.HabilidadesDados;
 import br.com.vinicius.rpg.objetosTabelas.MissoesTable;
 import br.com.vinicius.rpg.objetosTabelas.PersoTable;
 import br.com.vinicius.rpg.objetosTabelas.HabilidadesPersoTable;
@@ -21,7 +21,7 @@ public class Sessao {
     @SuppressLint("StaticFieldLeak")
     private static Tempo.autoSalve autoSalve;
     private static List<HabilidadesTable> habilidades;
-    private static List<List<HabilidadesTable>> ListaDeHabilidadesDosPersonagens;
+    private static List<List<HabilidadesPersoTable>> ListaDeHabilidadesDosPersonagens;
     private static List<MissoesTable> ListaDeMissoes;
     private static List<MissoesTable> ListaDeMissoesAceitas;
 
@@ -62,9 +62,13 @@ public class Sessao {
     }
 
     public static void setHabilidades() {
-        Habilidades habilidades = new Habilidades();
-        habilidades.Habilidades();
-        Sessao.habilidades = habilidades.getHabilidades();
+        habilidades = new ArrayList<>();
+        for(HabilidadesDados habiliade : HabilidadesDados.values()){
+            habilidades.add(new HabilidadesTable(habiliade));
+        }
+//      Habilidades habilidades = new Habilidades();
+//      habilidades.Habilidades();
+//      Sessao.habilidades = habilidades.getHabilidades();
     }
 
     public static void setNull(){
@@ -75,32 +79,19 @@ public class Sessao {
         setListaDeHabilidadesDosPersonagens(null);
     }
 
-    private static void setListaDeHabilidadesDosPersonagens(List<List<HabilidadesTable>> listaDeHabilidadesDosPersonagens) {
+    private static void setListaDeHabilidadesDosPersonagens(List<List<HabilidadesPersoTable>> listaDeHabilidadesDosPersonagens) {
         ListaDeHabilidadesDosPersonagens = listaDeHabilidadesDosPersonagens;
     }
 
-    public static List<List<HabilidadesTable>> getListaDeHabilidadesDosPersonagens() {
+    public static List<List<HabilidadesPersoTable>> getListaDeHabilidadesDosPersonagens() {
         return ListaDeHabilidadesDosPersonagens;
     }
 
     public static void HabilidadesPersoDados(Context context){
         Loads.comandos comandos = new Loads.comandos();
-        List<List<HabilidadesTable>> ListaDeHabilidadesDosPersonagens = new ArrayList<>();
-        if(dadosPerso!=null){
-            for (int i3 = 0;i3<dadosPerso.size();i3++){
-                List<HabilidadesPersoTable> HabilidadesPerso = comandos.buscaHabilidadesDoPerso(context,0,dadosPerso.get(i3).getId());
-                List<HabilidadesTable> habiPerso = new ArrayList<>();
-                for (int i = 0;i<HabilidadesPerso.size();i++){
-                    habiPerso.add(habilidades.get(HabilidadesPerso.get(i).getHabilidadesId()));
-                }
-                System.out.println(dadosPerso.get(i3).getId());
-                ListaDeHabilidadesDosPersonagens.add(habiPerso);
-            }
-        }else{
-            setDadosPerso(comandos.buscaDados(context));
-            HabilidadesPersoDados(context);
+        for (PersoTable perso : dadosPerso){
+            ListaDeHabilidadesDosPersonagens.add(comandos.buscaHabilidadesDoPerso(context,0,perso.getId()));
         }
-        setListaDeHabilidadesDosPersonagens(ListaDeHabilidadesDosPersonagens);
     }
 
     public static List<MissoesTable> getListaDeMissoes() {

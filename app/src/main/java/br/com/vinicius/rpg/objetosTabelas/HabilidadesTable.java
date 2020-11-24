@@ -1,17 +1,33 @@
 package br.com.vinicius.rpg.objetosTabelas;
 
+import br.com.vinicius.rpg.dados.HabilidadesDados;
+
 public class HabilidadesTable {
     private int id;
     private String nome;
-    private String tipo;//1-Ataque, 2-fortalecimento
+    private int tipo;//1-Ataque, 2-fortalecimento
     private int nuberAtk;//numero de ataques que habilidade fara;
     private int valor;// dano, aumento // porcentagem;
     private int aumento;
     private int nocalte;
-    private String extra;//tipo de fortalecimento;
+    private Status extra;//tipo de fortalecimento;
     private int pontos;//pontos necessarios para adquirir a habilidade;
     private String descricao;
-    private int custo; //custo de mp
+    private int custoMp; //custo de mp
+
+    public HabilidadesTable(HabilidadesDados habilidade){
+        this.id = habilidade.getId();
+        this.nome = habilidade.getNome();
+        this.tipo = habilidade.getTipo();
+        this.nuberAtk = habilidade.getNumberAtk();
+        this.valor = habilidade.getValor();
+        this.aumento = habilidade.getAumento();
+        this.nocalte = habilidade.getNocalte();
+        this.extra = habilidade.getExtra();
+        this.pontos = habilidade.getCusto();
+        this.descricao = habilidade.getDescricao();
+        this.custoMp = habilidade.getMpCusto();
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -29,11 +45,11 @@ public class HabilidadesTable {
         return nome;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(int tipo) {
         this.tipo = tipo;
     }
 
-    public String getTipo() {
+    public int getTipo() {
         return tipo;
     }
 
@@ -69,11 +85,11 @@ public class HabilidadesTable {
         return nocalte;
     }
 
-    public void setExtra(String extra) {
+    public void setExtra(Status extra) {
         this.extra = extra;
     }
 
-    public String getExtra() {
+    public Status getExtra() {
         return extra;
     }
 
@@ -89,18 +105,18 @@ public class HabilidadesTable {
         return descricao;
     }
 
-    public void setCusto(int custo) {
-        this.custo = custo;
+    public void setCusto(int custoMp) {
+        this.custoMp = custoMp;
     }
 
     public int getCusto() {
-        return custo;
+        return custoMp;
     }
 
     public void descricao(String descricao){
         this.descricao = descricao+
                 "\n"+valor+"%   Aumento por level "+aumento+
-                "\n"+custo+" MP";
+                "\n"+custoMp+" MP";
         if(!extra.equals("")){
             this.descricao = this.descricao+"\nEfeito:"+extra;
         }

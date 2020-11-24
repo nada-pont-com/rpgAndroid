@@ -1,6 +1,6 @@
 package br.com.vinicius.rpg.objetosTabelas;
 
-public class PersoTable { //Dados do jogador
+public class PersoTable extends Status{ //Dados do jogador
 
     private int id;
     private String nome;
@@ -12,17 +12,6 @@ public class PersoTable { //Dados do jogador
     private String classe;
     private String rank;
     private int rankExp;
-    private int vida;
-    private int vidaMax;
-    private int mp;
-    private int mpMax;
-    private int atk;
-    private int def;
-    private int agi;
-    private int atkM;
-    private int defM;
-    private int vit;
-    private int intl;
 
     public void setId(int id) {
         this.id = id;
@@ -127,98 +116,6 @@ public class PersoTable { //Dados do jogador
 
     public int getRankExp() {
         return rankExp;
-    }
-
-    public void setVida(int vida) {
-        this.vida = vida;
-    }
-
-    public int getVida() {
-        return vida;
-    }
-
-    public void setVidaMax(int vidaMax) {
-        this.vidaMax = vidaMax;
-    }
-
-    public int getVidaMax() {
-        return (vidaMax+(vit*10));
-    }
-
-    public int getVidaM(){
-        return this.vidaMax;
-    }
-
-    public void setMp(int mp) {
-        this.mp = mp;
-    }
-
-    public int getMp() {
-        return mp;
-    }
-
-    public void setMpMax(int mpMax) {
-        this.mpMax = mpMax;
-    }
-
-    public int getMpMax() {
-        return (mpMax+(intl*2));
-    }
-
-    public void setAtk(int atk){
-        this.atk = atk;
-    }
-
-    public int getAtk(){
-        return this.atk;
-    }
-
-    public void setDef(int def){
-        this.def = def;
-    }
-
-    public int getDef(){
-        return this.def;
-    }
-
-    public void setAgi(int agi){
-        this.agi = agi;
-    }
-
-    public int getAgi(){
-        return this.agi;
-    }
-
-    public void setAtkM(int atkM){
-        this.atkM = atkM;
-    }
-
-    public int getAtkM(){
-        return this.atkM;
-    }
-
-    public void setDefM(int defM){
-        this.defM = defM;
-    }
-
-    public int getDefM(){
-        return this.defM;
-    }
-
-    public int getVit() {
-        return vit;
-    }
-
-    public void setVit(int vit) {
-        this.vit = vit;
-    }
-
-    public int getIntl() {
-        return intl;
-    }
-
-    public void setIntl(int intl) {
-        this.intl = intl;
     }
 
     public boolean validadorRank(String rank){
